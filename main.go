@@ -14,7 +14,7 @@ var decoder = schema.NewDecoder()
 
 type Handler func(http.ResponseWriter, *http.Request)
 
-const dbg = true
+const dbg = false
 
 func opendb() (*mgo.Session, *mgo.Database) {
   if dbg {

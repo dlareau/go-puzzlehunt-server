@@ -9,3 +9,6 @@ const TeamRealm     = "Pirate Login"
 const MongoHost     = "mongodb://127.0.0.1:27017"
 const MongoDatabase = "puzzlehunt"
 const ListenAddress = ":4000"
+
+/* Constant strings and whatnot */
+const InvalidAnswerText = "invalid: answers will be one word (no spaces)"

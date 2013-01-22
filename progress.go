@@ -22,6 +22,7 @@ type Submission struct {
   PuzzleName  string
   Answer      string
   Status      SubmissionStatus
+  Comment     string
   ReceivedAt  time.Time
 }
 

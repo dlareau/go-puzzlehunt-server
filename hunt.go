@@ -57,3 +57,13 @@ func MapPuzzleHandler(w http.ResponseWriter, r *http.Request, t *Team) {
 
   check(mpuzzle.Execute(w, &data))
 }
+
+func AnswerStatus(s Submission) string {
+  switch (s.Status) {
+    case CorrectUnreplied, IncorrectUnreplied: return "validating...";
+    case Correct:                              return "correct";
+    case InvalidAnswer:                        return InvalidAnswerText;
+    case IncorrectReplied:                     return "incorrect: " + s.Comment;
+  }
+  return ""
+}

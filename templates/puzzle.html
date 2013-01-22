@@ -11,12 +11,22 @@
       <input type='submit' value='Submit'/>
     </div>
   </form>
-    <div>
-      <h3>Past Submissions</h3>
-      <ul>
-        {{ range .Submissions }}
-          <li>{{ .ReceivedAt.Format "15:04:05" }} {{ .Answer }}</li>
-        {{ end }}
-      </ul>
-    </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Answer</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range .Submissions }}
+        <tr>
+          <td>{{ .ReceivedAt.Format "15:04:05" }}</td>
+          <td>{{ .Answer }} </td>
+          <td>{{ AnswerStatus . }}</td>
+        </tr>
+      {{ end }}
+    </tbody>
+  </table>
 {{ end }}
