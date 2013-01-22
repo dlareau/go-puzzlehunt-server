@@ -3,11 +3,8 @@ package main
 import "bytes"
 import "github.com/gorilla/mux"
 import "labix.org/v2/mgo/bson"
-import "log"
 import "net/http"
 import "time"
-import "container/list"
-import ws "code.google.com/p/go.net/websocket"
 
 /* A solution can be solved or possibly not. This is a placeholder for whether a
    team has unlocked a puzzle, and then for whether the team has solved the
@@ -44,10 +41,6 @@ type SolutionList []Solution
 type SolutionMap  map[bson.ObjectId]Solution
 type TeamMap      map[bson.ObjectId]Team
 type PuzzleMap    map[bson.ObjectId]Puzzle
-type ClientSocket struct {
-  done chan int
-  ws   *ws.Conn
-}
 type QueueMessage struct {
   Html string
   Id   string
@@ -59,8 +52,8 @@ var Submissions = db.C("submissions")
 
 var solutionst = AdminTemplate("progress/solutions.html")
 var queuet = AdminTemplate("progress/queue.html")
-var queuews = make(chan *ClientSocket)
-var queuemsg = make(chan QueueMessage)
+var Queue = WsServer()
+var Progress = WsServer()
 
 func AllSolutions() []Solution {
   solutions := make([]Solution, 0)
@@ -84,35 +77,6 @@ func AllSubmissions() []Submission {
 /* Main queue, should be fast because everyone is slamming this page */
 func SubmissionsIndex(w http.ResponseWriter, r *http.Request) {
   check(queuet.Execute(w, AllSubmissions()))
-}
-
-func QueueBroadcastServer() {
-  sockets := list.New()
-  for {
-    select {
-      case ws := <-queuews:
-        sockets.PushBack(ws)
-
-      case msg := <-queuemsg:
-        var nxt *list.Element
-        for cur := sockets.Front(); cur != nil; cur = nxt {
-          nxt = cur.Next()
-          client := cur.Value.(*ClientSocket)
-          if ws.JSON.Send(client.ws, msg) != nil {
-            sockets.Remove(cur)
-            client.done <- 1
-          }
-        }
-    }
-  }
-}
-
-func QueueNewSocket(ws *ws.Conn) {
-  log.Print("got a queue websocket")
-  client := ClientSocket{ done: make(chan int), ws: ws }
-  queuews <- &client
-  <-client.done
-  log.Print("losing a queue websocket")
 }
 
 /* Main solution progress scoreboard */
@@ -193,17 +157,17 @@ func (s *Submission) find(id string) {
   check(Submissions.FindId(bson.ObjectIdHex(id)).One(s))
 }
 
-func (s *Submission) html() string {
+func (s *Submission) message(typ string) QueueMessage {
   buf := bytes.NewBuffer(make([]byte, 0))
   check(queuet.ExecuteTemplate(buf, "queue_submission", s))
-  return buf.String()
+  return QueueMessage{ Id: s.Id.Hex(), Html: buf.String(), Type: typ }
 }
 
 func (s *Submission) Insert() error {
   s.Id = bson.NewObjectId()
   err := Submissions.Insert(s)
   if err == nil {
-    queuemsg <- QueueMessage { Id: s.Id.Hex(), Html: s.html(), Type: "new" }
+    Queue.Messages <- s.message("new")
   }
   return err
 }
@@ -211,7 +175,7 @@ func (s *Submission) Insert() error {
 func (s *Submission) Update() error {
   err := Submissions.UpdateId(s.Id, s)
   if err == nil {
-    queuemsg <- QueueMessage { Id: s.Id.Hex(), Html: s.html(), Type: "update" }
+    Queue.Messages <- s.message("update")
   }
   return err
 }

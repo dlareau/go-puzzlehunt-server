@@ -1,6 +1,5 @@
 package main
 
-import ws "code.google.com/p/go.net/websocket"
 import "github.com/gorilla/mux"
 import "github.com/gorilla/schema"
 import "labix.org/v2/mgo"
@@ -101,7 +100,8 @@ func main() {
   check(Puzzles.EnsureIndex(mgo.Index{ Key: []string{"slug"} }));
   check(Teams.EnsureIndex(mgo.Index{ Key: []string{"username"} }));
   check(Solutions.EnsureIndex(mgo.Index{ Key: []string{"teamid"} }));
-  go QueueBroadcastServer()
+  go Queue.Serve()
+  go Progress.Serve()
 
   r := mux.NewRouter()
 
@@ -121,12 +121,13 @@ func main() {
   r.Handle("/admin/puzzles/{id}/edit", A404(PuzzlesEdit)).Methods("GET", "POST")
   r.Handle("/admin/puzzles/{id}/destroy", A404(PuzzlesDestroy)).Methods("POST")
 
-  r.Handle("/admin/progress", A(ProgressIndex)).Methods("GET")
   r.Handle("/admin/reset", A(ProgressReset)).Methods("POST")
   r.Handle("/admin/release", A(ProgressRelease)).Methods("POST")
   r.Handle("/admin", A(SubmissionsIndex)).Methods("GET")
   r.Handle("/admin/queue", A(SubmissionsIndex)).Methods("GET")
-  r.Handle("/admin/queue/ws", ws.Handler(QueueNewSocket))
+  r.Handle("/admin/queue/ws", Queue.Endpoint())
+  r.Handle("/admin/progress", A(ProgressIndex)).Methods("GET")
+  r.Handle("/admin/progress/ws", Progress.Endpoint())
   r.Handle("/admin/respond/{id}", A(SubmissionRespond)).Methods("POST")
 
   srv := http.FileServer(http.Dir("./assets"))
