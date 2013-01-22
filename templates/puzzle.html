@@ -1,8 +1,7 @@
 {{ define "title" }}Puzzle - {{ .Puzzle.Name }}{{ end }}
 
 {{ define "content" }}
-  <h1>{{ .Puzzle.Name }}</h1>
-  <a href='{{ .Puzzle.Url }}'>{{ .Puzzle.Name }}</a>
+  <h1><a href='{{ .Puzzle.Url }}'>{{ .Puzzle.Name }}</a></h1>
   <a href='/map'>All Puzzles</a>
 
   <form action="/map/puzzles/{{ .Puzzle.Slug }}" method='post'>
@@ -12,22 +11,24 @@
       <input type='submit' value='Submit'/>
     </div>
   </form>
-  <table>
-    <thead>
-      <tr>
-        <th>Time</th>
-        <th>Answer</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{ range .Submissions }}
+  {{ if .Submissions }}
+    <table>
+      <thead>
         <tr>
-          <td>{{ .ReceivedAt.Format "15:04:05" }}</td>
-          <td>{{ .Answer }} </td>
-          <td>{{ AnswerStatus . }}</td>
+          <th>Time</th>
+          <th>Answer</th>
+          <th>Status</th>
         </tr>
-      {{ end }}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {{ range .Submissions }}
+          <tr>
+            <td>{{ .ReceivedAt.Format "15:04:05" }}</td>
+            <td>{{ .Answer }} </td>
+            <td>{{ AnswerStatus . }}</td>
+          </tr>
+        {{ end }}
+      </tbody>
+    </table>
+  {{ end }}
 {{ end }}
