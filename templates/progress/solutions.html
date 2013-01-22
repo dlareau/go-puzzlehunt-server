@@ -1,0 +1,60 @@
+{{ define "title" }}Puzzle Progress{{ end }}
+
+{{ define "content" }}
+  <h1>Puzzle Progress</h1>
+  <table id='progress'>
+    <thead>
+      <tr>
+        <th>Team</th>
+        <th>#</th>
+        {{ range .Puzzles }}
+          <th>{{ .Name }}</th>
+        {{ end }}
+      </tr>
+    </thead>
+    <tbody>
+      {{ with $data := . }}
+        {{ range $_, $team := $data.Teams }}
+          <tr>
+            <td>{{ $team.Name }}</td>
+            <td>{{ NumSolved $data.Solutions $team }}</td>
+            {{ range $_, $puzzle := $data.Puzzles }}
+              {{ with $solution := SolutionFor $data.Solutions $team $puzzle }}
+                {{ if not $solution.SolvedAt.IsZero }}
+                  <td class='solved'>
+                    {{ $solution.SolvedAt.Format "15:04:05" }}
+                  </td>
+                {{ else }}
+                  <td class='available'></td>
+                {{ end }}
+              {{ else }}
+                <td class='unavailable'>
+                  <a href="/admin/puzzles/{{ $puzzle.Id.Hex }}/unlock/{{ $team.Id.Hex }}"
+                     data-method="post">
+                     unlock
+                  </a>
+                </td>
+              {{ end }}
+            {{ end }}
+          </tr>
+        {{ end }}
+      {{ end }}
+    </tbody>
+  </table>
+  <script type='text/javascript'>
+    setInterval(function() {
+      $.get(window.location, function(foo) {
+        var rows = $(foo).find('#progress');
+        $('#progress').replaceWith(rows);
+      });
+    }, 2000);
+  </script>
+
+  <a href="/admin/reset"
+     data-confirm="Are you sure?"
+     data-method="post">Reset all progress</a>
+  &middot;
+  <a href="/admin/release"
+     data-confirm="Are you sure?"
+     data-method="post">Release initial puzzles</a>
+{{ end }}

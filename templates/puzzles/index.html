@@ -1,0 +1,34 @@
+{{ define "title" }}Puzzle Index{{ end }}
+
+{{ define "content" }}
+  <h1>All Puzzles</h1>
+  <table id="puzzles">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Slug</th>
+        <th>Answer</th>
+        <th>Unlock Index</th>
+        <th>Options</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range . }}
+        <tr class="{{ .Classes }}">
+          <td><a href='{{ .Url }}'>{{ .Name }}</a></td>
+          <td>{{ .Slug }}</td>
+          <td>{{ .Answer }}</td>
+          <td>{{ .UnlockIdx }}</td>
+          <td>
+            <a href="/admin/puzzles/{{ .Id.Hex }}/edit">Edit</a>
+            <a href="/admin/puzzles/{{ .Id.Hex }}/destroy"
+               data-method="post"
+               data-confirm="Are you sure?">Destroy</a>
+          </td>
+        </tr>
+      {{ end }}
+    </tbody>
+  </table>
+
+  <a href="/admin/puzzles/new">Create Puzzle</a>
+{{ end }}

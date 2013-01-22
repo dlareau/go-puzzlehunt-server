@@ -1,0 +1,10 @@
+{{ define "title" }}New Puzzle{{ end }}
+
+{{ define "content" }}
+  <h1>New Puzzle</h1>
+  {{ template "error" .Err }}
+  <form action="/admin/puzzles/new" method="post">
+    {{ template "form" . }}
+  </form>
+  <a href="/admin/puzzles">All Puzzles</a>
+{{ end }}

@@ -1,0 +1,10 @@
+{{ define "title" }}Edit Puzzle{{ end }}
+
+{{ define "content" }}
+  <h1>Edit Puzzle</h1>
+  {{ template "error" .Err }}
+  <form action="/admin/puzzles/{{ .Id.Hex }}/edit" method="post">
+    {{ template "form" . }}
+  </form>
+  <a href="/admin/puzzles">All Puzzles</a>
+{{ end }}

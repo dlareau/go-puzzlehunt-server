@@ -1,0 +1,30 @@
+{{ define "title" }}Team Index{{ end }}
+
+{{ define "content" }}
+  <h1>All Teams</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Options</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range . }}
+        <tr>
+          <td>{{ .Name }}</td>
+          <td>{{ .EmailAddress }}</td>
+          <td>
+            <a href="/admin/teams/{{ .Id.Hex }}/edit">Edit</a>
+            <a href="/admin/teams/{{ .Id.Hex }}/destroy"
+               data-method="post"
+               data-confirm="Are you sure?">Destroy</a>
+          </td>
+        </tr>
+      {{ end }}
+    </tbody>
+  </table>
+
+  <a href="/admin/teams/new">Create Team</a>
+{{ end }}

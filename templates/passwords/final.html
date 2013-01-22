@@ -1,0 +1,32 @@
+{{ define "title" }}Final Puzzle{{ end }}
+
+{{ define "content" }}
+  <h1>Final Puzzle</h1>
+
+  {{ if .Msg }}
+    <div class='error'>{{ .Msg }}</div>
+  {{ end }}
+
+  <form action='/obfuscated' method='post' id='reset'>
+    <div>
+      <ol style='margin-left:100px'>
+        <li><input type='text' name='a1' value='{{ FormGet .Form "a1" }}'
+                   autocomplete='off'/></li>
+        <li><input type='text' name='a2' value='{{ FormGet .Form "a2" }}'
+                   autocomplete='off'/></li>
+        <li><input type='text' name='a3' value='{{ FormGet .Form "a3" }}'
+                   autocomplete='off'/></li>
+        <li><input type='text' name='a5' value='{{ FormGet .Form "a5" }}'
+                   autocomplete='off'/></li>
+        <li><input type='text' name='a4' value='{{ FormGet .Form "a4" }}'
+                   autocomplete='off'/></li>
+        <li><input type='text' name='a6' value='{{ FormGet .Form "a6" }}'
+                   autocomplete='off'/></li>
+      </ol>
+
+      <div style='text-align:center'>
+        <input type='submit' value='Submit' data-disable-with='Submitting...'/>
+      </div>
+    </div>
+  </form>
+{{ end }}

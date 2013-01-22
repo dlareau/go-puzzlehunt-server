@@ -1,0 +1,30 @@
+{{ define "title" }}Password Reset{{ end }}
+
+{{ define "content" }}
+  <h1>Password Reset Questionnaire</h1>
+
+  {{ if .Msg }}
+    <div class='error'>{{ .Msg }}</div>
+  {{ end }}
+
+  <form action='/password-reset' method='post' id='reset'>
+    <div>
+      <dl>
+        <dt>Favorite Color</dt>
+        <dd><input type='text' value='{{ FormGet .Form "color" }}'
+                   name='color' autofocus autocomplete='off'/></dd>
+        <dt>Name of your high school?</dt>
+        <dd><input type='text' value='{{ FormGet .Form "school" }}'
+                   name='school' autocomplete='off'/></dd>
+        <dt>Mother's maiden name</dt>
+        <dd><input type='text' value='{{ FormGet .Form "maiden" }}'
+                   name='maiden' autocomplete='off'/></dd>
+        <dd>
+          <input type='submit'
+                 value='Reset Password'
+                 data-disable-with='Submitting...'/>
+        </dd>
+      </dl>
+    </div>
+  </form>
+{{ end }}

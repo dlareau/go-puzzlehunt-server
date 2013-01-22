@@ -1,0 +1,10 @@
+{{ define "title" }}New Team{{ end }}
+
+{{ define "content" }}
+  <h1>New Team</h1>
+  {{ template "error" .Err }}
+  <form action="/admin/teams/new" method="post">
+    {{ template "form" . }}
+  </form>
+  <a href="/admin/teams">All Teams</a>
+{{ end }}

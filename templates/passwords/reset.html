@@ -1,0 +1,22 @@
+{{ define "title" }}Password Reset{{ end }}
+
+{{ define "content" }}
+  <h1>Password Reset</h1>
+
+  <form action='/password-reset' method='post' id='reset'>
+    <div>
+      <input type='hidden' name='foo' value='{{ FormGet . "foo" }}'/>
+      <dl>
+        <dt>Password</dt>
+        <dd><input type='text' name='password'/></dd>
+        <dt>Password Confirmation</dt>
+        <dd><input type='text' name='password_confirmation'/></dd>
+        <dd>
+          <input type='submit'
+                 value='Reset Password'
+                 data-disable-with='Submitting...'/>
+        </dd>
+      </dl>
+    </div>
+  </form>
+{{ end }}

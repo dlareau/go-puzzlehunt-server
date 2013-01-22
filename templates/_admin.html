@@ -1,0 +1,34 @@
+{{ define "error" }}
+  {{ if . }}
+    <div class="error">
+      Error: {{ .Error }}
+    </div>
+  {{ end }}
+{{ end }}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ template "title" . }}</title>
+    <link type="text/css" rel="stylesheet" href="/assets/admin.css"/>
+    <script type="text/javascript" src="/assets/jquery.js"></script>
+    <script type="text/javascript" src="/assets/ujs.js"></script>
+    <script type="text/javascript" src="/assets/admin.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>Puzzlehunt Admin</h1>
+      <ul>
+        <li><a href="/admin/teams">Teams</a></li>
+        <li><a href="/admin/puzzles">Puzzles</a></li>
+        <li><a href="/admin/progress">Progress</a></li>
+        <li><a href="/admin/queue">Queue</a></li>
+      </ul>
+    </header>
+    <section id="content">
+      {{ template "content" . }}
+      <br/>
+      <code style='margin-top: 50px;display:block'>B======D~</code>
+    </section>
+  </body>
+</html>
+

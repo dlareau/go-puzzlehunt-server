@@ -1,0 +1,10 @@
+{{ define "title" }}Edit Team{{ end }}
+
+{{ define "content" }}
+  <h1>Edit Team</h1>
+  {{ template "error" .Err }}
+  <form action="/admin/teams/{{ .Id.Hex }}/edit" method="post">
+    {{ template "form" . }}
+  </form>
+  <a href="/admin/teams">All Teams</a>
+{{ end }}

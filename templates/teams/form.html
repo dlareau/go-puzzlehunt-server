@@ -1,0 +1,15 @@
+{{ define "form" }}
+  <div>
+    <dl>
+      <dt><label for="name">Name</label></dt>
+      <dd><input type="text" name="Name" id="name" value="{{ .Name }}"/></dt>
+      <dt><label for="email">Email Address</label></dt>
+      <dd><input type="text" name="EmailAddress" id="email" value="{{ .EmailAddress }}"/></dt>
+      <dt><label for="phones">Phone Numbers</label></dt>
+      <dd><input type="text" name="Phones" id="phones" value="{{ .Phones }}"/></dt>
+      <dt><label for="members">Team Members</label></dt>
+      <dd><input type="text" name="Members" id="members" value="{{ .Members }}"/></dt>
+    </dl>
+    <input type="submit" value="Submit" data-disable-with="Submitting..."/>
+  </div>
+{{ end }}
