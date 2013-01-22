@@ -41,10 +41,16 @@ type SolutionList []Solution
 type SolutionMap  map[bson.ObjectId]Solution
 type TeamMap      map[bson.ObjectId]Team
 type PuzzleMap    map[bson.ObjectId]Puzzle
+
 type QueueMessage struct {
   Html string
   Id   string
   Type string
+}
+
+type ProgressMessage struct {
+  Html string
+  Id   string
 }
 
 var Solutions = db.C("solutions")
@@ -127,8 +133,8 @@ func ProgressRelease(w http.ResponseWriter, r *http.Request) {
 
   for iter.Next(&puzzle) {
     for i, _ := range teams {
-      _, err := CreateSolution(&teams[i], &puzzle)
-      check(err)
+      solution := Solution{TeamId: teams[i].Id, PuzzleId: puzzle.Id}
+      check(solution.Insert())
     }
   }
 }
@@ -180,12 +186,42 @@ func (s *Submission) Update() error {
   return err
 }
 
+func (s *Submission) DisplayAnswer() string {
+  if s.Status == InvalidAnswer {
+    return "<invalid>"
+  }
+  return s.Answer
+}
+
+func (s *Solution) message() ProgressMessage {
+  buf := bytes.NewBuffer(make([]byte, 0))
+  check(solutionst.ExecuteTemplate(buf, "solution", s))
+  return ProgressMessage{ Id: s.Identifier(),
+                          Html: buf.String() }
+}
+
 func (s *Solution) findId(id bson.ObjectId) {
   check(Solutions.FindId(id).One(s))
 }
 
+func (s *Solution) Insert() error {
+  err := Solutions.Insert(s)
+  if err == nil {
+    Progress.Messages <- s.message()
+  }
+  return err
+}
+
 func (s *Solution) Update() error {
-  return Solutions.UpdateId(s.Id, s)
+  err := Solutions.UpdateId(s.Id, s)
+  if err == nil {
+    Progress.Messages <- s.message()
+  }
+  return err
+}
+
+func (s *Solution) Identifier() string {
+  return s.PuzzleId.Hex() + s.TeamId.Hex()
 }
 
 func (s SubmissionStatus) String() string {
@@ -197,17 +233,4 @@ func (s SubmissionStatus) String() string {
   }
 
   return "invalid-status"
-}
-
-func (s *Submission) DisplayAnswer() string {
-  if s.Status == InvalidAnswer {
-    return "<invalid>"
-  }
-  return s.Answer
-}
-
-func CreateSolution(t *Team, p *Puzzle) (*Solution, error) {
-  solution := Solution{TeamId: t.Id, PuzzleId: p.Id}
-  err := Solutions.Insert(&solution)
-  return &solution, err
 }

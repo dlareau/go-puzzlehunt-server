@@ -85,8 +85,8 @@ func PuzzlesUnlock(w http.ResponseWriter, r *http.Request) {
   var team Team
   team.find(mux.Vars(r)["team_id"])
 
-  _, err := CreateSolution(&team, &puzzle)
-  check(err)
+  solution := Solution{TeamId: team.Id, PuzzleId: puzzle.Id}
+  check(solution.Insert())
 
   http.Redirect(w, r, "/admin/progress", http.StatusFound)
 }
