@@ -134,15 +134,11 @@ func SubmissionRespond(w http.ResponseWriter, r *http.Request) {
   solution.findId(submission.SolutionId)
   puzzle.findId(solution.PuzzleId)
   team.findId(solution.TeamId)
-  submission.Respond(&puzzle, &team, r.FormValue("response"))
+  submission.Comment = r.FormValue("response")
   submission.Status = IncorrectReplied
   check(Submissions.UpdateId(submission.Id, submission))
 
   http.Redirect(w, r, "/admin/queue", http.StatusFound)
-}
-
-func (s *Submission) Respond(p *Puzzle, t *Team, content string) {
-  // TODO: send this response to the team
 }
 
 func (s *Submission) NeedsResponse() bool {
