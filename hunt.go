@@ -15,7 +15,22 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func MapHandler(w http.ResponseWriter, r *http.Request, t *Team) {
-  check(mpuzzles.Execute(w, AllPuzzles()))
+  all := AllPuzzles()
+  var soln Solution
+  solns := make([]Solution, 0)
+  for iter := Solutions.Find(bson.M{"teamid": t.Id}).Iter(); iter.Next(&soln); {
+    solns = append(solns, soln)
+  }
+  puzzles := make([]Puzzle, 0)
+  for _, puz := range all {
+    for _, soln := range solns {
+      if puz.Id == soln.PuzzleId {
+        puzzles = append(puzzles, puz)
+        break
+      }
+    }
+  }
+  check(mpuzzles.Execute(w, puzzles))
 }
 
 func MapPuzzleHandler(w http.ResponseWriter, r *http.Request, t *Team) {

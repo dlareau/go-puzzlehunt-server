@@ -98,6 +98,7 @@ func Authenticate(h Handler, password, realm string) Handler {
 func main() {
   check(Puzzles.EnsureIndex(mgo.Index{ Key: []string{"slug"} }));
   check(Teams.EnsureIndex(mgo.Index{ Key: []string{"username"} }));
+  check(Solutions.EnsureIndex(mgo.Index{ Key: []string{"teamid"} }));
 
   r := mux.NewRouter()
 

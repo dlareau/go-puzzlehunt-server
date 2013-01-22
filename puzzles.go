@@ -26,8 +26,7 @@ var pedit   = AdminTemplate("puzzles/edit.html", "puzzles/form.html")
 func AllPuzzles() []Puzzle {
   puzzles := make([]Puzzle, 0)
   var puzzle Puzzle
-  iter := Puzzles.Find(nil).Sort("secondround", "metapuzzle",
-                                 "unlockidx", "name").Iter()
+  iter := Puzzles.Find(nil).Sort("metapuzzle", "unlockidx", "name").Iter()
   for iter.Next(&puzzle) {
     puzzles = append(puzzles, puzzle)
   }

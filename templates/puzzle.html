@@ -3,6 +3,7 @@
 {{ define "content" }}
   <h1>{{ .Puzzle.Name }}</h1>
   <a href='{{ .Puzzle.Url }}'>{{ .Puzzle.Name }}</a>
+  <a href='/map'>All Puzzles</a>
 
   <form action="/map/puzzles/{{ .Puzzle.Slug }}" method='post'>
     <div>
