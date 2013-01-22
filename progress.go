@@ -29,6 +29,7 @@ type SubmissionStatus int
 
 const (
   Correct SubmissionStatus = iota
+  CorrectUnreplied
   InvalidAnswer
   IncorrectReplied
   IncorrectUnreplied
@@ -158,6 +159,7 @@ func (s *Solution) findId(id bson.ObjectId) {
 func (s SubmissionStatus) String() string {
   switch (s) {
     case Correct: return "correct"
+    case CorrectUnreplied: return "correct-unreplied"
     case InvalidAnswer: return "invalid-answer"
     case IncorrectReplied: return "incorrect-replied"
     case IncorrectUnreplied: return "incorrect-unreplied"

@@ -10,6 +10,7 @@ type Puzzle struct {
   Name        string
   Url         string
   Answer      string
+  Slug        string
 
   UnlockIdx   int     // when is this puzzle unlocked?
   Metapuzzle  bool    // is this the metapuzzle?
@@ -99,6 +100,10 @@ func (p *Puzzle) findId(id bson.ObjectId) {
   check(Puzzles.FindId(id).One(p))
 }
 
+func (p *Puzzle) findSlug(slug string) {
+  check(Puzzles.Find(bson.M{"slug": slug}).One(p))
+}
+
 func (p *Puzzle) inherit(r *http.Request) error {
   /* Parse from the form */
   err := r.ParseForm()
@@ -108,6 +113,7 @@ func (p *Puzzle) inherit(r *http.Request) error {
   if p.Name == "" {
     return errors.New("Requires a name to be provided")
   }
+  p.Slug = Parameterize(p.Name);
   return nil
 }
 

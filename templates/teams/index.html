@@ -6,6 +6,8 @@
     <thead>
       <tr>
         <th>Name</th>
+        <th>Username</th>
+        <th>Password</th>
         <th>Email</th>
         <th>Options</th>
       </tr>
@@ -14,6 +16,8 @@
       {{ range . }}
         <tr>
           <td>{{ .Name }}</td>
+          <td>{{ .Username }}</td>
+          <td>{{ .Password }}</td>
           <td>{{ .EmailAddress }}</td>
           <td>
             <a href="/admin/teams/{{ .Id.Hex }}/edit">Edit</a>

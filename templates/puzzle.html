@@ -1,0 +1,22 @@
+{{ define "title" }}Puzzle - {{ .Puzzle.Name }}{{ end }}
+
+{{ define "content" }}
+  <h1>{{ .Puzzle.Name }}</h1>
+  <a href='{{ .Puzzle.Url }}'>{{ .Puzzle.Name }}</a>
+
+  <form action="/map/puzzles/{{ .Puzzle.Slug }}" method='post'>
+    <div>
+      <label for='answer'>Answer:</label>
+      <input type='text' id='answer' name='answer'/><br/>
+      <input type='submit' value='Submit'/>
+    </div>
+  </form>
+    <div>
+      <h3>Past Submissions</h3>
+      <ul>
+        {{ range .Submissions }}
+          <li>{{ .ReceivedAt.Format "15:04:05" }} {{ .Answer }}</li>
+        {{ end }}
+      </ul>
+    </div>
+{{ end }}

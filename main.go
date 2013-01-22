@@ -14,7 +14,7 @@ var decoder = schema.NewDecoder()
 
 type Handler func(http.ResponseWriter, *http.Request)
 
-const dbg = false
+const dbg = true
 
 func opendb() (*mgo.Session, *mgo.Database) {
   if dbg {
@@ -96,10 +96,14 @@ func Authenticate(h Handler, password, realm string) Handler {
 }
 
 func main() {
+  check(Puzzles.EnsureIndex(mgo.Index{ Key: []string{"slug"} }));
+  check(Teams.EnsureIndex(mgo.Index{ Key: []string{"username"} }));
+
   r := mux.NewRouter()
 
   r.HandleFunc("/", H(HomeHandler)).Methods("GET")
   r.HandleFunc("/map", TA(MapHandler)).Methods("GET")
+  r.HandleFunc("/map/puzzles/{id}", TA(MapPuzzleHandler)).Methods("GET", "POST")
 
   r.HandleFunc("/admin/teams", A(TeamsIndex)).Methods("GET")
   r.HandleFunc("/admin/teams/new", A(TeamsCreate)).Methods("GET", "POST")

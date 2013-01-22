@@ -1,0 +1,9 @@
+{{ define "title" }}Pirate Map{{ end }}
+
+{{ define "content" }}
+  {{ range . }}
+    <div class='puzzle'>
+      <a href='/map/puzzles/{{ .Slug }}'>{{ .Name }}</a>
+    </tr>
+  {{ end }}
+{{ end }}

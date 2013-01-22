@@ -87,7 +87,7 @@ func (t *Team) findId(id bson.ObjectId) {
 }
 
 func (t *Team) findName(name string) error {
-  return Teams.Find(bson.M{"name": name}).One(t)
+  return Teams.Find(bson.M{"username": name}).One(t)
 }
 
 func (t *Team) inherit(r *http.Request) error {
