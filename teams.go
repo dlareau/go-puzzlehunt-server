@@ -4,7 +4,6 @@ import "errors"
 import "github.com/gorilla/mux"
 import "labix.org/v2/mgo/bson"
 import "net/http"
-import "net/mail"
 
 type Team struct {
   Id           bson.ObjectId "_id,omitempty"
@@ -101,54 +100,4 @@ func (t *Team) inherit(r *http.Request) error {
     return errors.New("Requires a name to be provided")
   }
   return nil
-}
-
-func (t *Team) Email() mail.Address {
-  return mail.Address{Address: t.EmailAddress, Name: t.Name}
-}
-
-func (t *Team) UnlockMore() (bool, error) {
-  /* Find the metapuzzle */
-  var meta Puzzle
-  err := Puzzles.Find(bson.M{"metapuzzle": true}).One(&meta)
-  check(err)
-
-  /* Find all currently unlocked puzzles by this team */
-  var soln Solution
-  iter := Solutions.Find(bson.M{"teamid": t.Id}).Iter()
-  unlocked := make([]bson.ObjectId, 0)
-  hasmeta := false
-  solved := 0
-  for iter.Next(&soln) {
-    unlocked = append(unlocked, soln.PuzzleId)
-    if soln.PuzzleId == meta.Id {
-      hasmeta = true
-    }
-    if soln.SolvedAt.Year() > 2000 {
-      solved++
-    }
-  }
-
-  /* Find all puzzles that need to be unlocked, and unlock two more */
-  iter2 := Puzzles.Find(bson.M{"metapuzzle":false, "secondround":false,
-                               "_id": bson.M{"$nin": unlocked}}).
-                   Sort("unlockidx").Limit(2).Iter()
-  var puzzle Puzzle
-  mailed := 0
-  for iter2.Next(&puzzle) {
-    _, err := CreateSolution(t, &puzzle)
-    if err != nil {
-      return false, err
-    }
-    mailed++
-  }
-
-  /* If 4 or more puzzles have been solved, then unlock the meta */
-  if !hasmeta && solved >= 4 {
-    _, err := CreateSolution(t, &meta)
-    check(err)
-    mailed++
-  }
-
-  return mailed > 0, nil
 }
