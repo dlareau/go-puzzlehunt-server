@@ -1,5 +1,28 @@
 {{ define "title" }}Queue{{ end }}
 
+{{ define "queue_submission" }}
+  <tr class="{{ .Status }} submission" data-id='{{ .Id.Hex }}'>
+    <td>{{ .TeamName }}</td>
+    <td>{{ .PuzzleName }}</td>
+    <td>{{ .DisplayAnswer }}</td>
+    <td>{{ .ReceivedAt.Local }}</td>
+    <td>
+      {{ if .NeedsResponse }}
+        <a href='#' class='needs-response'>[manual response]</a>
+        <a href='#' class='canned-response'>[canned response]</a>
+
+        <form action="/admin/respond/{{ .Id.Hex }}"
+              method="post" style="display:none" data-remote=true>
+          <p>
+            <textarea name="response">Incorrect Answer</textarea>
+            <input type="Submit" value="Send email"/>
+          </p>
+        </form>
+      {{ end }}
+    </td>
+  </tr>
+{{ end }}
+
 {{ define "content" }}
   <h1>Submission Queue</h1>
 
@@ -14,28 +37,8 @@
       </tr>
     </thead>
 
-    {{ range $submission := . }}
-      <tr class="{{ $submission.Status }} submission"
-          data-id='{{ $submission.Id.Hex }}'>
-        <td>{{ $submission.TeamName }}</td>
-        <td>{{ $submission.PuzzleName }}</td>
-        <td>{{ $submission.DisplayAnswer }}</td>
-        <td>{{ $submission.ReceivedAt.Local }}</td>
-        <td>
-          {{ if $submission.NeedsResponse }}
-            <a href='#' class='needs-response'>[manual response]</a>
-            <a href='#' class='canned-response'>[canned response]</a>
-
-            <form action="/admin/respond/{{ $submission.Id.Hex }}"
-                  method="post" style="display:none">
-              <p>
-                <textarea name="response">Incorrect Answer</textarea>
-                <input type="Submit" value="Send email"/>
-              </p>
-            </form>
-          {{ end }}
-        </td>
-      </tr>
+    {{ range . }}
+      {{ template "queue_submission" . }}
     {{ end }}
   </table>
 
@@ -52,6 +55,7 @@
         focused = false;
       });
 
+      /* flash the title if necessary */
       setInterval(function() {
         if (flashing && !focused) {
           if (document.title[0] == '[') {
@@ -63,24 +67,34 @@
           document.title = title;
         }
       }, 1000);
-      setInterval(function() {
-        $.get(window.location, function(foo) {
-          var rows = $(foo).find('tr.submission');
-          for (var i = rows.length - 1; i >= 0; i--) {
-            var selector = 'tr[data-id=' + $(rows[i]).attr('data-id') + ']';
-            var $tr = $(selector);
-            if ($tr.length == 0) {
-              if (!$(rows[i]).hasClass('correct')) {
-                flashing = !focused;
-                $('audio')[0].play();
-              }
-              $('#queue').prepend(rows[i]);
-            } else if ($(rows[i]).attr('class') != $tr.attr('class')) {
-              $tr.replaceWith(rows[i]);
-            }
+
+      /* Open a socket and listen for new submissions */
+      var ws = new WebSocket('ws://' + window.location.host + '/admin/queue/ws');
+      ws.onerror = function(e) { console.log('error', e) };
+      ws.onclose = function(e) { console.log('close', e); };
+      ws.onmessage = function(m) {
+        var data = JSON.parse(m.data);
+        var row = $(data.Html);
+        if (data.Type == 'new') {
+          if (!row.hasClass('correct')) {
+            flashing = !focused;
+            $('audio')[0].play();
           }
-        });
-      }, 2000);
+          $('#queue').prepend(row);
+        } else {
+          $('tr[data-id=' + data.Id + ']').replaceWith(row);
+        }
+      };
+
+      /* open a text box for submitting an email */
+      $(document).delegate('.needs-response', 'click', function() {
+        $(this).siblings('form').show();
+        return false;
+      });
+      $(document).delegate('.canned-response', 'click', function() {
+        $(this).siblings('form').submit();
+        return false;
+      });
     });
   </script>
   <audio>

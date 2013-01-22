@@ -1,9 +1,12 @@
 package main
 
+import "bytes"
 import "github.com/gorilla/mux"
 import "labix.org/v2/mgo/bson"
 import "net/http"
 import "time"
+import "container/list"
+import ws "code.google.com/p/go.net/websocket"
 
 /* A solution can be solved or possibly not. This is a placeholder for whether a
    team has unlocked a puzzle, and then for whether the team has solved the
@@ -40,12 +43,23 @@ type SolutionList []Solution
 type SolutionMap  map[bson.ObjectId]Solution
 type TeamMap      map[bson.ObjectId]Team
 type PuzzleMap    map[bson.ObjectId]Puzzle
+type ClientSocket struct {
+  done chan int
+  ws   *ws.Conn
+}
+type QueueMessage struct {
+  Html string
+  Id   string
+  Type string
+}
 
 var Solutions = db.C("solutions")
 var Submissions = db.C("submissions")
 
 var solutionst = AdminTemplate("progress/solutions.html")
 var queuet = AdminTemplate("progress/queue.html")
+var queuews = make(chan *ClientSocket)
+var queuemsg = make(chan QueueMessage)
 
 func AllSolutions() []Solution {
   solutions := make([]Solution, 0)
@@ -69,6 +83,33 @@ func AllSubmissions() []Submission {
 /* Main queue, should be fast because everyone is slamming this page */
 func SubmissionsIndex(w http.ResponseWriter, r *http.Request) {
   check(queuet.Execute(w, AllSubmissions()))
+}
+
+func QueueBroadcastServer() {
+  sockets := list.New()
+  for {
+    select {
+      case ws := <-queuews:
+        sockets.PushBack(ws)
+
+      case msg := <-queuemsg:
+        var nxt *list.Element
+        for cur := sockets.Front(); cur != nil; cur = nxt {
+          nxt = cur.Next()
+          client := cur.Value.(*ClientSocket)
+          if ws.JSON.Send(client.ws, msg) != nil {
+            sockets.Remove(cur)
+            client.done <- 1
+          }
+        }
+    }
+  }
+}
+
+func QueueNewSocket(ws *ws.Conn) {
+  client := ClientSocket{ done: make(chan int), ws: ws }
+  queuews <- &client
+  <-client.done
 }
 
 /* Main solution progress scoreboard */
@@ -136,7 +177,7 @@ func SubmissionRespond(w http.ResponseWriter, r *http.Request) {
   team.findId(solution.TeamId)
   submission.Comment = r.FormValue("response")
   submission.Status = IncorrectReplied
-  check(Submissions.UpdateId(submission.Id, submission))
+  check(submission.Update())
 
   http.Redirect(w, r, "/admin/queue", http.StatusFound)
 }
@@ -149,8 +190,35 @@ func (s *Submission) find(id string) {
   check(Submissions.FindId(bson.ObjectIdHex(id)).One(s))
 }
 
+func (s *Submission) html() string {
+  buf := bytes.NewBuffer(make([]byte, 0))
+  check(queuet.ExecuteTemplate(buf, "queue_submission", s))
+  return buf.String()
+}
+
+func (s *Submission) Insert() error {
+  s.Id = bson.NewObjectId()
+  err := Submissions.Insert(s)
+  if err == nil {
+    queuemsg <- QueueMessage { Id: s.Id.Hex(), Html: s.html(), Type: "new" }
+  }
+  return err
+}
+
+func (s *Submission) Update() error {
+  err := Submissions.UpdateId(s.Id, s)
+  if err == nil {
+    queuemsg <- QueueMessage { Id: s.Id.Hex(), Html: s.html(), Type: "update" }
+  }
+  return err
+}
+
 func (s *Solution) findId(id bson.ObjectId) {
   check(Solutions.FindId(id).One(s))
+}
+
+func (s *Solution) Update() error {
+  return Solutions.UpdateId(s.Id, s)
 }
 
 func (s SubmissionStatus) String() string {

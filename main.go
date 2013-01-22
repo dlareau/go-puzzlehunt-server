@@ -1,5 +1,6 @@
 package main
 
+import ws "code.google.com/p/go.net/websocket"
 import "github.com/gorilla/mux"
 import "github.com/gorilla/schema"
 import "labix.org/v2/mgo"
@@ -12,7 +13,8 @@ import "puzzlehunt/auth"
 var mongo, db = opendb()
 var decoder = schema.NewDecoder()
 
-type Handler func(http.ResponseWriter, *http.Request)
+// type Handler func(http.ResponseWriter, *http.Request)
+// type Handler = http.Handler
 
 const dbg = false
 
@@ -34,7 +36,7 @@ func check(err error) {
 
 var errorTemplate = Template("_base.html", "error.html")
 
-func H404(h Handler) Handler {
+func H404(h http.Handler) http.Handler {
   return H(func(w http.ResponseWriter, r *http.Request) {
     defer func() {
       err := recover()
@@ -44,16 +46,16 @@ func H404(h Handler) Handler {
         panic(err)
       }
     }()
-    h(w, r)
+    h.ServeHTTP(w, r)
   })
 }
 
-func A404(h Handler) Handler {
+func A404(h http.HandlerFunc) http.Handler {
   return H404(A(h))
 }
 
-func H(h Handler) Handler {
-  return func(w http.ResponseWriter, r *http.Request) {
+func H(h http.HandlerFunc) http.Handler {
+  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
     defer func() {
       e := recover()
       if e != nil {
@@ -61,16 +63,16 @@ func H(h Handler) Handler {
         errorTemplate.Execute(w, e)
       }
     }()
-    h(w, r)
-  }
+    h.ServeHTTP(w, r)
+  })
 }
 
-func A(h Handler) Handler {
+func A(h http.HandlerFunc) http.Handler {
   return Authenticate(h, AdminPassword, AdminRealm)
 }
 
-func TA(h func(http.ResponseWriter, *http.Request, *Team)) Handler {
-  return H(func(w http.ResponseWriter, r *http.Request) {
+func TA(h func(http.ResponseWriter, *http.Request, *Team)) http.Handler {
+  return H(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
     var team Team
     user, given, err := auth.Basic(r)
     if err == nil {
@@ -81,49 +83,51 @@ func TA(h func(http.ResponseWriter, *http.Request, *Team)) Handler {
     } else {
       h(w, r, &team)
     }
-  })
+  }))
 }
 
-func Authenticate(h Handler, password, realm string) Handler {
-  return H(func(w http.ResponseWriter, r *http.Request) {
+func Authenticate(h http.Handler, password, realm string) http.Handler {
+  return H(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
     _, given, err := auth.Basic(r)
     if err != nil || given != password {
       auth.RequireAuth(w, r, realm)
     } else {
-      h(w, r)
+      h.ServeHTTP(w, r)
     }
-  })
+  }))
 }
 
 func main() {
   check(Puzzles.EnsureIndex(mgo.Index{ Key: []string{"slug"} }));
   check(Teams.EnsureIndex(mgo.Index{ Key: []string{"username"} }));
   check(Solutions.EnsureIndex(mgo.Index{ Key: []string{"teamid"} }));
+  go QueueBroadcastServer()
 
   r := mux.NewRouter()
 
-  r.HandleFunc("/", H(HomeHandler)).Methods("GET")
-  r.HandleFunc("/map", TA(MapHandler)).Methods("GET")
-  r.HandleFunc("/map/puzzles/{id}", TA(MapPuzzleHandler)).Methods("GET", "POST")
+  r.Handle("/", H(HomeHandler)).Methods("GET")
+  r.Handle("/map", TA(MapHandler)).Methods("GET")
+  r.Handle("/map/puzzles/{id}", TA(MapPuzzleHandler)).Methods("GET", "POST")
 
-  r.HandleFunc("/admin/teams", A(TeamsIndex)).Methods("GET")
-  r.HandleFunc("/admin/teams/new", A(TeamsCreate)).Methods("GET", "POST")
-  r.HandleFunc("/admin/teams/{id}/edit", A404(TeamsEdit)).Methods("GET", "POST")
-  r.HandleFunc("/admin/teams/{id}/destroy", A404(TeamsDestroy)).Methods("POST")
+  r.Handle("/admin/teams", A(TeamsIndex)).Methods("GET")
+  r.Handle("/admin/teams/new", A(TeamsCreate)).Methods("GET", "POST")
+  r.Handle("/admin/teams/{id}/edit", A404(TeamsEdit)).Methods("GET", "POST")
+  r.Handle("/admin/teams/{id}/destroy", A404(TeamsDestroy)).Methods("POST")
 
-  r.HandleFunc("/admin/puzzles", A(PuzzlesIndex)).Methods("GET")
-  r.HandleFunc("/admin/puzzles/{puzzle_id}/unlock/{team_id}",
-               H404(PuzzlesUnlock)).Methods("POST")
-  r.HandleFunc("/admin/puzzles/new", A(PuzzlesCreate)).Methods("GET", "POST")
-  r.HandleFunc("/admin/puzzles/{id}/edit", A404(PuzzlesEdit)).Methods("GET", "POST")
-  r.HandleFunc("/admin/puzzles/{id}/destroy", A404(PuzzlesDestroy)).Methods("POST")
+  r.Handle("/admin/puzzles", A(PuzzlesIndex)).Methods("GET")
+  r.Handle("/admin/puzzles/{puzzle_id}/unlock/{team_id}",
+           H404(http.HandlerFunc(PuzzlesUnlock))).Methods("POST")
+  r.Handle("/admin/puzzles/new", A(PuzzlesCreate)).Methods("GET", "POST")
+  r.Handle("/admin/puzzles/{id}/edit", A404(PuzzlesEdit)).Methods("GET", "POST")
+  r.Handle("/admin/puzzles/{id}/destroy", A404(PuzzlesDestroy)).Methods("POST")
 
-  r.HandleFunc("/admin/progress", A(ProgressIndex)).Methods("GET")
-  r.HandleFunc("/admin/reset", A(ProgressReset)).Methods("POST")
-  r.HandleFunc("/admin/release", A(ProgressRelease)).Methods("POST")
-  r.HandleFunc("/admin", A(SubmissionsIndex)).Methods("GET")
-  r.HandleFunc("/admin/queue", (SubmissionsIndex)).Methods("GET")
-  r.HandleFunc("/admin/respond/{id}", A(SubmissionRespond)).Methods("POST")
+  r.Handle("/admin/progress", A(ProgressIndex)).Methods("GET")
+  r.Handle("/admin/reset", A(ProgressReset)).Methods("POST")
+  r.Handle("/admin/release", A(ProgressRelease)).Methods("POST")
+  r.Handle("/admin", A(SubmissionsIndex)).Methods("GET")
+  r.Handle("/admin/queue", A(SubmissionsIndex)).Methods("GET")
+  r.Handle("/admin/queue/ws", ws.Handler(QueueNewSocket))
+  r.Handle("/admin/respond/{id}", A(SubmissionRespond)).Methods("POST")
 
   srv := http.FileServer(http.Dir("./assets"))
   http.Handle("/assets/", http.StripPrefix("/assets/", srv))

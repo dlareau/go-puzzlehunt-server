@@ -16,14 +16,4 @@ $(function() {
       hidden.val('false')
     }
   });
-
-  /* On the queue page, open a text box for submitting an email */
-  $(document).delegate('.needs-response', 'click', function() {
-    $(this).siblings('form').show();
-    return false;
-  });
-  $(document).delegate('.canned-response', 'click', function() {
-    $(this).siblings('form').submit();
-    return false;
-  });
 })
