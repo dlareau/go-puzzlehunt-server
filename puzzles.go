@@ -1,24 +1,17 @@
 package main
 
-import "bytes"
 import "github.com/gorilla/mux"
 import "errors"
 import "labix.org/v2/mgo/bson"
-import "text/template"
 import "net/http"
-import "net/mail"
-
-import "puzzlehunt/email"
 
 type Puzzle struct {
   Id          bson.ObjectId "_id,omitempty"
   Name        string
-  Slug        string
   Url         string
   Answer      string
 
-  SecondRound bool    // second round puzzles are all unlocked at once
-  UnlockIdx   int     // first round puzzles unlocked in series
+  UnlockIdx   int     // when is this puzzle unlocked?
   Metapuzzle  bool    // is this the metapuzzle?
 
   Err         error         ",omitempty"
@@ -112,74 +105,14 @@ func (p *Puzzle) inherit(r *http.Request) error {
   if err != nil { return err }
   err = decoder.Decode(p, r.Form)
   if err != nil { return err }
-
   if p.Name == "" {
     return errors.New("Requires a name to be provided")
-  }
-  p.Slug = Parameterize(p.Name)
-
-  /* Make sure the slug doesn't already exist */
-  query := bson.M{"slug": p.Slug}
-  if p.Id != "" {
-    query["_id"] = bson.M{"$ne": p.Id}
-  }
-  cnt, err := Puzzles.Find(query).Count()
-  if err != nil { return err }
-  if cnt > 0 {
-    return errors.New("Slug is already taken")
   }
   return nil
 }
 
-func (p *Puzzle) FromAddress() mail.Address {
-  if p.SecondRound {
-    return mail.Address{Address: Round2Username + "+" + p.Slug + "@" + EmailHost,
-                        Name: Round2Name}
-  }
-  return mail.Address{Address: Round1Username + "+" + p.Slug + "@" + EmailHost,
-                      Name: Round1Name}
-}
-
-var roundinit = template.Must(template.New("rinit").Parse(EmailInitialRound))
-var round1 = template.Must(template.New("r1").Parse(EmailFirstRound))
-var round2 = template.Must(template.New("r2").Parse(EmailSecondRound))
-var roundmeta = template.Must(template.New("meta").Parse(EmailMetapuzzle))
-
-func (p *Puzzle) EmailText(t *Team) string {
-  desc := struct { Team *Team; Puzzle *Puzzle; From string }{t, p, Round1Name}
-  buf := bytes.NewBufferString("")
-  if p.Metapuzzle {
-    check(roundmeta.Execute(buf, &desc))
-  } else if p.SecondRound {
-    desc.From = Round2Name
-    check(round2.Execute(buf, &desc))
-  } else if p.UnlockIdx <= 0 {
-    check(roundinit.Execute(buf, &desc))
-  } else {
-    check(round1.Execute(buf, &desc))
-  }
-  return buf.String()
-}
-
-func (p *Puzzle) EmailTo(t *Team) error {
-  var msg email.Message
-  msg.From = p.FromAddress()
-  msg.To = []mail.Address{t.Email()}
-  msg.Subject = p.EmailSubject()
-  msg.Content = p.EmailText(t)
-
-  msg.Headers = map[string]string{"Content-Type": "text/plain; charset=utf8"}
-  return msg.Send(MailServer)
-}
-
-func (p *Puzzle) UnlockedWithMeta() bool {
-  return p.UnlockIdx >= 7
-}
-
 func (p *Puzzle) Classes() string {
-  if p.SecondRound {
-    return "second"
-  } else if p.Metapuzzle {
+  if p.Metapuzzle {
     return "meta"
   }
   return ""

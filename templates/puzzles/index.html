@@ -6,7 +6,6 @@
     <thead>
       <tr>
         <th>Name</th>
-        <th>Slug</th>
         <th>Answer</th>
         <th>Unlock Index</th>
         <th>Options</th>
@@ -16,7 +15,6 @@
       {{ range . }}
         <tr class="{{ .Classes }}">
           <td><a href='{{ .Url }}'>{{ .Name }}</a></td>
-          <td>{{ .Slug }}</td>
           <td>{{ .Answer }}</td>
           <td>{{ .UnlockIdx }}</td>
           <td>

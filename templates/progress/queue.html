@@ -14,36 +14,28 @@
       </tr>
     </thead>
 
-    {{ with $data := . }}
-      {{ range $submission := $data.Submissions }}
-        {{ with $solution := index $data.Solutions $submission.SolutionId.Hex }}
-        {{ with $puzzle := index $data.Puzzles $solution.PuzzleId.Hex }}
-        {{ with $team := index $data.Teams $solution.TeamId.Hex }}
-          <tr class="{{ $submission.Status }} submission"
-              data-id='{{ $submission.Id.Hex }}'>
-            <td>{{ $team.Name }}</td>
-            <td>{{ $puzzle.Name }}</td>
-            <td>{{ $submission.DisplayAnswer }}</td>
-            <td>{{ $submission.ReceivedAt.Local }}</td>
-            <td>
-              {{ if $submission.NeedsResponse }}
-                <a href='#' class='needs-response'>[manual response]</a>
-                <a href='#' class='canned-response'>[canned response]</a>
+    {{ range $submission := . }}
+      <tr class="{{ $submission.Status }} submission"
+          data-id='{{ $submission.Id.Hex }}'>
+        <td>{{ $submission.TeamName }}</td>
+        <td>{{ $submission.PuzzleName }}</td>
+        <td>{{ $submission.DisplayAnswer }}</td>
+        <td>{{ $submission.ReceivedAt.Local }}</td>
+        <td>
+          {{ if $submission.NeedsResponse }}
+            <a href='#' class='needs-response'>[manual response]</a>
+            <a href='#' class='canned-response'>[canned response]</a>
 
-                <form action="/admin/respond/{{ $submission.Id.Hex }}"
-                      method="post" style="display:none">
-                  <p>
-                    <textarea name="response">Incorrect Answer</textarea>
-                    <input type="Submit" value="Send email"/>
-                  </p>
-                </form>
-              {{ end }}
-            </td>
-          </tr>
-        {{ end }}
-        {{ end }}
-        {{ end }}
-      {{ end }}
+            <form action="/admin/respond/{{ $submission.Id.Hex }}"
+                  method="post" style="display:none">
+              <p>
+                <textarea name="response">Incorrect Answer</textarea>
+                <input type="Submit" value="Send email"/>
+              </p>
+            </form>
+          {{ end }}
+        </td>
+      </tr>
     {{ end }}
   </table>
 

@@ -1,17 +1,13 @@
 package main
 
 import "github.com/gorilla/mux"
-import "labix.org/v2/mgo"
 import "labix.org/v2/mgo/bson"
 import "net/http"
-import "net/mail"
-import "regexp"
-import "strings"
 import "time"
-import uuid "github.com/nu7hatch/gouuid"
 
-import "puzzlehunt/email"
-
+/* A solution can be solved or possibly not. This is a placeholder for whether a
+   team has unlocked a puzzle, and then for whether the team has solved the
+   puzzle or not (nonzero SolvedAt) */
 type Solution struct {
   Id        bson.ObjectId "_id,omitempty"
   TeamId    bson.ObjectId
@@ -22,12 +18,11 @@ type Solution struct {
 type Submission struct {
   Id          bson.ObjectId "_id,omitempty"
   SolutionId  bson.ObjectId
+  TeamName    string
+  PuzzleName  string
   Answer      string
   Status      SubmissionStatus
   ReceivedAt  time.Time
-  MessageId   string
-  References  string
-  Subject     string
 }
 
 type SubmissionStatus int
@@ -69,6 +64,12 @@ func AllSubmissions() []Submission {
   return submissions
 }
 
+/* Main queue, should be fast because everyone is slamming this page */
+func SubmissionsIndex(w http.ResponseWriter, r *http.Request) {
+  check(queuet.Execute(w, AllSubmissions()))
+}
+
+/* Main solution progress scoreboard */
 func ProgressIndex(w http.ResponseWriter, r *http.Request) {
   data := struct{
     Teams []Team
@@ -97,84 +98,6 @@ func NumSolved(l SolutionList, t *Team) int {
   return cnt
 }
 
-var emailRegex = regexp.MustCompile(`([^\+]*)(?:\+(.*))?@.*`)
-
-func EmailReceived(w http.ResponseWriter, r *http.Request) {
-  msg, err := mail.ReadMessage(strings.NewReader(r.FormValue("mail")))
-  check(err)
-
-  /* Parse the To: address to find out what puzzle is being submitted */
-  to, err := msg.Header.AddressList("To")
-  check(err)
-  matches := emailRegex.FindStringSubmatch(to[0].Address)
-  if len(matches) != 3 {
-    panic("Bad email in To:")
-  }
-  var puzzle Puzzle
-  err = Puzzles.Find(bson.M{"slug": matches[2]}).One(&puzzle)
-  check(err)
-
-  /* Parse the From: to figure out who submitted the puzzle */
-  from, err := msg.Header.AddressList("From")
-  check(err)
-  matches = emailRegex.FindStringSubmatch(from[0].Address)
-  if len(matches) != 3 {
-    panic("Bad email in From:")
-  }
-  var team Team
-  err = Teams.Find(bson.M{"emailaddress": from[0].Address}).One(&team)
-  check(err)
-
-  /* Find the solution struct for this team/puzzle pair */
-  var solution Solution
-  err = Solutions.Find(bson.M{"teamid": team.Id,
-                              "puzzleid": puzzle.Id}).One(&solution)
-  check(err)
-
-  /* Create the submission */
-  var submission Submission
-  submission.SolutionId = solution.Id
-  date, err := msg.Header.Date()
-  check(err)
-  submission.ReceivedAt = date
-  submission.MessageId = msg.Header.Get("Message-Id")
-  submission.Subject = msg.Header.Get("Subject")
-  submission.References = msg.Header.Get("References")
-  defer Submissions.Insert(&submission)
-  defer w.WriteHeader(http.StatusOK)
-
-  /* Figure out the answer they gave us */
-  data, err := email.Plaintext(msg)
-  check(err)
-  submission.Answer = strings.TrimSpace(string(data))
-  if strings.Index(submission.Answer, " ") > 0 {
-    submission.Respond(&puzzle, &team, InvalidEmailFormat)
-    submission.Status = InvalidAnswer
-    return
-  }
-
-  /* If the answer is right, email back that it's right */
-  if strings.EqualFold(submission.Answer, puzzle.Answer) {
-    solution.SolvedAt = submission.ReceivedAt
-    err = Solutions.UpdateId(solution.Id, &solution)
-    check(err)
-    hasmore := false
-    if !puzzle.SecondRound {
-      hasmore, err = team.UnlockMore()
-      check(err)
-    }
-    submission.Status = Correct
-    text := EmailCorrectAnswer
-    if hasmore {
-      text = EmailCorrectMorePuzzles
-    }
-    submission.Respond(&puzzle, &team, text)
-  } else {
-    /* Nothing to do, it's in the queue and it'll be responded to soon */
-    submission.Status = IncorrectUnreplied
-  }
-}
-
 func ProgressReset(w http.ResponseWriter, r *http.Request) {
   _, err := Solutions.RemoveAll(nil)
   check(err)
@@ -191,17 +114,6 @@ func ProgressRelease(w http.ResponseWriter, r *http.Request) {
   iter := Puzzles.Find(bson.M{"secondround":false,
                               "metapuzzle":false,
                               "unlockidx":bson.M{"$lte": 0}}).Iter()
-  for _, t := range teams {
-    var msg email.Message
-    msg.From = mail.Address{Address: Round1Username + "@" + EmailHost,
-                            Name: Round1Name}
-    msg.To = []mail.Address{t.Email()}
-    msg.Subject = EmailInitialSubject
-    msg.Content = EmailInitialBody
-
-    msg.Headers = map[string]string{"Content-Type": "text/plain; charset=utf8"}
-    check(msg.Send(MailServer))
-  }
 
   for iter.Next(&puzzle) {
     for i, _ := range teams {
@@ -209,46 +121,6 @@ func ProgressRelease(w http.ResponseWriter, r *http.Request) {
       check(err)
     }
   }
-}
-
-func SubmissionsIndex(w http.ResponseWriter, r *http.Request) {
-  data := struct{
-    Teams       map[string]Team
-    Solutions   map[string]Solution
-    Puzzles     map[string]Puzzle
-    Submissions []Submission
-  }{make(map[string]Team), make(map[string]Solution), make(map[string]Puzzle),
-    AllSubmissions()}
-
-  all := func(c *mgo.Collection, ids []bson.ObjectId) *mgo.Iter {
-    return c.Find(bson.M{"_id": bson.M{"$in": ids}}).Iter()
-  }
-
-  /* Find all Solutions */
-  ids := []bson.ObjectId{}
-  for _, submission := range data.Submissions {
-    ids = append(ids, submission.SolutionId)
-  }
-  var soln Solution
-  puzzle_ids := []bson.ObjectId{}
-  team_ids := []bson.ObjectId{}
-  for iter := all(Solutions, ids); iter.Next(&soln); {
-    data.Solutions[soln.Id.Hex()] = soln
-    puzzle_ids = append(puzzle_ids, soln.PuzzleId)
-    team_ids = append(team_ids, soln.TeamId)
-  }
-
-  /* Now find all puzzles/teams */
-  var puzzle Puzzle
-  var team Team
-  for iter := all(Teams, team_ids); iter.Next(&team); {
-    data.Teams[team.Id.Hex()] = team
-  }
-  for iter := all(Puzzles, puzzle_ids); iter.Next(&puzzle); {
-    data.Puzzles[puzzle.Id.Hex()] = puzzle
-  }
-
-  check(queuet.Execute(w, data))
 }
 
 func SubmissionRespond(w http.ResponseWriter, r *http.Request) {
@@ -268,23 +140,7 @@ func SubmissionRespond(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Submission) Respond(p *Puzzle, t *Team, content string) {
-  uid, _ := uuid.NewV4()
-  id := "<" + uid.String() + "@" + EmailHost + ">"
-  if s.Status == IncorrectUnreplied || s.Status == IncorrectReplied ||
-     s.Status == Correct {
-    content = "> " + s.Answer + "\n\n" + content
-  }
-
-  msg := email.Message{
-    From: p.FromAddress(),
-    To: []mail.Address{t.Email()},
-    Subject: s.Subject,
-    Content: content,
-    Headers: map[string]string{"In-Reply-To": s.MessageId,
-                               "References": s.MessageId + " " + s.References,
-                               "Message-Id": id},
-  }
-  check(msg.Send(MailServer))
+  // TODO: send this response to the team
 }
 
 func (s *Submission) NeedsResponse() bool {
@@ -320,8 +176,5 @@ func (s *Submission) DisplayAnswer() string {
 func CreateSolution(t *Team, p *Puzzle) (*Solution, error) {
   solution := Solution{TeamId: t.Id, PuzzleId: p.Id}
   err := Solutions.Insert(&solution)
-  if err == nil {
-    err = p.EmailTo(t)
-  }
   return &solution, err
 }

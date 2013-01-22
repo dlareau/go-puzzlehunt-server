@@ -1,6 +1,4 @@
-html {
-  background: #444;
-}
+html { background-image: url(/assets/parchment.jpg); }
 
 body {
   font-family: verdana;
@@ -10,66 +8,4 @@ body {
   width: 800px;
   background: white;
   border: 4px solid black;
-}
-
-dl {
-  margin: 5px 0;
-  overflow: visible;
-}
-
-dl dt {
-  width: 14em;
-  float: left;
-  text-align: right;
-  color: #333;
-}
-
-dl dd {
-  margin-right: 8px;
-  margin-left: 14.5em;
-}
-
-dl dt, dl dd {
-  line-height: 2em;
-}
-
-#head {
-  background-image: url(http://mazeoftwistypassages.com/Logo.png);
-  background-size: 200px;
-  background-repeat: no-repeat;
-}
-
-h1 {
-  text-align: center;
-}
-
-#clockhead { text-align: center }
-#clock { font-size: 50px; }
-#profiles {
-  border-top: 1px solid black;
-  text-align: center;
-  margin-top: 25px;
-  padding-top: 25px;
-}
-
-.profile {
-  border-top: 2px dashed #777;
-  margin: 10px auto;
-  padding: 10px;
-  text-align: left;
-}
-.profile dl { width: 500px; }
-.profile img { width: 200px; }
-.profile img { width: 200px; display: block; margin: 20px; }
-.profile:nth-child(even) img { float: left; }
-.profile:nth-child(odd) img { float: right; }
-.profile:nth-child(even) dl { margin-left: 300px; }
-.profile dt { font-weight: bold; }
-
-#reset { margin: 0 auto; width: 400px; }
-
-.error {
-  border: 2px solid #B62929;
-  background: #FAD7D7;
-  padding: 10px;
 }

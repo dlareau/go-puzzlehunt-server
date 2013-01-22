@@ -84,10 +84,6 @@ func main() {
   r := mux.NewRouter()
 
   r.HandleFunc("/", H(HomeHandler)).Methods("GET")
-  r.HandleFunc("/password-reset", Authenticate(PasswordReset, ResetPassword,
-                                               ResetRealm)).Methods("GET", "POST")
-  r.HandleFunc("/obfuscated", Authenticate(FinalQuestionnaire, LastPassword,
-                                           ResetRealm)).Methods("GET", "POST")
 
   r.HandleFunc("/admin/teams", A(TeamsIndex)).Methods("GET")
   r.HandleFunc("/admin/teams/new", A(TeamsCreate)).Methods("GET", "POST")
@@ -102,14 +98,14 @@ func main() {
   r.HandleFunc("/admin/puzzles/{id}/destroy", A404(PuzzlesDestroy)).Methods("POST")
 
   r.HandleFunc("/admin/progress", A(ProgressIndex)).Methods("GET")
-  r.HandleFunc("/admin/email", EmailReceived).Methods("POST")
   r.HandleFunc("/admin/reset", A(ProgressReset)).Methods("POST")
   r.HandleFunc("/admin/release", A(ProgressRelease)).Methods("POST")
   r.HandleFunc("/admin", A(SubmissionsIndex)).Methods("GET")
-  r.HandleFunc("/admin/queue", A(SubmissionsIndex)).Methods("GET")
+  r.HandleFunc("/admin/queue", (SubmissionsIndex)).Methods("GET")
   r.HandleFunc("/admin/respond/{id}", A(SubmissionRespond)).Methods("POST")
 
-  http.Handle("/assets/", http.FileServer(http.Dir(".")))
+  srv := http.FileServer(http.Dir("./assets"))
+  http.Handle("/assets/", http.StripPrefix("/assets/", srv))
   http.Handle("/", r)
 
   log.Print("Serving requests...")

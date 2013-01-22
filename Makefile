@@ -1,4 +1,4 @@
-DEST = kgbpuzzlehunt.club.cc.cmu.edu:weathermen
+DEST = kgbpuzzlehunt.club.cc.cmu.edu:pirates
 
 all: build
 
@@ -6,8 +6,8 @@ build:
 	go build -v
 
 run: build
-	./weathermen
+	./puzzlehunt
 
 deploy:
 	CGO_ENABLED=0 GOOS=linux go build -v
-	rsync -vauh --delete weathermen ./assets ./templates $(DEST)
+	rsync -vauh --delete puzzlehunt ./assets ./templates $(DEST)
