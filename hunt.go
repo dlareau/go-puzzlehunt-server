@@ -27,19 +27,21 @@ func MapPuzzleHandler(w http.ResponseWriter, r *http.Request, t *Team) {
   if r.Method != "GET" {
     check(r.ParseForm())
     answer := r.Form["answer"][0]
-    submission := Submission { SolutionId: soln.Id,
-                               TeamName: t.Name,
-                               PuzzleName: puzzle.Name,
-                               Answer: answer,
-                               ReceivedAt: time.Now() }
+    submission := &Submission { Id: bson.NewObjectId(),
+                                SolutionId: soln.Id,
+                                TeamName: t.Name,
+                                PuzzleName: puzzle.Name,
+                                Answer: answer,
+                                ReceivedAt: time.Now() }
     if answer == puzzle.Answer {
       submission.Status = CorrectUnreplied
+      go updateCorrect(submission, &soln)
     } else if strings.Index(answer, " ") != -1 {
       submission.Status = InvalidAnswer
     } else {
       submission.Status = IncorrectUnreplied
     }
-    check(Submissions.Insert(&submission))
+    check(Submissions.Insert(submission))
   }
 
   submissions := make([]Submission, 0)
@@ -66,4 +68,12 @@ func AnswerStatus(s Submission) string {
     case IncorrectReplied:                     return "incorrect: " + s.Comment;
   }
   return ""
+}
+
+func updateCorrect(s *Submission, soln *Solution) {
+  time.Sleep(5 * time.Second)
+  s.Status = Correct
+  soln.SolvedAt = time.Now()
+  Submissions.UpdateId(s.Id, s)
+  Solutions.UpdateId(soln.Id, soln)
 }

@@ -159,8 +159,7 @@ func (s *Solution) findId(id bson.ObjectId) {
 
 func (s SubmissionStatus) String() string {
   switch (s) {
-    case Correct: return "correct"
-    case CorrectUnreplied: return "correct-unreplied"
+    case Correct, CorrectUnreplied: return "correct"
     case InvalidAnswer: return "invalid-answer"
     case IncorrectReplied: return "incorrect-replied"
     case IncorrectUnreplied: return "incorrect-unreplied"
