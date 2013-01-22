@@ -3,6 +3,7 @@ package main
 import "bytes"
 import "github.com/gorilla/mux"
 import "labix.org/v2/mgo/bson"
+import "log"
 import "net/http"
 import "time"
 import "container/list"
@@ -107,9 +108,11 @@ func QueueBroadcastServer() {
 }
 
 func QueueNewSocket(ws *ws.Conn) {
+  log.Print("got a queue websocket")
   client := ClientSocket{ done: make(chan int), ws: ws }
   queuews <- &client
   <-client.done
+  log.Print("losing a queue websocket")
 }
 
 /* Main solution progress scoreboard */
