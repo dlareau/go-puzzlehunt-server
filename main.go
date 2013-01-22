@@ -69,6 +69,21 @@ func A(h Handler) Handler {
   return Authenticate(h, AdminPassword, AdminRealm)
 }
 
+func TA(h func(http.ResponseWriter, *http.Request, *Team)) Handler {
+  return H(func(w http.ResponseWriter, r *http.Request) {
+    var team Team
+    user, given, err := auth.Basic(r)
+    if err == nil {
+      err = team.findName(user)
+    }
+    if err != nil || team.Password != given {
+      auth.RequireAuth(w, r, TeamRealm)
+    } else {
+      h(w, r, &team)
+    }
+  })
+}
+
 func Authenticate(h Handler, password, realm string) Handler {
   return H(func(w http.ResponseWriter, r *http.Request) {
     _, given, err := auth.Basic(r)
@@ -84,6 +99,7 @@ func main() {
   r := mux.NewRouter()
 
   r.HandleFunc("/", H(HomeHandler)).Methods("GET")
+  r.HandleFunc("/map", TA(MapHandler)).Methods("GET")
 
   r.HandleFunc("/admin/teams", A(TeamsIndex)).Methods("GET")
   r.HandleFunc("/admin/teams/new", A(TeamsCreate)).Methods("GET", "POST")

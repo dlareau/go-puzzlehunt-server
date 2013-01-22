@@ -7,12 +7,14 @@ import "net/http"
 import "net/mail"
 
 type Team struct {
-  Id      bson.ObjectId "_id,omitempty"
-  Name    string
-  Phones  string
-  Members string
+  Id           bson.ObjectId "_id,omitempty"
+  Name         string
+  Phones       string
+  Members      string
   EmailAddress string
-  Err     error         ",omitempty"
+  Err          error         ",omitempty"
+  Username     string
+  Password     string
 }
 
 var Teams   = db.C("teams")
@@ -82,6 +84,10 @@ func (t *Team) find(id string) {
 
 func (t *Team) findId(id bson.ObjectId) {
   check(Teams.FindId(id).One(t))
+}
+
+func (t *Team) findName(name string) error {
+  return Teams.Find(bson.M{"name": name}).One(t)
 }
 
 func (t *Team) inherit(r *http.Request) error {
