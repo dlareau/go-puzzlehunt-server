@@ -7,7 +7,7 @@ import "log"
 import "net/http"
 import _ "net/http/pprof"
 import "os"
-import "weathermen/auth"
+import "puzzlehunt/auth"
 
 var mongo, db = opendb()
 var decoder = schema.NewDecoder()

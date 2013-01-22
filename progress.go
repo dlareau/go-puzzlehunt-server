@@ -10,7 +10,7 @@ import "strings"
 import "time"
 import uuid "github.com/nu7hatch/gouuid"
 
-import "weathermen/email"
+import "puzzlehunt/email"
 
 type Solution struct {
   Id        bson.ObjectId "_id,omitempty"
@@ -38,7 +38,6 @@ const (
   IncorrectReplied
   IncorrectUnreplied
 )
-
 
 type SolutionList []Solution
 type SolutionMap  map[bson.ObjectId]Solution

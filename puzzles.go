@@ -8,7 +8,7 @@ import "text/template"
 import "net/http"
 import "net/mail"
 
-import "weathermen/email"
+import "puzzlehunt/email"
 
 type Puzzle struct {
   Id          bson.ObjectId "_id,omitempty"
