@@ -20,22 +20,20 @@
       <input type='submit' value='Submit' data-disable-with='Submitting...'/>
     </div>
   </form>
-  {{ if .Submissions }}
-    <table>
-      <thead>
-        <tr>
-          <th>Time</th>
-          <th>Answer</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{ range .Submissions }}
-          {{ template "submission" . }}
-        {{ end }}
-      </tbody>
-    </table>
-  {{ end }}
+  <table>
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Answer</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range .Submissions }}
+        {{ template "submission" . }}
+      {{ end }}
+    </tbody>
+  </table>
   <script type='text/javascript'>
     $(function() {
       var ws = new WebSocket('ws://' + location.host + '/map/{{ .Tag }}/ws');
