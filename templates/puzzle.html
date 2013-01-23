@@ -1,14 +1,23 @@
 {{ define "title" }}Puzzle - {{ .Puzzle.Name }}{{ end }}
 
+{{ define "submission" }}
+<tr data-id='{{ .Id.Hex }}'>
+  <td>{{ .ReceivedAt.Format "15:04:05" }}</td>
+  <td>{{ .Answer }} </td>
+  <td>{{ .AnswerStatus }}</td>
+</tr>
+{{ end }}
+
 {{ define "content" }}
   <h1><a href='{{ .Puzzle.Url }}'>{{ .Puzzle.Name }}</a></h1>
   <a href='/map'>All Puzzles</a>
 
-  <form action="/map/puzzles/{{ .Puzzle.Slug }}" method='post'>
+  <form action="/map/puzzles/{{ .Puzzle.Slug }}" method='post'
+        data-remote=true>
     <div>
       <label for='answer'>Answer:</label>
       <input type='text' id='answer' name='answer'/><br/>
-      <input type='submit' value='Submit'/>
+      <input type='submit' value='Submit' data-disable-with='Submitting...'/>
     </div>
   </form>
   {{ if .Submissions }}
@@ -22,11 +31,7 @@
       </thead>
       <tbody>
         {{ range .Submissions }}
-          <tr data-id='{{ .Id.Hex }}'>
-            <td>{{ .ReceivedAt.Format "15:04:05" }}</td>
-            <td>{{ .Answer }} </td>
-            <td class='status'>{{ .AnswerStatus }}</td>
-          </tr>
+          {{ template "submission" . }}
         {{ end }}
       </tbody>
     </table>
@@ -38,8 +43,15 @@
       ws.onerror = function(e) { console.log('error', e); };
       ws.onmessage = function(e) {
         var data = JSON.parse(e.data);
-        $('tr[data-id=' + data.Id + '] .status').text(data.Html);
+        if (data.Type == 'new') {
+          $('tbody').prepend(data.Html);
+        } else {
+          $('tr[data-id=' + data.Id + ']').replaceWith(data.Html);
+        }
       };
+      $('form').bind('ajax:complete', function() {
+        $('#answer').val('');
+      });
     });
   </script>
 {{ end }}

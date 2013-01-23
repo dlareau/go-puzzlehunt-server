@@ -164,9 +164,15 @@ func (s *Submission) find(id string) {
   check(Submissions.FindId(bson.ObjectIdHex(id)).One(s))
 }
 
-func (s *Submission) message(typ string) QueueMessage {
+func (s *Submission) qmessage(typ string) QueueMessage {
   buf := bytes.NewBuffer(make([]byte, 0))
   check(queuet.ExecuteTemplate(buf, "queue_submission", s))
+  return QueueMessage{ Id: s.Id.Hex(), Html: buf.String(), Type: typ }
+}
+
+func (s *Submission) pmessage(typ string) QueueMessage {
+  buf := bytes.NewBuffer(make([]byte, 0))
+  check(mpuzzle.ExecuteTemplate(buf, "submission", s))
   return QueueMessage{ Id: s.Id.Hex(), Html: buf.String(), Type: typ }
 }
 
@@ -174,7 +180,8 @@ func (s *Submission) Insert() error {
   s.Id = bson.NewObjectId()
   err := Submissions.Insert(s)
   if err == nil {
-    Queue.Broadcast <- s.message("new")
+    Queue.Broadcast <- s.qmessage("new")
+    PuzzleStatus.Tags <- TaggedMessage{ Tag: s.Tag(), Msg: s.pmessage("new") }
   }
   return err
 }
@@ -182,9 +189,8 @@ func (s *Submission) Insert() error {
 func (s *Submission) Update() error {
   err := Submissions.UpdateId(s.Id, s)
   if err == nil {
-    Queue.Broadcast <- s.message("update")
-    msg := ProgressMessage { Id: s.Id.Hex(), Html: s.AnswerStatus() }
-    PuzzleStatus.Tags <- TaggedMessage{ Tag: s.Tag(), Msg: msg }
+    Queue.Broadcast <- s.qmessage("update")
+    PuzzleStatus.Tags <- TaggedMessage{ Tag: s.Tag(), Msg: s.pmessage("update") }
   }
   return err
 }
