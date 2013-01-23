@@ -22,13 +22,24 @@
       </thead>
       <tbody>
         {{ range .Submissions }}
-          <tr>
+          <tr data-id='{{ .Id.Hex }}'>
             <td>{{ .ReceivedAt.Format "15:04:05" }}</td>
             <td>{{ .Answer }} </td>
-            <td>{{ AnswerStatus . }}</td>
+            <td class='status'>{{ .AnswerStatus }}</td>
           </tr>
         {{ end }}
       </tbody>
     </table>
   {{ end }}
+  <script type='text/javascript'>
+    $(function() {
+      var ws = new WebSocket('ws://' + location.host + '/map/{{ .Tag }}/ws');
+      ws.onclose = function(e) { console.log('close', e); };
+      ws.onerror = function(e) { console.log('error', e); };
+      ws.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        $('tr[data-id=' + data.Id + '] .status').text(data.Html);
+      };
+    });
+  </script>
 {{ end }}

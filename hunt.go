@@ -69,19 +69,10 @@ func MapPuzzleHandler(w http.ResponseWriter, r *http.Request, t *Team) {
   data := struct {
     Puzzle *Puzzle
     Submissions []Submission
-  }{&puzzle, submissions}
+    Tag string
+  }{&puzzle, submissions, t.Id.Hex() + puzzle.Id.Hex()}
 
   check(mpuzzle.Execute(w, &data))
-}
-
-func AnswerStatus(s Submission) string {
-  switch (s.Status) {
-    case CorrectUnreplied, IncorrectUnreplied: return "validating...";
-    case Correct:                              return "correct";
-    case InvalidAnswer:                        return InvalidAnswerText;
-    case IncorrectReplied:                     return "incorrect: " + s.Comment;
-  }
-  return ""
 }
 
 func updateCorrect(s *Submission, soln *Solution) {

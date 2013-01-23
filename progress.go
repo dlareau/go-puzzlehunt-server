@@ -60,6 +60,9 @@ var solutionst = AdminTemplate("progress/solutions.html")
 var queuet = AdminTemplate("progress/queue.html")
 var Queue = WsServer()
 var Progress = WsServer()
+var PuzzleStatus = TagWsServer(func(r *http.Request) string {
+  return mux.Vars(r)["tag"]
+})
 
 func AllSolutions() []Solution {
   solutions := make([]Solution, 0)
@@ -173,7 +176,7 @@ func (s *Submission) Insert() error {
   s.Id = bson.NewObjectId()
   err := Submissions.Insert(s)
   if err == nil {
-    Queue.Messages <- s.message("new")
+    Queue.Broadcast <- s.message("new")
   }
   return err
 }
@@ -181,7 +184,9 @@ func (s *Submission) Insert() error {
 func (s *Submission) Update() error {
   err := Submissions.UpdateId(s.Id, s)
   if err == nil {
-    Queue.Messages <- s.message("update")
+    Queue.Broadcast <- s.message("update")
+    msg := ProgressMessage { Id: s.Id.Hex(), Html: s.AnswerStatus() }
+    PuzzleStatus.Tags <- TaggedMessage{ Tag: s.Tag(), Msg: msg }
   }
   return err
 }
@@ -191,6 +196,22 @@ func (s *Submission) DisplayAnswer() string {
     return "<invalid>"
   }
   return s.Answer
+}
+
+func (s *Submission) AnswerStatus() string {
+  switch (s.Status) {
+    case CorrectUnreplied, IncorrectUnreplied: return "validating...";
+    case Correct:                              return "correct";
+    case InvalidAnswer:                        return InvalidAnswerText;
+    case IncorrectReplied:                     return "incorrect: " + s.Comment;
+  }
+  return ""
+}
+
+func (s *Submission) Tag() string {
+  var soln Solution
+  soln.findId(s.SolutionId)
+  return soln.TeamId.Hex() + soln.PuzzleId.Hex()
 }
 
 func (s *Solution) message() ProgressMessage {
@@ -207,7 +228,7 @@ func (s *Solution) findId(id bson.ObjectId) {
 func (s *Solution) Insert() error {
   err := Solutions.Insert(s)
   if err == nil {
-    Progress.Messages <- s.message()
+    Progress.Broadcast <- s.message()
   }
   return err
 }
@@ -215,7 +236,7 @@ func (s *Solution) Insert() error {
 func (s *Solution) Update() error {
   err := Solutions.UpdateId(s.Id, s)
   if err == nil {
-    Progress.Messages <- s.message()
+    Progress.Broadcast <- s.message()
   }
   return err
 }

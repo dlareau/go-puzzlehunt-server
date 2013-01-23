@@ -102,12 +102,14 @@ func main() {
   check(Solutions.EnsureIndex(mgo.Index{ Key: []string{"teamid"} }));
   go Queue.Serve()
   go Progress.Serve()
+  go PuzzleStatus.Serve()
 
   r := mux.NewRouter()
 
   r.Handle("/", H(HomeHandler)).Methods("GET")
   r.Handle("/map", TA(MapHandler)).Methods("GET")
   r.Handle("/map/puzzles/{id}", TA(MapPuzzleHandler)).Methods("GET", "POST")
+  r.Handle("/map/{tag}/ws", PuzzleStatus.Endpoint())
 
   r.Handle("/admin/teams", A(TeamsIndex)).Methods("GET")
   r.Handle("/admin/teams/new", A(TeamsCreate)).Methods("GET", "POST")

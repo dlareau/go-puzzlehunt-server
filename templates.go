@@ -8,7 +8,6 @@ var funcs = template.FuncMap{
   "SolutionFor": SolutionFor,
   "NumSolved": NumSolved,
   "FormGet": FormGet,
-  "AnswerStatus": AnswerStatus,
 }
 
 func FormGet(form url.Values, key string) string {
