@@ -87,8 +87,6 @@ func PuzzlesUnlock(w http.ResponseWriter, r *http.Request) {
 
   solution := Solution{TeamId: team.Id, PuzzleId: puzzle.Id}
   check(solution.Insert())
-
-  http.Redirect(w, r, "/admin/progress", http.StatusFound)
 }
 
 func (p *Puzzle) find(id string) {
