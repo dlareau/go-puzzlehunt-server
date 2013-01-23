@@ -154,8 +154,6 @@ func SubmissionRespond(w http.ResponseWriter, r *http.Request) {
   submission.Comment = r.FormValue("response")
   submission.Status = IncorrectReplied
   check(submission.Update())
-
-  http.Redirect(w, r, "/admin/queue", http.StatusFound)
 }
 
 func (s *Submission) NeedsResponse() bool {
