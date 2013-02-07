@@ -8,6 +8,7 @@ import "net/http"
 import _ "net/http/pprof"
 import "os"
 import "puzzlehunt/auth"
+import "strings"
 
 var mongo, db = opendb()
 var decoder = schema.NewDecoder()
@@ -96,6 +97,15 @@ func Authenticate(h http.Handler, password, realm string) http.Handler {
   }))
 }
 
+func Log(handler http.Handler) http.Handler {
+  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    if !strings.HasPrefix(r.URL.String(), "/assets") {
+      log.Printf("%s %s %s", r.RemoteAddr, r.Method, r.URL)
+    }
+    handler.ServeHTTP(w, r)
+  })
+}
+
 func main() {
   check(Puzzles.EnsureIndex(mgo.Index{ Key: []string{"slug"} }));
   check(Teams.EnsureIndex(mgo.Index{ Key: []string{"username"} }));
@@ -137,5 +147,5 @@ func main() {
   http.Handle("/", r)
 
   log.Print("Serving requests...")
-  check(http.ListenAndServe(ListenAddress, nil))
+  check(http.ListenAndServe(ListenAddress, Log(http.DefaultServeMux)))
 }
