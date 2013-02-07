@@ -2,6 +2,7 @@ package main
 
 import "bytes"
 import "github.com/gorilla/mux"
+import "labix.org/v2/mgo"
 import "labix.org/v2/mgo/bson"
 import "net/http"
 import "time"
@@ -240,7 +241,59 @@ func (s *Solution) Update() error {
   err := Solutions.UpdateId(s.Id, s)
   if err == nil {
     Progress.Broadcast <- s.message()
+
+    var puzzle Puzzle
+    puzzle.findId(s.PuzzleId)
+    to_unlock := UnlockTree[puzzle.UnlockIdx]
+
+    /* For everything we're supposed to unlock, see if it's already unlocked and
+       if it isn't, insert the Solution to indicate that it's now available for
+       solving */
+    for _, idx := range to_unlock {
+      /* find the puzzle to unlock */
+      err = Puzzles.Find(bson.M{"unlockidx":idx}).One(&puzzle)
+      if err != nil {
+        return err
+      }
+      /* if it's already unlocked, no need to unlock again */
+      n, err := Solutions.Find(bson.M{"puzzleid":puzzle.Id, "teamid":s.TeamId}).
+                          Count()
+      if err != nil || n == 1 {
+        return err
+      }
+
+      /* If we're unlocking the meta, we require more solutions than 1 */
+      if len(to_unlock) == 1 && to_unlock[0] == MetaIndex {
+        iter := Puzzles.Find(bson.M{"unlockidx":bson.M{"$gte":MetaMinimum}}).Iter()
+        var p Puzzle
+        solved := 0
+        for iter.Next(&p) {
+          var soln Solution
+          err := Solutions.Find(bson.M{"puzzleid":p.Id,
+                                       "teamid":s.TeamId}).One(&soln)
+          if err == mgo.ErrNotFound {
+            continue
+          } else if err != nil {
+            return err
+          } else if soln.SolvedAt.Year() > 1400 {
+            solved += 1
+          }
+        }
+
+        if solved < MetaRequired {
+          return nil
+        }
+      }
+
+      /* Finally, actually unlock the puzzle */
+      solution := Solution{TeamId: s.TeamId, PuzzleId: puzzle.Id}
+      err = solution.Insert()
+      if err != nil {
+        return err
+      }
+    }
   }
+
   return err
 }
 

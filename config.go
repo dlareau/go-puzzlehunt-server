@@ -30,3 +30,7 @@ var UnlockTree = map[int][]int {
   14: []int{16},
   15: []int{16},
 }
+
+var MetaRequired = 2
+var MetaMinimum = 11
+var MetaIndex = 16
