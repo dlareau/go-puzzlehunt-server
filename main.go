@@ -147,5 +147,9 @@ func main() {
   http.Handle("/", r)
 
   log.Print("Serving requests...")
-  check(http.ListenAndServe(ListenAddress, Log(http.DefaultServeMux)))
+  listen := ListenAddress
+  if len(os.Args) > 1 {
+    listen = os.Args[1]
+  }
+  check(http.ListenAndServe(listen, Log(http.DefaultServeMux)))
 }
