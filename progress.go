@@ -131,7 +131,7 @@ func ProgressRelease(w http.ResponseWriter, r *http.Request) {
   var puzzle Puzzle
   teams := AllTeams()
   iter := Puzzles.Find(bson.M{"metapuzzle":false,
-                              "unlockidx":bson.M{"$lte": 0}}).Iter()
+                              "unlockidx":bson.M{"$lte": 5}}).Iter()
 
   for iter.Next(&puzzle) {
     for i, _ := range teams {
