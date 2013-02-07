@@ -69,7 +69,7 @@
       }, 1000);
 
       /* Open a socket and listen for new submissions */
-      var ws = new WebSocket('ws://' + window.location.host + '/admin/queue/ws');
+      var ws = new ReconnectingWebSocket('ws://' + window.location.host + '/admin/queue/ws');
       ws.onerror = function(e) { console.log('error', e) };
       ws.onclose = function(e) { console.log('close', e); };
       ws.onmessage = function(m) {

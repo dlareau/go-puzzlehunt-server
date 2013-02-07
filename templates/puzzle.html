@@ -36,7 +36,7 @@
   </table>
   <script type='text/javascript'>
     $(function() {
-      var ws = new WebSocket('ws://' + location.host + '/map/{{ .Tag }}/ws');
+      var ws = new ReconnectingWebSocket('ws://' + location.host + '/map/{{ .Tag }}/ws');
       ws.onclose = function(e) { console.log('close', e); };
       ws.onerror = function(e) { console.log('error', e); };
       ws.onmessage = function(e) {

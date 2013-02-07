@@ -48,7 +48,7 @@
   </table>
   <script type='text/javascript'>
     $(function() {
-      var ws = new WebSocket('ws://' + window.location.host + '/admin/progress/ws');
+      var ws = new ReconnectingWebSocket('ws://' + window.location.host + '/admin/progress/ws');
       ws.onerror = function(e) { console.log('error', e) };
       ws.onclose = function(e) { console.log('close', e); };
       ws.onmessage = function(m) {
