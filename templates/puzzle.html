@@ -9,31 +9,40 @@
 {{ end }}
 
 {{ define "content" }}
-  <h1><a href='{{ .Puzzle.Url }}'>{{ .Puzzle.Name }}</a></h1>
-  <a href='/map'>All Puzzles</a>
+<div class='puzzle'>
+  <div class='info'>
+    <h1><a href='{{ .Puzzle.Url }}'>{{ .Puzzle.Name }}</a></h1>
+    <a href='/map'>Go back to all puzzles</a>
+  </div>
 
-  <form action="/map/puzzles/{{ .Puzzle.Slug }}" method='post'
-        data-remote=true>
-    <div>
-      <label for='answer'>Answer:</label>
-      <input type='text' id='answer' name='answer'/><br/>
-      <input type='submit' value='Submit' data-disable-with='Submitting...'/>
-    </div>
-  </form>
-  <table>
-    <thead>
-      <tr>
-        <th>Time</th>
-        <th>Answer</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{ range .Submissions }}
-        {{ template "submission" . }}
-      {{ end }}
-    </tbody>
-  </table>
+  <fieldset id='submit'>
+    <legend>Submit an answer</legend>
+    <form action="/map/puzzles/{{ .Puzzle.Slug }}" method='post'
+          data-remote=true>
+      <div>
+        <label for='answer'>Answer:</label>
+        <input type='text' id='answer' name='answer'/><br/>
+        <input type='submit' value='Submit' data-disable-with='Submitting...'/>
+      </div>
+    </form>
+  </fieldset>
+  <fieldset id='answers'>
+    <legend>Past answers</legend>
+    <table>
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Answer</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ range .Submissions }}
+          {{ template "submission" . }}
+        {{ end }}
+      </tbody>
+    </table>
+  </fieldset>
   <script type='text/javascript'>
     $(function() {
       var ws = new ReconnectingWebSocket('ws://' + location.host + '/map/{{ .Tag }}/ws');
@@ -52,4 +61,5 @@
       });
     });
   </script>
+</div>
 {{ end }}
