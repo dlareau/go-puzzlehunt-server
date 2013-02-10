@@ -12,22 +12,19 @@ import "os/signal"
 import "puzzlehunt/auth"
 import "strings"
 
-var mongo, db = opendb()
+var db = opendb()
 var decoder = schema.NewDecoder()
-
-// type Handler func(http.ResponseWriter, *http.Request)
-// type Handler = http.Handler
 
 const dbg = false
 
-func opendb() (*mgo.Session, *mgo.Database) {
+func opendb() (*mgo.Database) {
   if dbg {
     mgo.SetDebug(true)
     mgo.SetLogger(log.New(os.Stdout, "[mgo] ", log.LstdFlags))
   }
   session, err := mgo.Dial(MongoHost)
   check(err)
-  return session, session.DB(MongoDatabase)
+  return session.DB(MongoDatabase)
 }
 
 func check(err error) {
@@ -65,7 +62,7 @@ func H(h http.HandlerFunc) http.Handler {
         errorTemplate.Execute(w, e)
       }
     }()
-    h.ServeHTTP(w, r)
+    h(w, r)
   })
 }
 
@@ -112,6 +109,8 @@ func main() {
   check(Puzzles.EnsureIndex(mgo.Index{ Key: []string{"slug"} }));
   check(Teams.EnsureIndex(mgo.Index{ Key: []string{"username"} }));
   check(Solutions.EnsureIndex(mgo.Index{ Key: []string{"teamid"} }));
+
+  /* spawn off each of the threads responsible for managing websockets */
   go Queue.Serve()
   go Progress.Serve()
   go PuzzleStatus.Serve()
