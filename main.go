@@ -147,8 +147,9 @@ func main() {
   r.Handle("/admin/progress/ws", Progress.Endpoint())
   r.Handle("/admin/respond/{id}", A(SubmissionRespond)).Methods("POST")
 
-  srv := http.FileServer(http.Dir("./assets"))
-  http.Handle("/assets/", http.StripPrefix("/assets/", srv))
+  srv := http.FileServer(http.Dir("./"))
+  http.Handle("/assets/", srv)
+  http.Handle("/favicon.ico", srv)
   http.Handle("/", r)
 
   log.Print("Serving requests...")
