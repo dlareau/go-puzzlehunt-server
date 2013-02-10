@@ -108,16 +108,6 @@ func SolutionFor(l SolutionList, t *Team, p *Puzzle) *Solution {
   return nil
 }
 
-func NumSolved(l SolutionList, t *Team) int {
-  cnt := 0
-  for _, s := range l {
-    if s.TeamId == t.Id && s.SolvedAt.Year() > 1000 {
-      cnt++
-    }
-  }
-  return cnt
-}
-
 func ProgressReset(w http.ResponseWriter, r *http.Request) {
   _, err := Solutions.RemoveAll(nil)
   check(err)

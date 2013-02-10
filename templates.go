@@ -6,7 +6,6 @@ import "path/filepath"
 
 var funcs = template.FuncMap{
   "SolutionFor": SolutionFor,
-  "NumSolved": NumSolved,
   "FormGet": FormGet,
 }
 

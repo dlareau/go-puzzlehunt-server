@@ -27,7 +27,7 @@
         {{ range $_, $team := $data.Teams }}
           <tr>
             <td>{{ $team.Name }}</td>
-            <td>{{ NumSolved $data.Solutions $team }}</td>
+            <td class='num'></td>
             {{ range $_, $puzzle := $data.Puzzles }}
               {{ with $soln := SolutionFor $data.Solutions $team $puzzle }}
                 {{ template "solution" $soln }}
@@ -48,13 +48,21 @@
   </table>
   <script type='text/javascript'>
     $(function() {
+      var updateSolved = function() {
+        $.each($('#progress tr'), function(_, row) {
+          var amt = $(row).find('td.solved').length;
+          $(row).find('.num').text(amt);
+        });
+      };
       var ws = new ReconnectingWebSocket('ws://' + window.location.host + '/admin/progress/ws');
       ws.onerror = function(e) { console.log('error', e) };
       ws.onclose = function(e) { console.log('close', e); };
       ws.onmessage = function(m) {
         var data = JSON.parse(m.data);
         $('td[data-id=' + data.Id + ']').replaceWith(data.Html);
+        updateSolved();
       };
+      updateSolved();
     });
   </script>
 
