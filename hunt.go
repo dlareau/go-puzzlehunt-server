@@ -4,11 +4,14 @@ import "github.com/gorilla/mux"
 import "labix.org/v2/mgo/bson"
 import "net/http"
 import "strings"
+import "sync"
 import "time"
 
 var mindex = Template("_base.html", "index.html")
 var mpuzzle = Template("_base.html", "puzzle.html")
 var mpuzzles = Template("_base.html", "puzzles.html")
+
+var CorrectNotifiers sync.WaitGroup
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
   check(mindex.Execute(w, nil))
@@ -76,9 +79,11 @@ func MapPuzzleHandler(w http.ResponseWriter, r *http.Request, t *Team) {
 }
 
 func updateCorrect(s *Submission, soln *Solution) {
+  CorrectNotifiers.Add(1)
   time.Sleep(5 * time.Second)
   s.Status = Correct
   soln.SolvedAt = time.Now()
   check(s.Update())
   check(soln.Update())
+  CorrectNotifiers.Add(-1)
 }

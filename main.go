@@ -4,9 +4,11 @@ import "github.com/gorilla/mux"
 import "github.com/gorilla/schema"
 import "labix.org/v2/mgo"
 import "log"
+import "net"
 import "net/http"
 import _ "net/http/pprof"
 import "os"
+import "os/signal"
 import "puzzlehunt/auth"
 import "strings"
 
@@ -151,5 +153,20 @@ func main() {
   if len(os.Args) > 1 {
     listen = os.Args[1]
   }
-  check(http.ListenAndServe(listen, Log(http.DefaultServeMux)))
+
+  l, err := net.Listen("tcp", listen)
+  check(err)
+
+  /* Be sure we can run code after the server exits */
+  exit := make(chan os.Signal)
+  signal.Notify(exit, os.Interrupt, os.Kill)
+  go func() {
+    <-exit
+    l.Close()
+  }()
+
+  http.Serve(l, Log(http.DefaultServeMux))
+
+  println("Waiting for all problems to be marked as correct")
+  CorrectNotifiers.Wait()
 }
