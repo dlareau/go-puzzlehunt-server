@@ -11,6 +11,7 @@ import "os"
 import "os/signal"
 import "puzzlehunt/auth"
 import "strings"
+import "time"
 
 var db = opendb()
 var decoder = schema.NewDecoder()
@@ -98,10 +99,13 @@ func Authenticate(h http.Handler, password, realm string) http.Handler {
 
 func Log(handler http.Handler) http.Handler {
   return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-    if !strings.HasPrefix(r.URL.String(), "/assets") {
-      log.Printf("%s %s %s", r.RemoteAddr, r.Method, r.URL)
-    }
+    start := time.Now()
+    url := r.URL.String() // may change depending on routing
     handler.ServeHTTP(w, r)
+    if !strings.HasPrefix(url, "/assets") && url != "/favicon.ico" &&
+       !strings.HasSuffix(url, "/ws") {
+      log.Printf("%s %s %s %s", r.RemoteAddr, r.Method, url, time.Since(start))
+    }
   })
 }
 
