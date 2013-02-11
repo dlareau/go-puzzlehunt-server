@@ -60,6 +60,7 @@ func H(h http.HandlerFunc) http.Handler {
       e := recover()
       if e != nil {
         w.WriteHeader(http.StatusInternalServerError)
+        log.Printf("internal error %s", e)
         errorTemplate.Execute(w, e)
       }
     }()
