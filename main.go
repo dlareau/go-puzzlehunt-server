@@ -112,8 +112,8 @@ func Log(handler http.Handler) http.Handler {
 
 func main() {
   check(Puzzles.EnsureIndex(mgo.Index{ Key: []string{"slug"} }));
-  check(Teams.EnsureIndex(mgo.Index{ Key: []string{"username"} }));
-  check(Solutions.EnsureIndex(mgo.Index{ Key: []string{"teamid"} }));
+  check(Teams.EnsureIndex(mgo.Index{ Key: []string{"username", "name"} }));
+  check(Solutions.EnsureIndex(mgo.Index{ Key: []string{"teamid", "receivedat"} }));
 
   /* spawn off each of the threads responsible for managing websockets */
   go Queue.Serve()
