@@ -9,7 +9,6 @@ import "net/http"
 import _ "net/http/pprof"
 import "os"
 import "os/signal"
-import "github.com/alexcrichton/puzzlehunt/auth"
 import "strings"
 import "time"
 
@@ -17,6 +16,8 @@ var db = opendb()
 var decoder = schema.NewDecoder()
 
 const dbg = false
+
+type TeamHandler func(w http.ResponseWriter, r *http.Request, t *Team)
 
 func opendb() (*mgo.Database) {
   if dbg {
@@ -69,33 +70,7 @@ func H(h http.HandlerFunc) http.Handler {
 }
 
 func A(h http.HandlerFunc) http.Handler {
-  return Authenticate(h, AdminPassword, AdminRealm)
-}
-
-func TA(h func(http.ResponseWriter, *http.Request, *Team)) http.Handler {
-  return H(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-    var team Team
-    user, given, err := auth.Basic(r)
-    if err == nil {
-      err = team.findName(user)
-    }
-    if err != nil || team.Password != given {
-      auth.RequireAuth(w, r, TeamRealm)
-    } else {
-      h(w, r, &team)
-    }
-  }))
-}
-
-func Authenticate(h http.Handler, password, realm string) http.Handler {
-  return H(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-    _, given, err := auth.Basic(r)
-    if err != nil || given != password {
-      auth.RequireAuth(w, r, realm)
-    } else {
-      h.ServeHTTP(w, r)
-    }
-  }))
+  return AdminAuthenticate(h)
 }
 
 func Log(handler http.Handler) http.Handler {
@@ -131,6 +106,8 @@ func main() {
   go PuzzleStatus.Serve()
 
   r := mux.NewRouter()
+
+  TA := TeamAuthenticate
 
   r.Handle("/", TA(MapHandler)).Methods("GET")
   r.Handle("/map", TA(MapHandler)).Methods("GET")
