@@ -57,7 +57,7 @@ body {
 #map #puzzle8 a { color: black; }
 #map #puzzle9 a { color: black; }
 
-.puzzle { overflow: visible; width: 20px; height; 20px; }
+#map .puzzle { overflow: visible; width: 20px; height; 20px; }
 
 #puzzle0 .cloud { top: -83px; left: -172px; width: 404px;
                -webkit-transform:rotate(90deg); }
@@ -92,3 +92,19 @@ body {
 #puzzle15 .cloud { top: -54px; left: -82px; width: 263px;
                -webkit-transform:rotate(198deg); }
 
+#puzzle0 { z-index: 100; }
+#puzzle1 { z-index: 99; }
+#puzzle2 { z-index: 98; }
+#puzzle3 { z-index: 97; }
+#puzzle4 { z-index: 96; }
+#puzzle5 { z-index: 95; }
+#puzzle6 { z-index: 94; }
+#puzzle7 { z-index: 93; }
+#puzzle8 { z-index: 92; }
+#puzzle9 { z-index: 91; }
+#puzzle10 { z-index: 90; }
+#puzzle11 { z-index: 89; }
+#puzzle12 { z-index: 88; }
+#puzzle13 { z-index: 87; }
+#puzzle14 { z-index: 86; }
+#puzzle15 { z-index: 85; }
