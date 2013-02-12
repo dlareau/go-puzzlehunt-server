@@ -2,7 +2,7 @@ $(function() {
   $(window).on('ajax:error', function(e) {
     e = $(e.target);
     if (e.is('form')) {
-      $.get('/map', function() {
+      $.get('/teams/auth', function() {
         e.submit();
       })
     }
