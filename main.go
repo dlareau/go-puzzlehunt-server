@@ -126,7 +126,7 @@ func main() {
   r.Handle("/admin/progress/ws", Progress.Endpoint())
   r.Handle("/admin/respond/{id}", A(SubmissionRespond)).Methods("POST")
 
-  srv := utils.CacheControl(utils.GzipHandler(http.FileServer(http.Dir("./"))))
+  srv := utils.CacheControl(http.FileServer(http.Dir("./")))
   http.Handle("/assets/", srv)
   http.Handle("/favicon.ico", srv)
   http.Handle("/", r)
@@ -148,7 +148,7 @@ func main() {
     l.Close()
   }()
 
-  http.Serve(l, Log(http.DefaultServeMux))
+  http.Serve(l, Log(utils.GzipHandler(http.DefaultServeMux)))
 
   println("Waiting for all problems to be marked as correct")
   CorrectNotifiers.Wait()

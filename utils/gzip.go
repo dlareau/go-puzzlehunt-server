@@ -5,12 +5,19 @@ import "net/http"
 import "io"
 import "strings"
 
+
+
 type gzipResponseWriter struct {
+  sniffed bool
   io.Writer
   http.ResponseWriter
 }
 
-func (w gzipResponseWriter) Write(b []byte) (int, error) {
+func (w *gzipResponseWriter) Write(b []byte) (int, error) {
+  if !w.sniffed {
+    w.ResponseWriter.Header().Set("Content-Type", http.DetectContentType(b))
+    w.sniffed = true
+  }
   return w.Writer.Write(b)
 }
 
@@ -22,7 +29,7 @@ func GzipHandler(f http.Handler) http.Handler{
     }
     w.Header().Set("Content-Encoding", "gzip")
     gz := gzip.NewWriter(w)
-    f.ServeHTTP(gzipResponseWriter{Writer: gz, ResponseWriter: w}, r)
+    f.ServeHTTP(&gzipResponseWriter{Writer: gz, ResponseWriter: w}, r)
     gz.Close()
   })
 }
