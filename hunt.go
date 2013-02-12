@@ -42,9 +42,8 @@ func MapPuzzleHandler(w http.ResponseWriter, r *http.Request, t *Team) {
   var soln Solution
   check(Solutions.Find(bson.M{"teamid": t.Id, "puzzleid": puzzle.Id}).One(&soln))
 
-  check(r.ParseForm())
-  answer := r.Form.Get("answer")
-  if answer != "" {
+  if r.Method == "POST" {
+    answer := r.FormValue("answer")
     submission := &Submission { SolutionId: soln.Id,
                                 TeamName: t.Name,
                                 PuzzleName: puzzle.Name,

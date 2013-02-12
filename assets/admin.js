@@ -16,4 +16,13 @@ $(function() {
       hidden.val('false')
     }
   });
+
+  $(window).on('ajax:error', function(e) {
+    e = $(e.target);
+    if (e.is('form')) {
+      $.get('/admin/teams', function() {
+        e.submit();
+      })
+    }
+  });
 })
