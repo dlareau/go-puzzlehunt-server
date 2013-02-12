@@ -7,13 +7,15 @@
 
     {{ with $data := . }}
     {{ range $i, $puzzle := $data.Puzzles }}
-      <div id='puzzle{{ $i }}'
-           class='puzzle {{ if PuzzleSolved $data.Solutions $data.Team $puzzle }}solved{{end}}'>
-        <a href='/map/puzzles/{{ .Slug }}'>P{{ .UnlockIdx }}</a>
-        {{ if SolutionFor $data.Solutions $data.Team $puzzle }}
+      <div id='puzzle{{ $i }}' class='puzzle'>
+        {{ with $soln := SolutionFor $data.Solutions $data.Team $puzzle }}
+          {{ if not $soln.SolvedAt.IsZero }}
+            <img class='done' src='/assets/redx.png'/>
+          {{ end }}
         {{ else }}
           <img class='cloud' src='/assets/cloud.png'/>
         {{ end }}
+        <a href='/map/puzzles/{{ .Slug }}'>P{{ .UnlockIdx }}</a>
       </div>
     {{ end }}
     {{ end }}

@@ -58,6 +58,13 @@ body {
 #map #puzzle9 a { color: black; }
 
 #map .puzzle { overflow: visible; width: 20px; height; 20px; }
+#map .puzzle .done {
+  width: 48px;
+  position: absolute;
+  top: -16px;
+  left: -8px;
+  z-index: -1;
+}
 
 #puzzle0 .cloud { top: -83px; left: -172px; width: 404px;
                -webkit-transform:rotate(90deg); }
