@@ -17,7 +17,7 @@
 
   <fieldset id='submit'>
     <legend>Submit an answer</legend>
-    <form action="/map/puzzles/{{ .Puzzle.Slug }}" method='post'
+    <form action="/map/puzzles/{{ .Puzzle.Slug }}" method='get'
           data-remote=true>
       <div>
         <label for='answer'>Answer:</label>
