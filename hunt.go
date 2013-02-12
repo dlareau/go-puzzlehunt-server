@@ -7,15 +7,10 @@ import "strings"
 import "sync"
 import "time"
 
-var mindex = Template("_base.html", "index.html")
 var mpuzzle = Template("_base.html", "puzzle.html")
 var mpuzzles = Template("_base.html", "puzzles.html")
 
 var CorrectNotifiers sync.WaitGroup
-
-func HomeHandler(w http.ResponseWriter, r *http.Request) {
-  check(mindex.Execute(w, nil))
-}
 
 func MapHandler(w http.ResponseWriter, r *http.Request, t *Team) {
   all := AllPuzzles()

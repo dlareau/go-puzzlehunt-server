@@ -122,7 +122,7 @@ func main() {
 
   r := mux.NewRouter()
 
-  r.Handle("/", H(HomeHandler)).Methods("GET")
+  r.Handle("/", TA(MapHandler)).Methods("GET")
   r.Handle("/map", TA(MapHandler)).Methods("GET")
   r.Handle("/map/puzzles/{id}", TA(MapPuzzleHandler)).Methods("GET", "POST")
   r.Handle("/map/{tag}/ws", PuzzleStatus.Endpoint())
