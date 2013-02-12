@@ -33,7 +33,12 @@ func MapHandler(w http.ResponseWriter, r *http.Request, t *Team) {
       }
     }
   }
-  check(mpuzzles.Execute(w, puzzles))
+  data := struct {
+    Solutions SolutionList
+    Team      *Team
+    Puzzles   []Puzzle
+  }{solns, t, AllPuzzles()}
+  check(mpuzzles.Execute(w, data))
 }
 
 func MapPuzzleHandler(w http.ResponseWriter, r *http.Request, t *Team) {

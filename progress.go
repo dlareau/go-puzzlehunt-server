@@ -99,6 +99,15 @@ func ProgressIndex(w http.ResponseWriter, r *http.Request) {
   check(solutionst.Execute(w, data))
 }
 
+func PuzzleSolved(l SolutionList, t *Team, p *Puzzle) bool {
+  for i, s := range l {
+    if s.TeamId == t.Id && s.PuzzleId == p.Id {
+      return !l[i].SolvedAt.IsZero()
+    }
+  }
+  return false
+}
+
 func SolutionFor(l SolutionList, t *Team, p *Puzzle) *Solution {
   for i, s := range l {
     if s.TeamId == t.Id && s.PuzzleId == p.Id {

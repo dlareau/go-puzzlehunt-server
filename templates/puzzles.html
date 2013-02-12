@@ -1,9 +1,21 @@
 {{ define "title" }}Pirate Map{{ end }}
 
 {{ define "content" }}
-  {{ range . }}
-    <div class='puzzle'>
-      <a href='/map/puzzles/{{ .Slug }}'>{{ .Name }}</a>
-    </tr>
-  {{ end }}
+  <div id='map'>
+    <img src='/assets/map.png' width=800/>
+
+
+    {{ with $data := . }}
+    {{ range $i, $puzzle := $data.Puzzles }}
+      <div id='puzzle{{ $i }}'
+           class='puzzle {{ if PuzzleSolved $data.Solutions $data.Team $puzzle }}solved{{end}}'>
+        <a href='/map/puzzles/{{ .Slug }}'>P{{ .UnlockIdx }}</a>
+        {{ if SolutionFor $data.Solutions $data.Team $puzzle }}
+        {{ else }}
+          <img class='cloud' src='/assets/cloud.png'/>
+        {{ end }}
+      </div>
+    {{ end }}
+    {{ end }}
+  </div>
 {{ end }}
