@@ -74,7 +74,7 @@
       ws.onclose = function(e) { console.log('close', e); };
       ws.onmessage = function(m) {
         var data = JSON.parse(m.data);
-        var row = $(data.Html);
+        var row = $($.parseHTML(data.Html));
         if (data.Type == 'new') {
           if (!row.hasClass('correct')) {
             flashing = !focused;
