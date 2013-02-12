@@ -20,7 +20,7 @@ const dbg = false
 
 type TeamHandler func(w http.ResponseWriter, r *http.Request, t *Team)
 
-func opendb() (*mgo.Database) {
+func opendb() *mgo.Database {
   if dbg {
     mgo.SetDebug(true)
     mgo.SetLogger(log.New(os.Stdout, "[mgo] ", log.LstdFlags))
@@ -77,7 +77,7 @@ func A(h http.HandlerFunc) http.Handler {
 func Log(handler http.Handler) http.Handler {
   return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
     start := time.Now()
-    url := r.URL.String() // may change depending on routing
+    url := r.URL.String() /* may change depending on routing, so save before */
     handler.ServeHTTP(w, r)
     if !strings.HasPrefix(url, "/assets") && url != "/favicon.ico" &&
        !strings.HasSuffix(url, "/ws") {
@@ -96,8 +96,8 @@ func main() {
   go Progress.Serve()
   go PuzzleStatus.Serve()
 
+  /* Routing tables! */
   r := mux.NewRouter()
-
   TA := TeamAuthenticate
 
   r.Handle("/", TA(MapHandler)).Methods("GET")

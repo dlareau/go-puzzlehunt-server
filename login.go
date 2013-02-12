@@ -1,3 +1,39 @@
+/**
+ * Implementation of logging users in for both teams and the admin portion of
+ * the site.
+ *
+ * This uses HTTP header-based authentication (the Authentication header) for
+ * handling logins/passwords. This is insecure for man in the middle attacks
+ * unless we're using SSL which we're not. This is a small enough
+ * website/application that I don't really care, however.
+ *
+ * Most of the site relies on cookies to ensure that someone is authenticated.
+ * If a cookie is not found for a request, the user is redirected to an
+ * authorization page which requests the 'Authorization' header via the
+ * 'WWW-Authorize' header (http basic authentication). Once received and
+ * validated, then cookies are issued in two situations:
+ *
+ *      1. Admins all receive a common and constant 'AdminToken' under the
+ *         cookie name 'admintoken' which is only sent for the '/admin' paths.
+ *      2. Teams are issued an encrypted version of their team id so they can't
+ *         easily spoof another team. This is stored in the 'team' cookie and
+ *         sent on all requests.
+ *
+ * The constant admin token and encryption keys for the team's cookies are
+ * generated at the start of the program, so between instances of a server users
+ * have to re-login. Normally browsers can handle this transparently, but
+ * there's a hiccup with anything which isn't a POST request. A GET can be
+ * easily redirected around, but a POST contains data which will be lsot through
+ * a series of redirects. To mitigate this, we've got JS running to catch
+ * authorization errors on form submissions which then re-authenticate manually,
+ * afterwards resubmitting the form.
+ *
+ * N.B. This was all done after noticing that Chrome refused to cache anything
+ * with an Authorization header. It was later realized that this may be a bug in
+ * Chrome, and I never went back and tested whether this was actually the case.
+ * Oh well, water under the bridge or something like that?
+ */
+
 package main
 
 import "encoding/hex"
