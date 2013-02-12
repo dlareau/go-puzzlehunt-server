@@ -67,37 +67,69 @@ body {
 }
 
 #puzzle0 .cloud { top: -83px; left: -172px; width: 404px;
-               -webkit-transform:rotate(90deg); }
+               -webkit-transform:rotate(90deg);
+               -moz-transform:rotate(90deg);
+               transform:rotate(90deg); }
 #puzzle1 .cloud { top: -83px; left: -146px; width: 371px;
-               -webkit-transform:rotate(0deg); }
+               -webkit-transform:rotate(0deg);
+               -moz-transform:rotate(0deg);
+               transform:rotate(0deg); }
 #puzzle2 .cloud { top: -119px; left: -187px; width: 371px;
-               -webkit-transform:rotate(60deg); }
+               -webkit-transform:rotate(60deg);
+               -moz-transform:rotate(60deg);
+               transform:rotate(60deg); }
 #puzzle3 .cloud { top: -123px; left: -145px; width: 371px;
-               -webkit-transform:rotate(-229deg); }
+               -webkit-transform:rotate(-229deg);
+               -moz-transform:rotate(-229deg);
+               transform:rotate(-229deg); }
 #puzzle4 .cloud { top: -94px; left: -94px; width: 371px;
-               -webkit-transform:rotate(-163deg); }
+               -webkit-transform:rotate(-163deg);
+               -moz-transform:rotate(-163deg);
+               transform:rotate(-163deg); }
 #puzzle5 .cloud { top: -30px; left: -81px; width: 235px;
-               -webkit-transform:rotate(-121deg); }
+               -webkit-transform:rotate(-121deg);
+               -moz-transform:rotate(-121deg);
+               transform:rotate(-121deg); }
 #puzzle6 .cloud { top: -30px; left: -117px; width: 235px;
-               -webkit-transform:rotate(-39deg); }
+               -webkit-transform:rotate(-39deg);
+               -moz-transform:rotate(-39deg);
+               transform:rotate(-39deg); }
 #puzzle7 .cloud { top: -94px; left: -116px; width: 235px;
-               -webkit-transform:rotate(87deg); }
+               -webkit-transform:rotate(87deg);
+               -moz-transform:rotate(87deg);
+               transform:rotate(87deg); }
 #puzzle8 .cloud { top: -87px; left: -101px; width: 235px;
-               -webkit-transform:rotate(100deg); }
+               -webkit-transform:rotate(100deg);
+               -moz-transform:rotate(100deg);
+               transform:rotate(100deg); }
 #puzzle9 .cloud { top: -71px; left: -57px; width: 235px;
-               -webkit-transform:rotate(168deg); }
+               -webkit-transform:rotate(168deg);
+               -moz-transform:rotate(168deg);
+               transform:rotate(168deg); }
 #puzzle10 .cloud { top: -76px; left: -111px; width: 225px;
-               -webkit-transform:rotate(51deg); }
+               -webkit-transform:rotate(51deg);
+               -moz-transform:rotate(51deg);
+               transform:rotate(51deg); }
 #puzzle11 .cloud { top: -81px; left: -90px; width: 225px;
-               -webkit-transform:rotate(115deg); }
+               -webkit-transform:rotate(115deg);
+               -moz-transform:rotate(115deg);
+               transform:rotate(115deg); }
 #puzzle12 .cloud { top: -62px; left: -78px; width: 225px;
-               -webkit-transform:rotate(179deg); }
+               -webkit-transform:rotate(179deg);
+               -moz-transform:rotate(179deg);
+               transform:rotate(179deg); }
 #puzzle13 .cloud { top: -39px; left: -78px; width: 225px;
-               -webkit-transform:rotate(245deg); }
+               -webkit-transform:rotate(245deg);
+               -moz-transform:rotate(245deg);
+               transform:rotate(245deg); }
 #puzzle14 .cloud { top: -43px; left: -98px; width: 225px;
-               -webkit-transform:rotate(319deg); }
+               -webkit-transform:rotate(319deg);
+               -moz-transform:rotate(319deg);
+               transform:rotate(319deg); }
 #puzzle15 .cloud { top: -54px; left: -82px; width: 263px;
-               -webkit-transform:rotate(198deg); }
+               -webkit-transform:rotate(198deg);
+               -moz-transform:rotate(198deg);
+               transform:rotate(198deg); }
 
 #puzzle0 { z-index: 100; }
 #puzzle1 { z-index: 99; }
