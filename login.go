@@ -10,18 +10,19 @@ var TokenSize = 24
 var AdminToken string
 var sc *securecookie.SecureCookie
 
+/* re-key tokens/cookies across restarts so we don't have to persist anything */
 func init() {
   AdminToken = hex.EncodeToString(securecookie.GenerateRandomKey(TokenSize))
-
-  http.HandleFunc("/admin/auth", AdminLogin)
-  http.HandleFunc("/teams/auth", TeamLogin)
 
   k1 := securecookie.GenerateRandomKey(TokenSize)
   k2 := securecookie.GenerateRandomKey(TokenSize)
   sc = securecookie.New(k1, k2)
+
+  http.HandleFunc("/admin/auth", adminLogin)
+  http.HandleFunc("/teams/auth", teamLogin)
 }
 
-func AdminLogin(w http.ResponseWriter, r *http.Request) {
+func adminLogin(w http.ResponseWriter, r *http.Request) {
   _, given, err := auth.Basic(r)
   if err != nil || given != AdminPassword {
     auth.RequireAuth(w, r, AdminRealm)
@@ -30,7 +31,7 @@ func AdminLogin(w http.ResponseWriter, r *http.Request) {
   }
 }
 
-func TeamLogin(w http.ResponseWriter, r *http.Request) {
+func teamLogin(w http.ResponseWriter, r *http.Request) {
   var team Team
   user, given, err := auth.Basic(r)
   if err == nil {
@@ -89,6 +90,8 @@ func TeamAuthenticate(h TeamHandler) http.Handler {
 }
 
 func needAuth(w http.ResponseWriter, r *http.Request, callback string) {
+  /* Only redirect GET requests because things like POST might have data
+     associated with them which would be lost otherwise */
   if r.Method == "GET" {
     path := callback + "?back=" + url.QueryEscape(r.URL.String())
     http.Redirect(w, r, path, http.StatusFound)
