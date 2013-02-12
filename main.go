@@ -1,5 +1,6 @@
 package main
 
+import "github.com/alexcrichton/puzzlehunt/utils"
 import "github.com/gorilla/mux"
 import "github.com/gorilla/schema"
 import "labix.org/v2/mgo"
@@ -85,15 +86,6 @@ func Log(handler http.Handler) http.Handler {
   })
 }
 
-func CacheControl(handler http.Handler) http.Handler {
-  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-    expires := time.Now().Add(time.Second)
-    w.Header().Add("Cache-Control", "public, max-age=1")
-    w.Header().Add("Expires", expires.Format(time.RFC1123))
-    handler.ServeHTTP(w, r)
-  })
-}
-
 func main() {
   check(Puzzles.EnsureIndex(mgo.Index{ Key: []string{"slug"} }));
   check(Teams.EnsureIndex(mgo.Index{ Key: []string{"username", "name"} }));
@@ -134,7 +126,7 @@ func main() {
   r.Handle("/admin/progress/ws", Progress.Endpoint())
   r.Handle("/admin/respond/{id}", A(SubmissionRespond)).Methods("POST")
 
-  srv := CacheControl(GzipHandler(http.FileServer(http.Dir("./"))))
+  srv := utils.CacheControl(utils.GzipHandler(http.FileServer(http.Dir("./"))))
   http.Handle("/assets/", srv)
   http.Handle("/favicon.ico", srv)
   http.Handle("/", r)

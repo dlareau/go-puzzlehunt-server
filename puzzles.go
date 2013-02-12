@@ -1,5 +1,6 @@
 package main
 
+import "github.com/alexcrichton/puzzlehunt/utils"
 import "github.com/gorilla/mux"
 import "errors"
 import "labix.org/v2/mgo/bson"
@@ -110,7 +111,7 @@ func (p *Puzzle) inherit(r *http.Request) error {
   if p.Name == "" {
     return errors.New("Requires a name to be provided")
   }
-  p.Slug = Parameterize(p.Name);
+  p.Slug = utils.Parameterize(p.Name);
   return nil
 }
 
