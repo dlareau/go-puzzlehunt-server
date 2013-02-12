@@ -87,9 +87,8 @@ func Log(handler http.Handler) http.Handler {
 
 func CacheControl(handler http.Handler) http.Handler {
   return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-    expires := time.Now().Add(time.Second * 10)
-    w.Header().Add("Cache-Control", "public")
-    w.Header().Add("Cache-Control", "max-age=10")
+    expires := time.Now().Add(time.Second)
+    w.Header().Add("Cache-Control", "public, max-age=1")
     w.Header().Add("Expires", expires.Format(time.RFC1123))
     handler.ServeHTTP(w, r)
   })
