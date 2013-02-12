@@ -135,7 +135,7 @@ func main() {
   r.Handle("/admin/progress/ws", Progress.Endpoint())
   r.Handle("/admin/respond/{id}", A(SubmissionRespond)).Methods("POST")
 
-  srv := CacheControl(http.FileServer(http.Dir("./")))
+  srv := CacheControl(GzipHandler(http.FileServer(http.Dir("./"))))
   http.Handle("/assets/", srv)
   http.Handle("/favicon.ico", srv)
   http.Handle("/", r)
