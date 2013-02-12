@@ -20,7 +20,7 @@ $(function() {
   $(window).on('ajax:error', function(e) {
     e = $(e.target);
     if (e.is('form')) {
-      $.get('/admin/teams', function() {
+      $.get('/admin/auth', function() {
         e.submit();
       })
     }
