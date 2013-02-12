@@ -27,19 +27,7 @@ func AdminLogin(w http.ResponseWriter, r *http.Request) {
     auth.RequireAuth(w, r, AdminRealm)
     return
   }
-
-  url := r.URL.Query().Get("back")
-  cookie := &http.Cookie {
-    Name: "admintoken",
-    Value: AdminToken,
-    Path: "/admin",
-  }
-  http.SetCookie(w, cookie)
-  if url == "" {
-    w.WriteHeader(http.StatusOK)
-  } else {
-    http.Redirect(w, r, url, http.StatusFound)
-  }
+  setCookie(w, r, "admintoken", AdminToken, "/admin")
 }
 
 func TeamLogin(w http.ResponseWriter, r *http.Request) {
@@ -55,14 +43,17 @@ func TeamLogin(w http.ResponseWriter, r *http.Request) {
 
   encoded, err := sc.Encode("team", team.Id.Hex())
   check(err)
+  setCookie(w, r, "team", encoded, "/")
+}
 
-  url := r.URL.Query().Get("back")
+func setCookie(w http.ResponseWriter, r *http.Request, name, value, path string) {
   cookie := &http.Cookie {
-    Name: "team",
-    Value: encoded,
-    Path: "/",
+    Name: name,
+    Value: value,
+    Path: path,
   }
   http.SetCookie(w, cookie)
+  url := r.URL.Query().Get("back")
   if url == "" {
     w.WriteHeader(http.StatusOK)
   } else {
@@ -75,14 +66,8 @@ func AdminAuthenticate(h http.Handler) http.Handler {
     cookie, err := r.Cookie("admintoken")
     if err == nil && cookie.Value == AdminToken {
       h.ServeHTTP(w, r)
-      return
-    }
-
-    if r.Method == "GET" {
-      path := "/admin/auth?back=" + url.QueryEscape(r.URL.String())
-      http.Redirect(w, r, path, http.StatusFound)
     } else {
-      w.WriteHeader(http.StatusUnauthorized)
+      needAuth(w, r, "/admin/auth")
     }
   })
 }
@@ -100,12 +85,15 @@ func TeamAuthenticate(h TeamHandler) http.Handler {
         return
       }
     }
-
-    if r.Method == "GET" {
-      path := "/teams/auth?back=" + url.QueryEscape(r.URL.String())
-      http.Redirect(w, r, path, http.StatusFound)
-    } else {
-      w.WriteHeader(http.StatusUnauthorized)
-    }
+    needAuth(w, r, "/teams/auth")
   })
+}
+
+func needAuth(w http.ResponseWriter, r *http.Request, callback string) {
+  if r.Method == "GET" {
+    path := callback + "?back=" + url.QueryEscape(r.URL.String())
+    http.Redirect(w, r, path, http.StatusFound)
+  } else {
+    w.WriteHeader(http.StatusUnauthorized)
+  }
 }
