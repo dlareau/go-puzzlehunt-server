@@ -35,7 +35,11 @@ func AdminLogin(w http.ResponseWriter, r *http.Request) {
     Path: "/admin",
   }
   http.SetCookie(w, cookie)
-  http.Redirect(w, r, url, http.StatusFound)
+  if url == "" {
+    w.WriteHeader(http.StatusOK)
+  } else {
+    http.Redirect(w, r, url, http.StatusFound)
+  }
 }
 
 func TeamLogin(w http.ResponseWriter, r *http.Request) {
@@ -59,7 +63,11 @@ func TeamLogin(w http.ResponseWriter, r *http.Request) {
     Path: "/",
   }
   http.SetCookie(w, cookie)
-  http.Redirect(w, r, url, http.StatusFound)
+  if url == "" {
+    w.WriteHeader(http.StatusOK)
+  } else {
+    http.Redirect(w, r, url, http.StatusFound)
+  }
 }
 
 func AdminAuthenticate(h http.Handler) http.Handler {
