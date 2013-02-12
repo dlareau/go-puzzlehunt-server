@@ -2,7 +2,9 @@ package main
 
 import "container/list"
 import "net/http"
-import ws "code.google.com/p/go.net/websocket"
+// Use a random fork of go.net's websocket because go is currently barfing on
+// the x509 certificate offered up from code.google.com, also less hg
+import ws "github.com/kellegous/websocket"
 
 type TagGen func(*http.Request) string
 
