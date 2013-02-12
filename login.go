@@ -25,9 +25,9 @@ func AdminLogin(w http.ResponseWriter, r *http.Request) {
   _, given, err := auth.Basic(r)
   if err != nil || given != AdminPassword {
     auth.RequireAuth(w, r, AdminRealm)
-    return
+  } else {
+    setCookie(w, r, "admintoken", AdminToken, "/admin")
   }
-  setCookie(w, r, "admintoken", AdminToken, "/admin")
 }
 
 func TeamLogin(w http.ResponseWriter, r *http.Request) {
@@ -38,12 +38,11 @@ func TeamLogin(w http.ResponseWriter, r *http.Request) {
   }
   if err != nil || team.Password != given {
     auth.RequireAuth(w, r, TeamRealm)
-    return
+  } else {
+    encoded, err := sc.Encode("team", team.Id.Hex())
+    check(err)
+    setCookie(w, r, "team", encoded, "/")
   }
-
-  encoded, err := sc.Encode("team", team.Id.Hex())
-  check(err)
-  setCookie(w, r, "team", encoded, "/")
 }
 
 func setCookie(w http.ResponseWriter, r *http.Request, name, value, path string) {
