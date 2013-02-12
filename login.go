@@ -70,8 +70,12 @@ func AdminAuthenticate(h http.Handler) http.Handler {
       return
     }
 
-    path := "/admin/auth?back=" + url.QueryEscape(r.URL.String())
-    http.Redirect(w, r, path, http.StatusFound)
+    if r.Method == "GET" {
+      path := "/admin/auth?back=" + url.QueryEscape(r.URL.String())
+      http.Redirect(w, r, path, http.StatusFound)
+    } else {
+      w.WriteHeader(http.StatusUnauthorized)
+    }
   })
 }
 
@@ -89,7 +93,11 @@ func TeamAuthenticate(h TeamHandler) http.Handler {
       }
     }
 
-    path := "/teams/auth?back=" + url.QueryEscape(r.URL.String())
-    http.Redirect(w, r, path, http.StatusFound)
+    if r.Method == "GET" {
+      path := "/teams/auth?back=" + url.QueryEscape(r.URL.String())
+      http.Redirect(w, r, path, http.StatusFound)
+    } else {
+      w.WriteHeader(http.StatusUnauthorized)
+    }
   })
 }
