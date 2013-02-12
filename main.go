@@ -9,7 +9,7 @@ import "net/http"
 import _ "net/http/pprof"
 import "os"
 import "os/signal"
-import "puzzlehunt/auth"
+import "github.com/alexcrichton/puzzlehunt/auth"
 import "strings"
 import "time"
 
