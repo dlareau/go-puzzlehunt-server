@@ -257,9 +257,8 @@ func (s *Solution) Update() error {
       /* if it's already unlocked, no need to unlock again */
       n, err := Solutions.Find(bson.M{"puzzleid":puzzle.Id, "teamid":s.TeamId}).
                           Count()
-      if err != nil || n == 1 {
-        return err
-      }
+      if err != nil { return err }
+      if n == 1 { continue }
 
       /* If we're unlocking the meta, we require more solutions than 1 */
       if len(to_unlock) == 1 && to_unlock[0] == MetaIndex {
