@@ -1,3 +1,7 @@
+//= require assets/jquery
+//= require assets/ujs
+//= require assets/ws
+
 $(function() {
   /* Checkboxes in forms are submitted through a hidden element */
   var boxes = $('input[type=checkbox]');

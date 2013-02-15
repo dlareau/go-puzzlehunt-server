@@ -3,11 +3,17 @@ package main
 import "html/template"
 import "net/url"
 import "path/filepath"
+import "strings"
+import _ "github.com/alexcrichton/go-paste/jsmin"
+import _ "github.com/alexcrichton/go-paste/sass"
 
 var funcs = template.FuncMap{
   "SolutionFor": SolutionFor,
   "PuzzleSolved": PuzzleSolved,
   "FormGet": FormGet,
+  "AssetPath": assetPath,
+  "Javascript": javascriptTag,
+  "Stylesheet": stylesheetTag,
 }
 
 func FormGet(form url.Values, key string) string {
@@ -31,4 +37,26 @@ func Template(layout string, names... string) *template.Template {
   }
 
   return template.Must(t.ParseFiles(paths...))
+}
+
+func assetPath(p string) string {
+  path, err := PasteServer.AssetPath(p, true)
+  check(err)
+  return path
+}
+
+func javascriptTag(p string) template.HTML {
+  if !strings.HasSuffix(p, ".js") {
+    p += ".js"
+  }
+  return template.HTML("<script type='text/javascript' src='" + assetPath(p) +
+                       "'></script>")
+}
+
+func stylesheetTag(p string) template.HTML {
+  if !strings.HasSuffix(p, ".css") {
+    p += ".css"
+  }
+  return template.HTML(`<link href="` + assetPath(p) + `" media="screen" ` +
+                       `rel="stylesheet" type="text/css" />`)
 }
