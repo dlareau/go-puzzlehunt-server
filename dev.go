@@ -6,5 +6,8 @@ import "github.com/alexcrichton/go-paste"
 import _ "github.com/alexcrichton/go-paste/jsmin"
 import _ "github.com/alexcrichton/go-paste/sass"
 
-const AssetDigest = false
-var PasteServer = paste.FileServer("./assets", "1.0")
+var PasteServer = paste.FileServer(paste.Config{
+  Root: "./assets",
+  TempDir: "./tmp",
+  Version: "1.0",
+})

@@ -4,7 +4,6 @@ package main
 
 import "github.com/alexcrichton/go-paste"
 
-const AssetDigest = true
 var PasteServer paste.Server
 
 func init() {
