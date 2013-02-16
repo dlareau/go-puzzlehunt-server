@@ -11,7 +11,9 @@
 {{ define "content" }}
 <div class='puzzle'>
   <div class='info'>
-    <h1><a href='{{ .Puzzle.Url }}'>{{ .Puzzle.Name }}</a></h1>
+    <h1><a href='{{ .Puzzle.Url }}'>
+      P{{ .Puzzle.UnlockIdx}} - {{ .Puzzle.Name }}
+    </a></h1>
     <a href='/map'>Go back to all puzzles</a>
   </div>
 
