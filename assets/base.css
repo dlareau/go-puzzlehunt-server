@@ -131,19 +131,19 @@ body {
                -moz-transform:rotate(198deg);
                transform:rotate(198deg); }
 
-#puzzle0 { z-index: 100; }
+#puzzle0 { z-index: 99; }
 #puzzle1 { z-index: 99; }
-#puzzle2 { z-index: 98; }
-#puzzle3 { z-index: 97; }
-#puzzle4 { z-index: 96; }
+#puzzle2 { z-index: 99; }
+#puzzle3 { z-index: 99; }
+#puzzle4 { z-index: 99; }
 #puzzle5 { z-index: 95; }
-#puzzle6 { z-index: 94; }
-#puzzle7 { z-index: 93; }
-#puzzle8 { z-index: 92; }
-#puzzle9 { z-index: 91; }
+#puzzle6 { z-index: 95; }
+#puzzle7 { z-index: 95; }
+#puzzle8 { z-index: 95; }
+#puzzle9 { z-index: 95; }
 #puzzle10 { z-index: 90; }
-#puzzle11 { z-index: 89; }
-#puzzle12 { z-index: 88; }
-#puzzle13 { z-index: 87; }
-#puzzle14 { z-index: 86; }
+#puzzle11 { z-index: 90; }
+#puzzle12 { z-index: 90; }
+#puzzle13 { z-index: 90; }
+#puzzle14 { z-index: 90; }
 #puzzle15 { z-index: 85; }
