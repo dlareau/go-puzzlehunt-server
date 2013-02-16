@@ -90,6 +90,7 @@ func main() {
   /* If this is ot just precompile some assets, do that up front and return
      quickly */
   if len(os.Args) > 1 && os.Args[1] == "precompile" {
+    PasteServer.Config().Compressed = true
     err := PasteServer.Compile("precompiled")
     if err != nil {
       panic(err)

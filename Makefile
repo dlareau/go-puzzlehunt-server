@@ -9,6 +9,11 @@ puzzlehunt:
 run: puzzlehunt
 	./puzzlehunt
 
+prod: puzzlehunt
+	./puzzlehunt precompile
+	go build -tags prod -v
+	./puzzlehunt
+
 deploy: puzzlehunt
 	./puzzlehunt precompile
 	CGO_ENABLED=0 GOOS=linux go build -tags prod -v
