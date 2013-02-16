@@ -40,7 +40,7 @@ func Template(layout string, names... string) *template.Template {
 }
 
 func assetPath(p string) string {
-  path, err := PasteServer.AssetPath(p, true)
+  path, err := PasteServer.AssetPath(p, AssetDigest)
   check(err)
   return "/assets" + path
 }
