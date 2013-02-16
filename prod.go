@@ -8,7 +8,7 @@ const AssetDigest = true
 var PasteServer paste.Server
 
 func init() {
-  srv, err := paste.CompiledFileServer("./assets")
+  srv, err := paste.CompiledFileServer("./precompiled")
   if err != nil {
     panic(err)
   }

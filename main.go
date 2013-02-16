@@ -87,6 +87,16 @@ func Log(handler http.Handler) http.Handler {
 }
 
 func main() {
+  /* If this is ot just precompile some assets, do that up front and return
+     quickly */
+  if len(os.Args) > 1 && os.Args[1] == "precompile" {
+    err := PasteServer.Compile("precompiled")
+    if err != nil {
+      panic(err)
+    }
+    return
+  }
+
   check(Puzzles.EnsureIndex(mgo.Index{ Key: []string{"slug"} }));
   check(Teams.EnsureIndex(mgo.Index{ Key: []string{"username", "name"} }));
   check(Solutions.EnsureIndex(mgo.Index{ Key: []string{"teamid", "receivedat"} }));

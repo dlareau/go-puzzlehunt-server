@@ -1,13 +1,16 @@
 DEST = kgbpuzzlehunt.club.cc.cmu.edu:pirates
 
-all: build
+all: puzzlehunt
 
-build:
+puzzlehunt:
 	go build -v
 
-run: build
+run: puzzlehunt
 	./puzzlehunt
 
-deploy:
-	CGO_ENABLED=0 GOOS=linux go build -v
-	rsync -vauh --delete puzzlehunt ./assets ./templates $(DEST)
+deploy: puzzlehunt
+	go build -v
+	./puzzlehunt precompile
+	CGO_ENABLED=0 GOOS=linux go build -tags prod -v
+	rsync -vauh --delete ./precompiled ./puzzlehunt ./templates $(DEST)
+	rm -rf precompiled
