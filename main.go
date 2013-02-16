@@ -1,6 +1,5 @@
 package main
 
-import "github.com/alexcrichton/go-paste"
 import "github.com/alexcrichton/puzzlehunt/utils"
 import "github.com/gorilla/mux"
 import "github.com/gorilla/schema"
@@ -16,7 +15,6 @@ import "time"
 
 var db = opendb()
 var decoder = schema.NewDecoder()
-var PasteServer = paste.FileServer("./")
 
 const dbg = false
 
@@ -128,7 +126,7 @@ func main() {
   r.Handle("/admin/progress/ws", Progress.Endpoint())
   r.Handle("/admin/respond/{id}", A(SubmissionRespond)).Methods("POST")
 
-  http.Handle("/assets/", PasteServer)
+  http.Handle("/assets/", http.StripPrefix("/assets", PasteServer))
   http.Handle("/favicon.ico", PasteServer)
   http.Handle("/", r)
 

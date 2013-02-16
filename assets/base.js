@@ -1,6 +1,6 @@
-//= require assets/jquery
-//= require assets/ujs
-//= require assets/ws
+//= require jquery
+//= require ujs
+//= require ws
 
 $(function() {
   $(window).on('ajax:error', function(e) {

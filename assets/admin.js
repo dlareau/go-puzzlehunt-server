@@ -1,6 +1,6 @@
-//= require assets/jquery
-//= require assets/ujs
-//= require assets/ws
+//= require jquery
+//= require ujs
+//= require ws
 
 $(function() {
   /* Checkboxes in forms are submitted through a hidden element */

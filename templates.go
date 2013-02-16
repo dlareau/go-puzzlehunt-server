@@ -42,7 +42,7 @@ func Template(layout string, names... string) *template.Template {
 func assetPath(p string) string {
   path, err := PasteServer.AssetPath(p, true)
   check(err)
-  return path
+  return "/assets" + path
 }
 
 func javascriptTag(p string) template.HTML {
