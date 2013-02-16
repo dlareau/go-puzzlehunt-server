@@ -4,8 +4,6 @@ import "html/template"
 import "net/url"
 import "path/filepath"
 import "strings"
-import _ "github.com/alexcrichton/go-paste/jsmin"
-import _ "github.com/alexcrichton/go-paste/sass"
 
 var funcs = template.FuncMap{
   "SolutionFor": SolutionFor,
