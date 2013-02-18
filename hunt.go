@@ -7,9 +7,6 @@ import "strings"
 import "sync"
 import "time"
 
-var mpuzzle = Template("_base.html", "puzzle.html")
-var mpuzzles = Template("_base.html", "puzzles.html")
-
 var CorrectNotifiers sync.WaitGroup
 
 func MapHandler(w http.ResponseWriter, r *http.Request, t *Team) {
@@ -33,7 +30,8 @@ func MapHandler(w http.ResponseWriter, r *http.Request, t *Team) {
     Team      *Team
     Puzzles   []Puzzle
   }{solns, t, AllPuzzles()}
-  check(mpuzzles.Execute(w, data))
+
+  check(Template("_base.html", "puzzles.html").Execute(w, data))
 }
 
 func MapPuzzleHandler(w http.ResponseWriter, r *http.Request, t *Team) {
@@ -74,7 +72,7 @@ func MapPuzzleHandler(w http.ResponseWriter, r *http.Request, t *Team) {
     Tag string
   }{&puzzle, submissions, t.Id.Hex() + puzzle.Id.Hex()}
 
-  check(mpuzzle.Execute(w, &data))
+  check(Template("_base.html", "puzzle.html").Execute(w, &data))
 }
 
 func updateCorrect(s *Submission, soln *Solution) {

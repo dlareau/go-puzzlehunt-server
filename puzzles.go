@@ -20,9 +20,6 @@ type Puzzle struct {
 }
 
 var Puzzles  = db.C("puzzles")
-var pindex  = AdminTemplate("puzzles/index.html")
-var pcreate = AdminTemplate("puzzles/new.html", "puzzles/form.html")
-var pedit   = AdminTemplate("puzzles/edit.html", "puzzles/form.html")
 
 func AllPuzzles() []Puzzle {
   puzzles := make([]Puzzle, 0)
@@ -35,13 +32,14 @@ func AllPuzzles() []Puzzle {
 }
 
 func PuzzlesIndex(w http.ResponseWriter, r *http.Request) {
-  check(pindex.Execute(w, AllPuzzles()))
+  check(AdminTemplate("puzzles/index.html").Execute(w, AllPuzzles()))
 }
 
 func PuzzlesCreate(w http.ResponseWriter, r *http.Request) {
+  temp := AdminTemplate("puzzles/new.html", "puzzles/form.html")
   var puzzle Puzzle
   if r.Method == "GET" {
-    check(pcreate.Execute(w, &puzzle))
+    check(temp.Execute(w, &puzzle))
     return
   }
   puzzle.Err = puzzle.inherit(r)
@@ -50,17 +48,18 @@ func PuzzlesCreate(w http.ResponseWriter, r *http.Request) {
   }
 
   if puzzle.Err != nil {
-    check(pcreate.Execute(w, &puzzle))
+    check(temp.Execute(w, &puzzle))
   } else {
     http.Redirect(w, r, "/admin/puzzles", http.StatusFound)
   }
 }
 
 func PuzzlesEdit(w http.ResponseWriter, r *http.Request) {
+  temp := AdminTemplate("puzzles/edit.html", "puzzles/form.html")
   var puzzle Puzzle
   puzzle.find(mux.Vars(r)["id"])
   if r.Method == "GET" {
-    check(pedit.Execute(w, &puzzle))
+    check(temp.Execute(w, &puzzle))
     return
   }
   puzzle.Err = puzzle.inherit(r)
@@ -69,7 +68,7 @@ func PuzzlesEdit(w http.ResponseWriter, r *http.Request) {
   }
 
   if puzzle.Err != nil {
-    check(pedit.Execute(w, &puzzle))
+    check(temp.Execute(w, &puzzle))
   } else {
     http.Redirect(w, r, "/admin/puzzles", http.StatusFound)
   }

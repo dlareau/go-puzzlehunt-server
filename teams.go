@@ -17,9 +17,6 @@ type Team struct {
 }
 
 var Teams   = db.C("teams")
-var tindex  = AdminTemplate("teams/index.html")
-var tcreate = AdminTemplate("teams/new.html", "teams/form.html")
-var tedit   = AdminTemplate("teams/edit.html", "teams/form.html")
 
 func AllTeams() []Team {
   teams := make([]Team, 0)
@@ -32,10 +29,11 @@ func AllTeams() []Team {
 }
 
 func TeamsIndex(w http.ResponseWriter, r *http.Request) {
-  check(tindex.Execute(w, AllTeams()))
+  check(AdminTemplate("teams/index.html").Execute(w, AllTeams()))
 }
 
 func TeamsCreate(w http.ResponseWriter, r *http.Request) {
+  tcreate := AdminTemplate("teams/new.html", "teams/form.html")
   var team Team
   if r.Method == "GET" {
     check(tcreate.Execute(w, &team))
@@ -54,6 +52,7 @@ func TeamsCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 func TeamsEdit(w http.ResponseWriter, r *http.Request) {
+  tedit := AdminTemplate("teams/edit.html", "teams/form.html")
   var team Team
   team.find(mux.Vars(r)["id"])
   if r.Method == "GET" {

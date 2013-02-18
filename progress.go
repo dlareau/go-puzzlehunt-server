@@ -57,8 +57,6 @@ type ProgressMessage struct {
 var Solutions = db.C("solutions")
 var Submissions = db.C("submissions")
 
-var solutionst = AdminTemplate("progress/solutions.html")
-var queuet = AdminTemplate("progress/queue.html")
 var Queue = WsServer()
 var Progress = WsServer()
 var PuzzleStatus = TagWsServer(func(r *http.Request) string {
@@ -86,7 +84,7 @@ func AllSubmissions() []Submission {
 
 /* Main queue, should be fast because everyone is slamming this page */
 func SubmissionsIndex(w http.ResponseWriter, r *http.Request) {
-  check(queuet.Execute(w, AllSubmissions()))
+  check(AdminTemplate("progress/queue.html").Execute(w, AllSubmissions()))
 }
 
 /* Main solution progress scoreboard */
@@ -96,7 +94,7 @@ func ProgressIndex(w http.ResponseWriter, r *http.Request) {
     Solutions SolutionList
     Puzzles []Puzzle
   } {AllTeams(), AllSolutions(), AllPuzzles()}
-  check(solutionst.Execute(w, data))
+  check(AdminTemplate("progress/solutions.html").Execute(w, data))
 }
 
 func PuzzleSolved(l SolutionList, t *Team, p *Puzzle) bool {
@@ -165,13 +163,14 @@ func (s *Submission) find(id string) {
 
 func (s *Submission) qmessage(typ string) QueueMessage {
   buf := bytes.NewBuffer(make([]byte, 0))
+  queuet := AdminTemplate("progress/queue.html")
   check(queuet.ExecuteTemplate(buf, "queue_submission", s))
   return QueueMessage{ Id: s.Id.Hex(), Html: buf.String(), Type: typ }
 }
 
 func (s *Submission) pmessage(typ string) QueueMessage {
   buf := bytes.NewBuffer(make([]byte, 0))
-  check(mpuzzle.ExecuteTemplate(buf, "submission", s))
+  check(Template("puzzle.html").ExecuteTemplate(buf, "submission", s))
   return QueueMessage{ Id: s.Id.Hex(), Html: buf.String(), Type: typ }
 }
 
@@ -219,6 +218,7 @@ func (s *Submission) Tag() string {
 
 func (s *Solution) message() ProgressMessage {
   buf := bytes.NewBuffer(make([]byte, 0))
+  solutionst := AdminTemplate("progress/solutions.html")
   check(solutionst.ExecuteTemplate(buf, "solution", s))
   return ProgressMessage{ Id: s.Identifier(),
                           Html: buf.String() }
