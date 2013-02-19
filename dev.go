@@ -5,6 +5,7 @@ package main
 import "github.com/alexcrichton/go-paste"
 import _ "github.com/alexcrichton/go-paste/jsmin"
 import _ "github.com/alexcrichton/go-paste/sass"
+import _ "github.com/alexcrichton/go-paste/image"
 
 var PasteServer = paste.FileServer(paste.Config{
   Root: "./assets",
