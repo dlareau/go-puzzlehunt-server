@@ -9,7 +9,6 @@ import "net/http"
 import _ "net/http/pprof"
 import "os"
 import "os/signal"
-import "strings"
 import "time"
 
 var db = opendb()
@@ -78,10 +77,7 @@ func Log(handler http.Handler) http.Handler {
     start := time.Now()
     url := r.URL.String() /* may change depending on routing, so save before */
     handler.ServeHTTP(w, r)
-    if !strings.HasPrefix(url, "/assets") && url != "/favicon.ico" &&
-       !strings.HasSuffix(url, "/ws") {
-      log.Printf("%s %s %s %s", r.RemoteAddr, r.Method, url, time.Since(start))
-    }
+    log.Printf("%s %s %s %s", r.RemoteAddr, r.Method, url, time.Since(start))
   })
 }
 
