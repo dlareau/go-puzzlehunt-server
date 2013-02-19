@@ -1,6 +1,6 @@
 //= require jquery
 //= require ujs
-//= require ws
+//= require event
 
 $(function() {
   /* Checkboxes in forms are submitted through a hidden element */

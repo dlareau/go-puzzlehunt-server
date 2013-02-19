@@ -1,6 +1,6 @@
 //= require jquery
 //= require ujs
-//= require ws
+//= require event
 
 $(function() {
   $(window).on('ajax:error', function(e) {

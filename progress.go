@@ -57,9 +57,9 @@ type ProgressMessage struct {
 var Solutions = db.C("solutions")
 var Submissions = db.C("submissions")
 
-var Queue = WsServer()
-var Progress = WsServer()
-var PuzzleStatus = TagWsServer(func(r *http.Request) string {
+var Queue = EventServer()
+var Progress = EventServer()
+var PuzzleStatus = TagEventServer(func(r *http.Request) string {
   return mux.Vars(r)["tag"]
 })
 

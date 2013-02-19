@@ -69,10 +69,7 @@
       }, 1000);
 
       /* Open a socket and listen for new submissions */
-      var ws = new ReconnectingWebSocket('ws://' + window.location.host + '/admin/queue/ws');
-      ws.onerror = function(e) { console.log('error', e) };
-      ws.onclose = function(e) { console.log('close', e); };
-      ws.onmessage = function(m) {
+      listen('/admin/event/queue', function(m) {
         var data = JSON.parse(m.data);
         var row = $($.parseHTML(data.Html));
         if (data.Type == 'new') {
@@ -84,7 +81,7 @@
         } else {
           $('tr[data-id=' + data.Id + ']').replaceWith(row);
         }
-      };
+      });
 
       /* open a text box for submitting an email */
       $(document).delegate('.needs-response', 'click', function() {

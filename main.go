@@ -1,6 +1,5 @@
 package main
 
-import "github.com/alexcrichton/puzzlehunt/utils"
 import "github.com/gorilla/mux"
 import "github.com/gorilla/schema"
 import "labix.org/v2/mgo"
@@ -114,7 +113,6 @@ func main() {
   r.Handle("/", TA(MapHandler)).Methods("GET")
   r.Handle("/map", TA(MapHandler)).Methods("GET")
   r.Handle("/map/puzzles/{id}", TA(MapPuzzleHandler)).Methods("GET", "POST")
-  r.Handle("/map/{tag}/ws", PuzzleStatus.Endpoint())
 
   r.Handle("/admin/teams", A(TeamsIndex)).Methods("GET")
   r.Handle("/admin/teams/new", A(TeamsCreate)).Methods("GET", "POST")
@@ -132,10 +130,12 @@ func main() {
   r.Handle("/admin/release", A(ProgressRelease)).Methods("POST")
   r.Handle("/admin", A(SubmissionsIndex)).Methods("GET")
   r.Handle("/admin/queue", A(SubmissionsIndex)).Methods("GET")
-  r.Handle("/admin/queue/ws", Queue.Endpoint())
   r.Handle("/admin/progress", A(ProgressIndex)).Methods("GET")
-  r.Handle("/admin/progress/ws", Progress.Endpoint())
   r.Handle("/admin/respond/{id}", A(SubmissionRespond)).Methods("POST")
+
+  r.Handle("/event/map/{tag}", PuzzleStatus.Endpoint())
+  r.Handle("/admin/event/queue", AdminAuthenticate(Queue.Endpoint()))
+  r.Handle("/admin/event/progress", AdminAuthenticate(Progress.Endpoint()))
 
   http.Handle("/assets/", http.StripPrefix("/assets", PasteServer))
   http.Handle("/favicon.ico", PasteServer)
@@ -158,7 +158,7 @@ func main() {
     l.Close()
   }()
 
-  http.Serve(l, Log(utils.GzipHandler(http.DefaultServeMux)))
+  http.Serve(l, Log(http.DefaultServeMux))
 
   println("Waiting for all problems to be marked as correct")
   CorrectNotifiers.Wait()
