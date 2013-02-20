@@ -34,8 +34,6 @@ func check(err error) {
   }
 }
 
-var errorTemplate = Template("_base.html", "error.html")
-
 func H404(h http.Handler) http.Handler {
   return H(func(w http.ResponseWriter, r *http.Request) {
     defer func() {
@@ -61,7 +59,7 @@ func H(h http.HandlerFunc) http.Handler {
       if e != nil {
         w.WriteHeader(http.StatusInternalServerError)
         log.Printf("internal error %s", e)
-        errorTemplate.Execute(w, e)
+        Template("_base.html", "error.html").Execute(w, e)
       }
     }()
     h(w, r)
