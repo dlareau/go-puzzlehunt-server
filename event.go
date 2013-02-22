@@ -68,14 +68,13 @@ func (b *BroadcastServer) Serve() {
 }
 
 func (b *BroadcastServer) broadcastTag(tag string, msg interface{}) {
+  l, ok := b.clients[tag]
+  if !ok { return }
+
   data, err := json.Marshal(msg)
   check(err)
 
-  l, ok := b.clients[tag]
-  if !ok { return }
-  var nxt *list.Element
-  for cur := l.Front(); cur != nil; cur = nxt {
-    nxt = cur.Next()
+  for cur := l.Front(); cur != nil; cur = cur.Next() {
     client := cur.Value.(*client)
     client.msgs <- data
   }
@@ -97,7 +96,9 @@ func (b *BroadcastServer) Endpoint() http.Handler {
     buf.Write([]byte("X-Accel-Buffering: no\r\n\r\n"))
     check(buf.Flush())
 
-    msgs := make(chan []byte)
+    /* Don't clog the system too much if one particular write is slow by holding
+       a buffer of a few messages */
+    msgs := make(chan []byte, 10)
     c := client{ msgs: msgs, tag: tag }
     b.sockets <- &c
     for msg := range msgs {
