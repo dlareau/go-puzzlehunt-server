@@ -193,13 +193,6 @@ func (s *Submission) Update() error {
   return err
 }
 
-func (s *Submission) DisplayAnswer() string {
-  if s.Status == InvalidAnswer {
-    return "<invalid>"
-  }
-  return s.Answer
-}
-
 func (s *Submission) AnswerStatus() string {
   switch (s.Status) {
     case CorrectUnreplied, IncorrectUnreplied: return "validating...";

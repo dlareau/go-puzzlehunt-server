@@ -4,7 +4,7 @@
   <tr class="{{ .Status }} submission" data-id='{{ .Id.Hex }}'>
     <td>{{ .TeamName }}</td>
     <td>{{ .PuzzleName }}</td>
-    <td>{{ .DisplayAnswer }}</td>
+    <td>{{ .Answer }}</td>
     <td>{{ .ReceivedAt.Local }}</td>
     <td>
       {{ if .NeedsResponse }}
