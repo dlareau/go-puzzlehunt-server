@@ -108,6 +108,7 @@ func (b *BroadcastServer) Endpoint() http.Handler {
       if err == nil { err = buf.Flush() }
       if err != nil {
         b.dead <- &c
+        break
       }
     }
   })
