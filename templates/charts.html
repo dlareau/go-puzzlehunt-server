@@ -6,6 +6,7 @@
   var teams = {{ .Teams }};
   var puzzles = {{ .Puzzles }};
   var solutions = {{ .Solutions }};
+  var submissions = {{ .Submissions }};
 
   var tid2team = {};
   for (var i = 0; i < teams.length; i++) {
@@ -20,12 +21,55 @@
     puzzles[i].solves = 0;
   }
 
+  var id2solution = {};
+  for (var i = 0; i < solutions.length; i++) {
+    id2solution[solutions[i].Id] = solutions[i];
+  }
+
   google.load('visualization', '1.0', {'packages':['corechart']});
   google.setOnLoadCallback(drawCharts);
 
   function drawCharts() {
     drawSolutionRates();
     drawPuzzleSolves();
+    drawSubmissions();
+  }
+
+  function drawSubmissions() {
+    var solves = [];
+    for (var i = 0; i < puzzles.length; i++) {
+      solves.push([0, 0]);
+    }
+    for (var i = 0; i < submissions.length; i++) {
+      var soln = id2solution[submissions[i].SolutionId];
+      var puzzle = pid2puzzle[soln.PuzzleId];
+      if (submissions[i].Status == 0) {
+        solves[puzzle.idx][0] += 1;
+      } else {
+        solves[puzzle.idx][1] += 1;
+      }
+    }
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Puzzle');
+    data.addColumn('number', 'Correct Submissions');
+    data.addColumn('number', 'Incorrect Submissions');
+    data.addRows(puzzles.length);
+    for (var i = 0; i < puzzles.length; i++) {
+      data.setCell(i, 0, puzzles[i].Name);
+      data.setCell(i, 1, solves[i][0]);
+      data.setCell(i, 2, solves[i][1]);
+    }
+
+    // Set chart options
+    var options = {'title':'Puzzle Solves with Incorrect',
+      // 'width':1000,
+      'height':500,
+      isStacked: true
+    };
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.ColumnChart(document.getElementById('chart3'));
+    chart.draw(data, options);
   }
 
   function drawPuzzleSolves() {
@@ -135,5 +179,6 @@
 
 <div id='chart1' style='width:100%'></div>
 <div id='chart2' style='width:100%'></div>
+<div id='chart3' style='width:100%'></div>
 
 {{ end }}

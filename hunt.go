@@ -90,6 +90,7 @@ func ChartsPage(w http.ResponseWriter, r *http.Request) {
     Teams []Team
     Puzzles []Puzzle
     Solutions []Solution
-  }{AllTeams(), AllPuzzles(), AllSolutions()}
+    Submissions []Submission
+  }{AllTeams(), AllPuzzles(), AllSolutions(), AllSubmissions()}
   check(AdminTemplate("charts.html").Execute(w, data))
 }
