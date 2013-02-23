@@ -37,9 +37,11 @@
       </tr>
     </thead>
 
-    {{ range . }}
-      {{ template "queue_submission" . }}
-    {{ end }}
+    <tbody>
+      {{ range . }}
+        {{ template "queue_submission" . }}
+      {{ end }}
+    </tbody>
   </table>
 
   <script type='text/javascript'>
@@ -77,7 +79,7 @@
             flashing = !focused;
             $('audio')[0].play();
           }
-          $('#queue').prepend(row);
+          $('#queue tbody').prepend(row);
         } else {
           $('tr[data-id=' + data.Id + ']').replaceWith(row);
         }
