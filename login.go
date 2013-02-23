@@ -41,6 +41,7 @@ import "github.com/alexcrichton/puzzlehunt/auth"
 import "github.com/gorilla/securecookie"
 import "net/http"
 import "net/url"
+import "strings"
 
 var TokenSize = 24
 var AdminToken string
@@ -73,7 +74,7 @@ func teamLogin(w http.ResponseWriter, r *http.Request) {
   if err == nil {
     err = team.findName(user)
   }
-  if err != nil || team.Password != given {
+  if err != nil || !strings.EqualFold(team.Password, given) {
     auth.RequireAuth(w, r, TeamRealm)
   } else {
     encoded, err := sc.Encode("team", team.Id.Hex())

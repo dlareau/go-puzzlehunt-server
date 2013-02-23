@@ -16,7 +16,7 @@ type Team struct {
   Password     string
 }
 
-var Teams   = db.C("teams")
+var Teams = db.C("teams")
 
 func AllTeams() []Team {
   teams := make([]Team, 0)
@@ -85,7 +85,8 @@ func (t *Team) findId(id bson.ObjectId) {
 }
 
 func (t *Team) findName(name string) error {
-  return Teams.Find(bson.M{"username": name}).One(t)
+  regex := bson.RegEx{ Pattern: "^" + name + "$", Options: "i" }
+  return Teams.Find(bson.M{"username": regex}).One(t)
 }
 
 func (t *Team) inherit(r *http.Request) error {
