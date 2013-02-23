@@ -32,7 +32,6 @@
     for (var i = 0; i < solutions.length; i++) {
       if (solutions[i].SolvedAt != "0001-01-01T00:00:00Z") {
         pid2puzzle[solutions[i].PuzzleId].solves += 1;
-        console.log(pid2puzzle[solutions[i].PuzzleId]);
       }
     }
     var data = new google.visualization.DataTable();
@@ -46,7 +45,7 @@
 
     // Set chart options
     var options = {'title':'Puzzle Solves',
-      'width':1000,
+      // 'width':1000,
       'height':500
     };
 
@@ -59,12 +58,15 @@
     var solved = [];
     for (var i = 0; i < solutions.length; i++) {
       if (solutions[i].SolvedAt != "0001-01-01T00:00:00Z") {
-        solutions[i].SolvedAt = new Date(solutions[i].SolvedAt);
         solved.push(solutions[i]);
       }
     }
     solved.sort(function(a, b) {
-      return a.SolvedAt > b.SolvedAt;
+      if (a.SolvedAt < b.SolvedAt)
+        return -1;
+      if (a.SolvedAt > b.SolvedAt)
+        return 1;
+      return 0;
     });
     window.solved = solved;
     var cnts = {};
@@ -98,23 +100,30 @@
       data.addColumn('number', teams[i].Name);
     }
     for (var key in times) {
-      times[key].unshift(new Date(key));
+      times[key].unshift(key);
       table.push(times[key]);
     }
     table.sort(function(a, b) {
-      return a[0] > b[0];
+      if (a[0] < b[0])
+        return -1;
+      if (a[0] > b[0])
+        return 1;
+      return 0;
     });
     data.addRows(table.length);
     for (var i = 0; i < table.length; i++) {
       for (var j = 0; j < table[i].length; j++) {
-        data.setCell(i, j, table[i][j]);
+        if (j == 0)
+          data.setCell(i, j, new Date(table[i][j]));
+        else
+          data.setCell(i, j, table[i][j]);
       }
     }
 
     // Set chart options
     var options = {'title':'Solution Rate',
-      'width':1000,
-      'height':500
+      // 'width':1200,
+      'height':800
     };
 
     // Instantiate and draw our chart, passing in some options.
@@ -124,7 +133,7 @@
 
 </script>
 
-<div id='chart1'></div>
-<div id='chart2'></div>
+<div id='chart1' style='width:100%'></div>
+<div id='chart2' style='width:100%'></div>
 
 {{ end }}
