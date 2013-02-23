@@ -101,6 +101,20 @@ func (b *BroadcastServer) Endpoint() http.Handler {
     msgs := make(chan []byte, 10)
     c := client{ msgs: msgs, tag: tag }
     b.sockets <- &c
+
+    /* spawn off something to read and close the connection when they get
+       disconnected to prevent lots of things lying around */
+    go func() {
+      buf := []byte{0, 0, 0, 0}
+      for {
+        _, err := conn.Read(buf)
+        if err != nil {
+          close(msgs)
+          break
+        }
+      }
+    }()
+
     for msg := range msgs {
       _, err := buf.Write([]byte("data: "))
       if err == nil { _, err = buf.Write(msg) }
