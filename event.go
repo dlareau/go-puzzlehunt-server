@@ -89,7 +89,6 @@ func (b *BroadcastServer) Endpoint() http.Handler {
     hj := w.(http.Hijacker)
     conn, buf, err := hj.Hijack()
     check(err)
-    defer conn.Close()
 
     buf.Write([]byte("HTTP/1.1 200 OK\r\n"))
     buf.Write([]byte("Content-Type: text/event-stream\r\n"))
@@ -101,6 +100,7 @@ func (b *BroadcastServer) Endpoint() http.Handler {
     msgs := make(chan []byte, 10)
     c := client{ msgs: msgs, tag: tag }
     b.sockets <- &c
+    dead := make(chan int)
 
     /* spawn off something to read and close the connection when they get
        disconnected to prevent lots of things lying around */
@@ -109,20 +109,28 @@ func (b *BroadcastServer) Endpoint() http.Handler {
       for {
         _, err := conn.Read(buf)
         if err != nil {
-          close(msgs)
+          dead <- 1
           break
         }
       }
     }()
 
-    for msg := range msgs {
-      _, err := buf.Write([]byte("data: "))
-      if err == nil { _, err = buf.Write(msg) }
-      if err == nil { _, err = buf.Write([]byte("\n\n")) }
-      if err == nil { err = buf.Flush() }
-      if err != nil {
-        b.dead <- &c
-        break
+    defer func() {
+      b.dead <- &c
+      conn.Close()
+    }()
+
+    for {
+      select {
+        case <-dead:
+          return
+
+        case msg := <-msgs:
+          _, err := buf.Write([]byte("data: "))
+          if err == nil { _, err = buf.Write(msg) }
+          if err == nil { _, err = buf.Write([]byte("\n\n")) }
+          if err == nil { err = buf.Flush() }
+          if err != nil { return }
       }
     }
   })
