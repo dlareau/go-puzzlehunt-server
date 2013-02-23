@@ -1,0 +1,130 @@
+{{ define "title" }}awesome charts{{ end }}
+
+{{ define "content" }}
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script tye='text/javascript'>
+  var teams = {{ .Teams }};
+  var puzzles = {{ .Puzzles }};
+  var solutions = {{ .Solutions }};
+
+  var tid2team = {};
+  for (var i = 0; i < teams.length; i++) {
+    tid2team[teams[i].Id] = teams[i];
+    teams[i].idx = i;
+  }
+
+  var pid2puzzle = {};
+  for (var i = 0; i < puzzles.length; i++) {
+    pid2puzzle[puzzles[i].Id] = puzzles[i];
+    puzzles[i].idx = i;
+    puzzles[i].solves = 0;
+  }
+
+  google.load('visualization', '1.0', {'packages':['corechart']});
+  google.setOnLoadCallback(drawCharts);
+
+  function drawCharts() {
+    drawSolutionRates();
+    drawPuzzleSolves();
+  }
+
+  function drawPuzzleSolves() {
+    for (var i = 0; i < solutions.length; i++) {
+      if (solutions[i].SolvedAt != "0001-01-01T00:00:00Z") {
+        pid2puzzle[solutions[i].PuzzleId].solves += 1;
+        console.log(pid2puzzle[solutions[i].PuzzleId]);
+      }
+    }
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Puzzle');
+    data.addColumn('number', 'Solves');
+    data.addRows(puzzles.length);
+    for (var i = 0; i < puzzles.length; i++) {
+      data.setCell(i, 0, puzzles[i].Name);
+      data.setCell(i, 1, puzzles[i].solves);
+    }
+
+    // Set chart options
+    var options = {'title':'Puzzle Solves',
+      'width':1000,
+      'height':500
+    };
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.ColumnChart(document.getElementById('chart2'));
+    chart.draw(data, options);
+  }
+
+  function drawSolutionRates() {
+    var solved = [];
+    for (var i = 0; i < solutions.length; i++) {
+      if (solutions[i].SolvedAt != "0001-01-01T00:00:00Z") {
+        solutions[i].SolvedAt = new Date(solutions[i].SolvedAt);
+        solved.push(solutions[i]);
+      }
+    }
+    solved.sort(function(a, b) {
+      return a.SolvedAt > b.SolvedAt;
+    });
+    window.solved = solved;
+    var cnts = {};
+    var times = {};
+    var table = [['Time', 'Number of solves']];
+    var init = function(d) {
+      var ret = [];
+      for (var i = 0; i < teams.length; i++) {
+        ret.push(cnts[teams[i].Id]);
+      }
+      return ret;
+    };
+    for (var i = 0; i < teams.length; i++) {
+      cnts[teams[i].Id] = 0;
+    }
+    for (var i = 0; i < solved.length; i++) {
+      var foo = times[solved[i].SolvedAt];
+      if (foo == undefined) {
+        foo = init(solved[i].SolvedAt);
+        times[solved[i].SolvedAt] = foo;
+      }
+      var team = tid2team[solved[i].TeamId];
+      cnts[team.Id] = cnts[team.Id] + 1;
+      foo[team.idx] = cnts[team.Id];
+    }
+
+    var table = [];
+    var data = new google.visualization.DataTable();
+    data.addColumn('datetime', 'Time');
+    for (var i = 0; i < teams.length; i++) {
+      data.addColumn('number', teams[i].Name);
+    }
+    for (var key in times) {
+      times[key].unshift(new Date(key));
+      table.push(times[key]);
+    }
+    table.sort(function(a, b) {
+      return a[0] > b[0];
+    });
+    data.addRows(table.length);
+    for (var i = 0; i < table.length; i++) {
+      for (var j = 0; j < table[i].length; j++) {
+        data.setCell(i, j, table[i][j]);
+      }
+    }
+
+    // Set chart options
+    var options = {'title':'Solution Rate',
+      'width':1000,
+      'height':500
+    };
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.LineChart(document.getElementById('chart1'));
+    chart.draw(data, options);
+  }
+
+</script>
+
+<div id='chart1'></div>
+<div id='chart2'></div>
+
+{{ end }}

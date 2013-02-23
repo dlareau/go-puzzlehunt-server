@@ -84,3 +84,12 @@ func updateCorrect(s *Submission, soln *Solution) {
   check(soln.Update())
   CorrectNotifiers.Add(-1)
 }
+
+func ChartsPage(w http.ResponseWriter, r *http.Request) {
+  data := struct {
+    Teams []Team
+    Puzzles []Puzzle
+    Solutions []Solution
+  }{AllTeams(), AllPuzzles(), AllSolutions()}
+  check(AdminTemplate("charts.html").Execute(w, data))
+}

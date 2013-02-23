@@ -123,6 +123,7 @@ func main() {
   r.Handle("/admin/release", A(ProgressRelease)).Methods("POST")
   r.Handle("/admin", A(SubmissionsIndex)).Methods("GET")
   r.Handle("/admin/queue", A(SubmissionsIndex)).Methods("GET")
+  r.Handle("/admin/charts", A(ChartsPage)).Methods("GET")
   r.Handle("/admin/progress", A(ProgressIndex)).Methods("GET")
   r.Handle("/admin/respond/{id}", A(SubmissionRespond)).Methods("POST")
 
