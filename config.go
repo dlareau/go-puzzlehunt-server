@@ -31,6 +31,6 @@ var UnlockTree = map[int][]int {
   15: []int{16},
 }
 
-var MetaRequired = 3
+var MetaRequired = 2
 var MetaMinimum = 11
 var MetaIndex = 16
