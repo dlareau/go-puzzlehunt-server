@@ -8,8 +8,8 @@
    install mongodb`)
 5. [Install libsass](https://github.com/hcatlin/libsass) for compiling sass
    assets. This is required because some stylesheets are sass. Make sure you
-   install from git because the 1.0 version is too old (`brew install --HEAD
-   libsass`)
+   install from git because the 1.0 version is too old. (This isn't in homebrew
+   by default)
 6. Set up some sort of
    [$GOPATH](http://golang.org/cmd/go/#hdr-GOPATH_environment_variable)
 7. Execute `go get github.com/alexcrichton/puzzlehunt`
