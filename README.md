@@ -29,3 +29,7 @@ make run
 # Visit the website!
 open http://localhost:4000
 ```
+
+# Running puzzlehunt
+* Currently, mazeoftwistypassages.com (registration page) is at cmukgb.club.cc.cmu.edu:/var/www/mazeoftwistypassages.com
+* Currently, main server hosting is at kgbpuzzlehunt.club.cc.cmu.edu
