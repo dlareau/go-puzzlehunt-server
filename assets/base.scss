@@ -1,13 +1,14 @@
-html { background-image: url(/assets/parchment.jpg); }
+* { margin: 0; padding: 0; }
 
+html { background: black url(/assets/stars.jpg) no-repeat left top; }
 
 body {
-  font-family: verdana;
-  font-size: 14px;
+  font-family: 'Helvetica', Arial, sans-serif;
+  font-size: 16px;
   padding: 20px;
   margin: 20px auto;
   width: 800px;
-  background: white;
+  background: #fafafa;
   border: 4px solid black;
 }
 
@@ -24,54 +25,6 @@ body {
 .puzzle .info h1 { float: left; }
 .puzzle .info a { float: right; }
 
-#map {
-  position: relative;
-
-  .puzzle {
-    position: absolute;
-    overflow: visible;
-    width: 20px;
-    height: 20px;
-
-    .cloud { position: absolute; }
-
-    .done {
-      width: 48px;
-      position: absolute;
-      top: -16px;
-      left: -8px;
-      z-index: -1;
-    }
-
-    a {
-      font-weight: bold;
-      color: white;
-      font-size: 20px;
-    }
-  }
-}
-#puzzle0 { top: 306px; left: 86px; z-index: 99; }
-#puzzle1 { top: 123px; left: 286px; z-index: 99; }
-#puzzle2 { top: 272px; left: 620px; z-index: 99; }
-#puzzle3 { top: 576px; left: 559px; z-index: 99; }
-#puzzle4 { top: 609px; left: 188px; z-index: 99; }
-#puzzle5 { top: 459px; left: 189px; z-index: 95; }
-#puzzle6 { top: 247px; left: 229px; z-index: 95; }
-#puzzle7 { top: 212px; left: 457px; z-index: 95; }
-#puzzle8 { top: 408px; left: 558px; z-index: 95; }
-#puzzle9 { top: 565px; left: 375px; z-index: 95; }
-#puzzle10 { top: 487px; left: 302px; z-index: 90; }
-#puzzle11 { top: 360px; left: 234px; z-index: 90; }
-#puzzle12 { top: 275px; left: 364px; z-index: 90; }
-#puzzle13 { top: 344px; left: 472px; z-index: 90; }
-#puzzle14 { top: 478px; left: 448px; z-index: 90; }
-#puzzle15 { top: 374px; left: 353px; z-index: 85; }
-
-#map #puzzle5 a { color: black; }
-#map #puzzle6 a { color: black; }
-#map #puzzle7 a { color: black; }
-#map #puzzle8 a { color: black; }
-#map #puzzle9 a { color: black; }
 
 @mixin rotate($deg) {
   -webkit-transform:rotate($deg);
@@ -79,35 +32,3 @@ body {
   transform:rotate($deg);
 }
 
-#puzzle0 .cloud { top: -83px; left: -172px; width: 404px;
-                  @include rotate(90deg); }
-#puzzle1 .cloud { top: -83px; left: -146px; width: 371px;
-                  @include rotate(0deg); }
-#puzzle2 .cloud { top: -119px; left: -187px; width: 371px;
-                  @include rotate(60deg); }
-#puzzle3 .cloud { top: -123px; left: -145px; width: 371px;
-                  @include rotate(-229deg); }
-#puzzle4 .cloud { top: -94px; left: -94px; width: 371px;
-                  @include rotate(-163deg); }
-#puzzle5 .cloud { top: -30px; left: -81px; width: 235px;
-                  @include rotate(-121deg); }
-#puzzle6 .cloud { top: -30px; left: -117px; width: 235px;
-                  @include rotate(-39deg); }
-#puzzle7 .cloud { top: -94px; left: -116px; width: 235px;
-                  @include rotate(87deg); }
-#puzzle8 .cloud { top: -87px; left: -101px; width: 235px;
-                  @include rotate(100deg); }
-#puzzle9 .cloud { top: -71px; left: -57px; width: 235px;
-                  @include rotate(168deg); }
-#puzzle10 .cloud { top: -76px; left: -111px; width: 225px;
-                   @include rotate(51deg); }
-#puzzle11 .cloud { top: -81px; left: -90px; width: 225px;
-                   @include rotate(115deg); }
-#puzzle12 .cloud { top: -62px; left: -78px; width: 225px;
-                   @include rotate(179deg); }
-#puzzle13 .cloud { top: -39px; left: -78px; width: 225px;
-                   @include rotate(245deg); }
-#puzzle14 .cloud { top: -43px; left: -98px; width: 225px;
-                   @include rotate(319deg); }
-#puzzle15 .cloud { top: -54px; left: -82px; width: 263px;
-                   @include rotate(198deg); }

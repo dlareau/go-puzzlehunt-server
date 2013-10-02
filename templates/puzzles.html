@@ -1,23 +1,18 @@
-{{ define "title" }}Pirate Map{{ end }}
+{{ define "title" }}Puzzle List{{ end }}
 
 {{ define "content" }}
-  <div id='map'>
-    <img src='{{ AssetPath "map.png" }}' width=800 height=810 />
-
-
+    <h1>Puzzles</h1>
     {{ with $data := . }}
     {{ range $i, $puzzle := $data.Puzzles }}
       <div id='puzzle{{ $i }}' class='puzzle'>
         {{ with $soln := SolutionFor $data.Solutions $data.Team $puzzle }}
           {{ if not $soln.SolvedAt.IsZero }}
-            <img class='done' src='{{ AssetPath "redx.png" }}'/>
+            <del><a href='/map/puzzles/{{ $puzzle.Slug }}'>P{{ $puzzle.UnlockIdx }}</a></del> Solved!
+          {{ else }}
+            <a href='/map/puzzles/{{ $puzzle.Slug }}'>P{{ $puzzle.UnlockIdx }}</a>
           {{ end }}
-        {{ else }}
-          <img class='cloud' src='{{ AssetPath "cloud.png" }}'/>
         {{ end }}
-        <a href='/map/puzzles/{{ .Slug }}'>P{{ .UnlockIdx }}</a>
       </div>
     {{ end }}
     {{ end }}
-  </div>
 {{ end }}
