@@ -9,7 +9,7 @@ import _ "github.com/alexcrichton/go-paste/image"
 import _ "net/http/pprof"
 
 var PasteServer = paste.FileServer(paste.Config{
-  Root: "./assets",
-  TempDir: "./tmp",
-  Version: "1.4",
+	Root:    "./assets",
+	TempDir: "./tmp",
+	Version: "1.4",
 })

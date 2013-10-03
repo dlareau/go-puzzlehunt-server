@@ -1,4 +1,4 @@
-DEST = kgbpuzzlehunt.club.cc.cmu.edu:pirates
+DEST = wcrichto@kgbpuzzlehunt.club.cc.cmu.edu:hitchhikers
 
 all: puzzlehunt
 .PHONY: puzzlehunt
