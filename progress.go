@@ -240,7 +240,61 @@ func (s *Solution) Update() error {
 
 		var puzzle Puzzle
 		puzzle.findId(s.PuzzleId)
-		to_unlock := UnlockTree[puzzle.UnlockIdx]
+		
+		if (puzzle.UnlockIdx <= 5) {
+			iter := Puzzles.Find(bson.M{"unlockidx": bson.M{"$lte": 5}}).Iter()
+			var p Puzzle
+			solved := 0
+			for iter.Next(&p) {
+				var soln Solution
+				err := Solutions.Find(bson.M{"puzzleid": p.Id,
+					"teamid": s.TeamId}).One(&soln)
+				if err == mgo.ErrNotFound {
+					continue
+				} else if err != nil {
+					return err
+				} else if soln.SolvedAt.Year() > 1400 {
+					solved += 1
+				}
+			}
+
+			if solved >= MetaRequired {
+				err = Puzzles.Find(bson.M{"unlockidx": MiniMetaIndex}).One(&puzzle)
+				solution := Solution{TeamId: s.TeamId, PuzzleId: puzzle.Id}
+				err = solution.Insert()
+			}
+		} else if (puzzle.UnlockIdx == MiniMetaIndex) {
+			err = Puzzles.Find(bson.M{"unlockidx": MetaIndex}).One(&puzzle)
+			solution := Solution{TeamId: s.TeamId, PuzzleId: puzzle.Id}
+			err = solution.Insert()
+		}
+
+		iter := Puzzles.Find(bson.M{}).Iter()
+		var p Puzzle
+		solved := 0
+		for iter.Next(&p) {
+			var soln Solution
+			err := Solutions.Find(bson.M{"puzzleid": p.Id,
+				"teamid": s.TeamId}).One(&soln)
+			if err == mgo.ErrNotFound {
+				continue
+			} else if err != nil {
+				return err
+			} else if soln.SolvedAt.Year() > 1400 {
+				solved += 1
+			}
+		}
+
+		if solved <= 4 {
+			n := 6 + (solved - 1) * (solved) / 2
+			for i := n; i < n + solved; i++ {
+				err = Puzzles.Find(bson.M{"unlockidx": i}).One(&puzzle)
+				solution := Solution{TeamId: s.TeamId, PuzzleId: puzzle.Id}
+				err = solution.Insert()
+			}
+		}
+		
+		s := `to_unlock := UnlockTree[puzzle.UnlockIdx]
 
 		/* For everything we're supposed to unlock, see if it's already unlocked and
 		   if it isn't, insert the Solution to indicate that it's now available for
@@ -252,8 +306,7 @@ func (s *Solution) Update() error {
 				return err
 			}
 			/* if it's already unlocked, no need to unlock again */
-			n, err := Solutions.Find(bson.M{"puzzleid": puzzle.Id, "teamid": s.TeamId}).
-				Count()
+			n, err := Solutions.Find(bson.M{"puzzleid": puzzle.Id, "teamid": s.TeamId}).Count()
 			if err != nil {
 				return err
 			}
@@ -261,8 +314,7 @@ func (s *Solution) Update() error {
 				continue
 			}
 
-			/* If we're unlocking the meta, we require more solutions than 1 */
-			if len(to_unlock) == 1 && to_unlock[0] == MetaIndex {
+			if idx == MetaIndex {
 				iter := Puzzles.Find(bson.M{"unlockidx": bson.M{"$gte": MetaMinimum}}).Iter()
 				var p Puzzle
 				solved := 0
@@ -280,7 +332,7 @@ func (s *Solution) Update() error {
 				}
 
 				if solved < MetaRequired {
-					return nil
+					continue
 				}
 			}
 
@@ -290,7 +342,8 @@ func (s *Solution) Update() error {
 			if err != nil {
 				return err
 			}
-		}
+		}`
+		_ = s
 	}
 
 	return err
