@@ -13,6 +13,9 @@ const ListenAddress = ":80"
 /* Constant strings and whatnot */
 const InvalidAnswerText = "invalid: answers will be one word (no spaces)"
 
+var MetaRequired = 3
+var MetaMinimum = 8
+
 var UnlockTree = map[int][]int {
   1: []int{6, 10},
   2: []int{7, 6},
@@ -37,6 +40,4 @@ var UnlockTree = map[int][]int {
   22: []int{23},
 }
 
-var MetaRequired = 3
-var MetaMinimum = 8
 var MetaIndex = 16
