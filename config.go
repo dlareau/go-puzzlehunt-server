@@ -29,5 +29,5 @@ const InvalidAnswerText = "invalid: answers will be one word (no spaces)"
 
 var MetaRequired = 3
 var MetaUnlockers = []int{1, 2, 3, 4, 5}
-var MiniMetaIndex = 15
-var MetaIndex = 16
+var MiniMetaIndex = 16
+var MetaIndex = 17

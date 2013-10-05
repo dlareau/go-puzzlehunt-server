@@ -7,9 +7,9 @@
       <div id='puzzle{{ $i }}' class='puzzle'>
         {{ with $soln := SolutionFor $data.Solutions $data.Team $puzzle }}
           {{ if not $soln.SolvedAt.IsZero }}
-            <del><a href='/map/puzzles/{{ $puzzle.Slug }}'>P{{ $puzzle.UnlockIdx }}</a></del> Solved!
+            <del><a href='/map/puzzles/{{ $puzzle.Slug }}'>{{ $puzzle.Name }}</a></del> Solved!
           {{ else }}
-            <a href='/map/puzzles/{{ $puzzle.Slug }}'>P{{ $puzzle.UnlockIdx }}</a>
+            <a href='/map/puzzles/{{ $puzzle.Slug }}'>{{ $puzzle.Name }}</a>
           {{ end }}
         {{ end }}
       </div>
