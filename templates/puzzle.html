@@ -11,40 +11,45 @@
 {{ define "content" }}
 <div class='puzzle'>
   <div class='info'>
-    <h1><a href='{{ .Puzzle.Url }}'>
-      P{{ .Puzzle.UnlockIdx}} - {{ .Puzzle.Name }}
-    </a></h1>
-    <a href='/map'>Go back to all puzzles</a>
+    <a class="back-link" href='/map'>Go back to all puzzles</a>
+    <h1>
+      DATA:
+      <a class="title-link" href='{{ .Puzzle.Url }}'>
+        P{{ .Puzzle.UnlockIdx}} - {{ .Puzzle.Name }}
+      </a>
+    </h1>
   </div>
 
-  <fieldset id='submit'>
-    <legend>Submit an answer</legend>
-    <form action="/map/puzzles/{{ .Puzzle.Slug }}" method='post'
-          data-remote=true>
-      <div>
-        <label for='answer'>Answer:</label>
-        <input type='text' id='answer' name='answer'/><br/>
-        <input type='submit' value='Submit' data-disable-with='Submitting...'/>
-      </div>
-    </form>
-  </fieldset>
-  <fieldset id='answers'>
-    <legend>Past answers (automatically updated)</legend>
-    <table>
-      <thead>
-        <tr>
-          <th>Time</th>
-          <th>Answer</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{ range .Submissions }}
-          {{ template "submission" . }}
-        {{ end }}
-      </tbody>
-    </table>
-  </fieldset>
+  <div>
+    <fieldset id='submit'>
+      <legend>Submit an answer</legend>
+      <form action="/map/puzzles/{{ .Puzzle.Slug }}" method='post'
+            data-remote=true>
+        <div>
+          <label for='answer'>Answer:</label>
+          <input type='text' id='answer' name='answer'/><br/>
+          <input type='submit' value='Submit' data-disable-with='Submitting...'/>
+        </div>
+      </form>
+    </fieldset>
+    <fieldset id='answers'>
+      <legend>Past answers (automatically updated)</legend>
+      <table>
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Answer</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ range .Submissions }}
+            {{ template "submission" . }}
+          {{ end }}
+        </tbody>
+      </table>
+    </fieldset>
+  </div>
   <script type='text/javascript'>
     $(function() {
       listen('/event/map/{{ .Tag }}', function(e) {
