@@ -65,8 +65,21 @@ body {
   vertical-align: top;
 }
 
-.puzzle fieldset#submit { width: 28%; }
-.puzzle fieldset#answers { width: 48%; }
+.puzzle fieldset#submit { 
+    width: 28%; 
+
+    input[type=submit] {
+        margin-top: 5px;
+    }
+}
+
+.puzzle fieldset#answers { 
+    width: 48%; 
+
+    td {
+        padding: 2px 5px;
+    }
+}
 
 .puzzle fieldset#answers th {
   font-weight: normal;

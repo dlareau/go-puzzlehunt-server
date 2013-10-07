@@ -8,11 +8,12 @@
           {{ if not $soln.SolvedAt.IsZero }}
           <div id='puzzle{{ $i }}' class='puzzle{{ if not $soln.SolvedAt.IsZero }} solved{{ end }}'>
             {{ if not $soln.SolvedAt.IsZero }}
-              <del><a href='/map/puzzles/{{ $puzzle.Slug }}'>P{{ $puzzle.UnlockIdx }}</a></del>
+              <a href='/map/puzzles/{{ $puzzle.Slug }}' class='icon-link'>P{{ $puzzle.UnlockIdx }}</a>
             {{ else }}
-              <a href='/map/puzzles/{{ $puzzle.Slug }}'>P{{ $puzzle.UnlockIdx }}</a>
+              <a href='/map/puzzles/{{ $puzzle.Slug }}' class='icon-link'>P{{ $puzzle.UnlockIdx }}</a>
             {{ end }}
           </div>
+          {{ end }}
         {{ end }}
       {{ end }}
     {{ end }}
