@@ -3,32 +3,76 @@
 html { background: black url(/assets/stars.jpg) no-repeat left top; }
 
 body {
-  font-family: 'Helvetica', Arial, sans-serif;
+  background: #000000;
+  border: 4px solid #3BEB1C;
+  color: #3BEB1C;
+  font-family: courier, serif;
   font-size: 16px;
-  padding: 20px;
   margin: 20px auto;
+  padding: 20px;
   width: 800px;
-  background: #fafafa;
-  border: 4px solid black;
+}
+
+.title {
+  font-size: 26px;
+  margin: 0 0 20px;
 }
 
 .puzzle, .info { overflow: auto; }
 
+.puzzle {
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+.puzzle a.icon-link {
+  background: url(/assets/folder.png) no-repeat left top;
+  background-size: cover;
+  color: #000000;
+  display: block;
+  height: 30px;
+  line-height: 30px;
+  padding: 10px 2px 10px 0;
+  text-align: center;
+  text-decoration: none;
+  width: 58px;
+}
+
+.puzzle.solved a.icon-link {
+  background: url(/assets/folder-gray.png) no-repeat left top;
+  background-size: cover;
+}
+
+.puzzle .info {
+  margin: 0 20px 10px;
+  text-align: right;
+}
+
+.puzzle .info h1 {
+  text-align: left;
+  margin: 10px 0;
+}
+
+.puzzle a.title-link, .puzzle a.back-link {
+  color: #FFFFFF;
+}
+
 .puzzle fieldset {
-  float: left;
+  border-color: #3BEB1C;
+  display: inline-block;
   padding: 20px;
   margin: 20px;
+  vertical-align: top;
 }
-.puzzle fieldset#submit { width: 30%; }
+
+.puzzle fieldset#submit { width: 28%; }
 .puzzle fieldset#answers { width: 48%; }
 
-.puzzle .info h1 { float: left; }
-.puzzle .info a { float: right; }
-
-
-@mixin rotate($deg) {
-  -webkit-transform:rotate($deg);
-  -moz-transform:rotate($deg);
-  transform:rotate($deg);
+.puzzle fieldset#answers th {
+  font-weight: normal;
+  padding: 0 2px;
 }
 
+.puzzle table tbody {
+  text-transform: none;
+}

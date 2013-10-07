@@ -1,18 +1,19 @@
 {{ define "title" }}Puzzle List{{ end }}
 
 {{ define "content" }}
-    <h1>Puzzles</h1>
+    <h1 class="title">MISSION ORIENTED INTER SPACE TRAVEL DATA ARCHIVE</h1>
     {{ with $data := . }}
-    {{ range $i, $puzzle := $data.Puzzles }}
-      <div id='puzzle{{ $i }}' class='puzzle'>
+      {{ range $i, $puzzle := $data.Puzzles }}
         {{ with $soln := SolutionFor $data.Solutions $data.Team $puzzle }}
           {{ if not $soln.SolvedAt.IsZero }}
-            <del><a href='/map/puzzles/{{ $puzzle.Slug }}'>{{ $puzzle.Name }}</a></del> Solved!
-          {{ else }}
-            <a href='/map/puzzles/{{ $puzzle.Slug }}'>{{ $puzzle.Name }}</a>
-          {{ end }}
+          <div id='puzzle{{ $i }}' class='puzzle{{ if not $soln.SolvedAt.IsZero }} solved{{ end }}'>
+            {{ if not $soln.SolvedAt.IsZero }}
+              <del><a href='/map/puzzles/{{ $puzzle.Slug }}'>P{{ $puzzle.UnlockIdx }}</a></del>
+            {{ else }}
+              <a href='/map/puzzles/{{ $puzzle.Slug }}'>P{{ $puzzle.UnlockIdx }}</a>
+            {{ end }}
+          </div>
         {{ end }}
-      </div>
-    {{ end }}
+      {{ end }}
     {{ end }}
 {{ end }}
