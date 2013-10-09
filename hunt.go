@@ -25,11 +25,20 @@ func MapHandler(w http.ResponseWriter, r *http.Request, t *Team) {
 			}
 		}
 	}
+
+	solved := 0
+	for _, soln := range solns {
+		if !soln.SolvedAt.IsZero() {
+			solved++
+		}
+	}
+
 	data := struct {
 		Solutions SolutionList
 		Team      *Team
 		Puzzles   []Puzzle
-	}{solns, t, AllPuzzles()}
+		Videos    []string
+	}{solns, t, AllPuzzles(), VideoLinks[:(solved / 2)]}
 
 	check(Template("_base.html", "puzzles.html").Execute(w, data))
 }

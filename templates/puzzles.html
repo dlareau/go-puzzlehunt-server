@@ -2,19 +2,26 @@
 
 {{ define "content" }}
     <h1 class="title">MISSION ORIENTED INTER SPACE TRAVEL DATA ARCHIVE</h1>
+    <div id="puzzles">
     {{ with $data := . }}
       {{ range $i, $puzzle := $data.Puzzles }}
         {{ with $soln := SolutionFor $data.Solutions $data.Team $puzzle }}
-          {{ if not $soln.SolvedAt.IsZero }}
-          <div id='puzzle{{ $i }}' class='puzzle{{ if not $soln.SolvedAt.IsZero }} solved{{ end }}'>
+          <div id='puzzle{{ $i }}' class='puzzle icon{{ if not $soln.SolvedAt.IsZero }} solved{{ end }}'>
             {{ if not $soln.SolvedAt.IsZero }}
-              <a href='/map/puzzles/{{ $puzzle.Slug }}' class='icon-link'>P{{ $puzzle.UnlockIdx }}</a>
+            <del><a href='/map/puzzles/{{ $puzzle.Slug }}' class='icon-link'>P{{ $puzzle.UnlockIdx }}</a></del>
             {{ else }}
-              <a href='/map/puzzles/{{ $puzzle.Slug }}' class='icon-link'>P{{ $puzzle.UnlockIdx }}</a>
+            <a href='/map/puzzles/{{ $puzzle.Slug }}' class='icon-link'>P{{ $puzzle.UnlockIdx }}</a>
             {{ end }}
           </div>
-          {{ end }}
         {{ end }}
       {{ end }}
     {{ end }}
+    </div>
+    <div id="videos">
+    {{ with $data := . }}
+      {{ range $i, $video := $data.Videos }}
+      <div class='puzzle icon'><a href='{{ $video }}' class='icon-link'>V{{ $i }}</a></div>
+      {{ end }}
+    {{ end }}
+    </div>
 {{ end }}

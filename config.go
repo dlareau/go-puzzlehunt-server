@@ -31,3 +31,16 @@ var MetaRequired = 3
 var MetaUnlockers = []int{1, 2, 3, 4, 5}
 var MiniMetaIndex = 16
 var MetaIndex = 17
+
+// autotune'd hide yo kids
+// star wars kid
+// train simulator BITCH
+// adam & kelly don't trust me
+// twright's mom
+var VideoLinks = []string {
+	"http://www.youtube.com/watch?v=hMtZfW2z9dw",
+	"http://www.youtube.com/watch?v=HPPj6viIBmU",
+	"http://www.youtube.com/watch?v=RnAMDg7IVWs",
+	"http://www.youtube.com/watch?v=68Nw71rN5Ic",
+	"http://www.youtube.com/watch?v=aPEx26ufEsI",
+}
