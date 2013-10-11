@@ -7,11 +7,12 @@
       {{ range $i, $puzzle := $data.Puzzles }}
         {{ with $soln := SolutionFor $data.Solutions $data.Team $puzzle }}
           <div id='puzzle{{ $i }}' class='puzzle icon{{ if not $soln.SolvedAt.IsZero }} solved{{ end }}'>
-            {{ if not $soln.SolvedAt.IsZero }}
-            <del><a href='/map/puzzles/{{ $puzzle.Slug }}' class='icon-link'>P{{ $puzzle.UnlockIdx }}</a></del>
-            {{ else }}
-            <a href='/map/puzzles/{{ $puzzle.Slug }}' class='icon-link'>P{{ $puzzle.UnlockIdx }}</a>
-            {{ end }}
+            <a href='/map/puzzles/{{ $puzzle.Slug }}' class='icon-link'>
+              <div class="icon">
+                P{{ $puzzle.UnlockIdx }}
+              </div>
+              <p class="puzzle-name">{{ $puzzle.Name }}</p>
+            </a>
           </div>
         {{ end }}
       {{ end }}

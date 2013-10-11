@@ -20,25 +20,35 @@ body {
 
 .puzzle, .info { overflow: auto; }
 
-.puzzle.icon {
+.puzzle {
   display: inline-block;
   text-transform: uppercase;
 }
 
-.puzzle a.icon-link {
+.puzzle.list-item {
+  max-width: 18%;
+  text-align: center;
+}
+
+.puzzle.list-item a {
+  color: #3BEB1C;
+}
+
+.puzzle .icon {
   background: url(/assets/folder.png) no-repeat left top;
   background-size: cover;
   color: #000000;
-  display: block;
+  display: inline-block;
   height: 30px;
   line-height: 30px;
+  margin-bottom: 5px;
   padding: 10px 2px 10px 0;
   text-align: center;
   text-decoration: none;
   width: 58px;
 }
 
-.puzzle.solved a.icon-link {
+.puzzle.solved .icon {
   background: url(/assets/folder-gray.png) no-repeat left top;
   background-size: cover;
 }
@@ -65,20 +75,20 @@ body {
   vertical-align: top;
 }
 
-.puzzle fieldset#submit { 
-    width: 28%; 
+.puzzle fieldset#submit {
+  width: 28%;
 
-    input[type=submit] {
-        margin-top: 5px;
-    }
+  input[type=submit] {
+    margin-top: 5px;
+  }
 }
 
-.puzzle fieldset#answers { 
-    width: 48%; 
+.puzzle fieldset#answers {
+  width: 48%;
 
-    td {
-        padding: 2px 5px;
-    }
+  td {
+    padding: 2px 5px;
+  }
 }
 
 .puzzle fieldset#answers th {
