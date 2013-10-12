@@ -43,6 +43,10 @@ a { color: #3BEB1C; }
             text-align: center;
         }
     }
+    
+    .solved .puzzle-name {
+        text-decoration: line-through;
+    }
 
     #puzzle0, #puzzle1, #puzzle2, #puzzle3, #puzzle4, #puzzle16 {
         .puzzle-name { color: red; }

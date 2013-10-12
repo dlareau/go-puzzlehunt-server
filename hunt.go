@@ -36,7 +36,7 @@ func MapHandler(w http.ResponseWriter, r *http.Request, t *Team) {
 
 	numVideos := 0
 	if solvedMeta != -1 {
-		numVideos = (5 * totalSolves) / (17 - totalSolves)
+		numVideos = (5 * (totalSolves - 4)) / 17
 	} 
 
 	data := struct {
