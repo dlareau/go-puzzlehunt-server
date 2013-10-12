@@ -17,28 +17,34 @@ func MapHandler(w http.ResponseWriter, r *http.Request, t *Team) {
 		solns = append(solns, soln)
 	}
 	puzzles := make([]Puzzle, 0)
+	solvedMeta := -1
+	totalSolves := 0
 	for _, puz := range all {
-		for _, soln := range solns {
+		for i, soln := range solns {
 			if puz.Id == soln.PuzzleId {
+				if !soln.SolvedAt.IsZero() {
+					totalSolves++
+					if puz.Metapuzzle {
+						solvedMeta = i
+					}
+				}
 				puzzles = append(puzzles, puz)
 				break
 			}
 		}
 	}
 
-	solved := 0
-	for _, soln := range solns {
-		if !soln.SolvedAt.IsZero() {
-			solved++
-		}
-	}
+	numVideos := 0
+	if solvedMeta != -1 {
+		numVideos = (5 * totalSolves) / (17 - totalSolves)
+	} 
 
 	data := struct {
 		Solutions SolutionList
 		Team      *Team
 		Puzzles   []Puzzle
 		Videos    []string
-	}{solns, t, AllPuzzles(), VideoLinks[:(solved / 2)]}
+	}{solns, t, AllPuzzles(), VideoLinks[:numVideos]}
 
 	check(Template("_base.html", "puzzles.html").Execute(w, data))
 }

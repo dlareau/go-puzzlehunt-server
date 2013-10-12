@@ -1,7 +1,7 @@
 package main
 
 /* Authentication credentials for the admin/password reset pages */
-const AdminPassword = "shenanigans"
+const AdminPassword = "allthefish"
 const AdminRealm = "Puzzlehunt Admin"
 const TeamRealm = "Frood Login"
 
