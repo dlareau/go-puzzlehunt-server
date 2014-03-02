@@ -1,4 +1,4 @@
-DEST = kgbpuzzlehunt.club.cc.cmu.edu:pirates
+DEST = jlareau@kgbpuzzlehunt.club.cc.cmu.edu:zombies
 
 all: puzzlehunt
 .PHONY: puzzlehunt
