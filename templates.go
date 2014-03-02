@@ -55,6 +55,6 @@ func stylesheetTag(p string) template.HTML {
   if !strings.HasSuffix(p, ".css") {
     p += ".css"
   }
-  return template.HTML(`<link href="` + assetPath(p) + `" media="screen" ` +
+  return template.HTML(`<link href="` + `" media="screen" ` +
                        `rel="stylesheet" type="text/css" />`)
 }

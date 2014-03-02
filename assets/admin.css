@@ -1,0 +1,81 @@
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\000031}}
+body {
+  font-family: verdana;
+  font-size: 14px;
+  padding: 0;
+  margin: 0; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\000038}}
+header {
+  margin: 0;
+  background: #414141;
+  color: white;
+  overflow: auto; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\0000314}}
+  header h1 {
+    padding: 20px;
+    margin: 0;
+    float: left; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\0000320}}
+  header ul {
+    float: left;
+    list-style: none; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\0000325}}
+  header li {
+    width: 100px;
+    float: left;
+    text-align: center; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\0000330}}
+    header li a {
+      color: white;
+      text-decoration: none; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\0000333}}
+      header li a:hover {
+        color: #DBDBDB; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\0000338}}
+#content {
+  margin: 20px; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\0000342}}
+#queue {
+  width: 100%; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\0000344}}
+  #queue td {
+    padding: 5px;
+    border: 1px solid black; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\0000348}}
+  #queue .correct {
+    background: #cbf5cb; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\0000349}}
+  #queue .incorrect-unreplied {
+    background: #ffa300; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\0000350}}
+  #queue .incorrect-replied {
+    background: #febdbd; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\0000351}}
+  #queue .invalid-answer {
+    background: yellow; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\0000354}}
+td {
+  padding: 5px;
+  border: 1px solid black; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\0000359}}
+#puzzles .meta {
+  background: #DADAF8; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\0000360}}
+#puzzles .second {
+  background: #E5FAE2; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\0000362}}
+#progress {
+  font-size: 80%; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\0000364}}
+  #progress .solved {
+    background: #92E292; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/admin\.scss}line{font-family:\0000365}}
+  #progress .available {
+    background: yellow; }
