@@ -11,7 +11,6 @@ var funcs = template.FuncMap{
   "FormGet": FormGet,
   "AssetPath": assetPath,
   "Javascript": javascriptTag,
-  "Stylesheet": stylesheetTag,
 }
 
 func FormGet(form url.Values, key string) string {
@@ -49,12 +48,4 @@ func javascriptTag(p string) template.HTML {
   }
   return template.HTML("<script type='text/javascript' src='" + assetPath(p) +
                        "'></script>")
-}
-
-func stylesheetTag(p string) template.HTML {
-  if !strings.HasSuffix(p, ".css") {
-    p += ".css"
-  }
-  return template.HTML(`<link href="` + `" media="screen" ` +
-                       `rel="stylesheet" type="text/css" />`)
 }
