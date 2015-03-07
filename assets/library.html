@@ -1,0 +1,246 @@
+<!doctype html>
+<head>
+	<meta charset="utf-8">
+	<title>HTML5 Sortable jQuery Plugin</title>
+	<style>
+		header, section {
+			display: block;
+		}
+		body {
+			font-family: 'Droid Serif';
+		}
+		h1, h2, p {
+			text-align: center;
+			font-weight: normal;
+			margin-right: 150px;
+			margin-left: 150px;
+		}
+		.connected, .sortable, .exclude, .handles {
+			margin: auto;
+			padding: 0;
+			width: 310px;
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+		.sortable.grid {
+			overflow: hidden;
+		}
+		.connected li, .sortable li, .exclude li, .handles li {
+			list-style: none;
+			border: 1px solid #CCC;
+			background: #FFF;
+			font-family: "Tahoma";
+			color: #666;
+			margin: 5px;
+			padding: 5px;
+			height: 22px;
+		}
+		.handles span {
+			cursor: move;
+		}
+		li.disabled {
+			opacity: 0.5;
+		}
+		.sortable.grid li {
+			line-height: 80px;
+			float: left;
+			width: 80px;
+			height: 80px;
+			text-align: center;
+		}
+		.placard {
+			float: left;
+			font-family: "Georgia";
+			color: #A63;
+			font-weight: bold;
+		}
+		.exit {
+			float: left;
+			font-family: "Tahoma";
+			color: #F00;
+			font-weight: bold;
+			text-align: center;
+		}
+		.locked1 {
+			float: left;
+			font-family: "Tahoma";
+			color: #99F;
+			font-weight: bold;
+			text-align: center;
+		}
+		.locked2 {
+			float: left;
+			font-family: "Tahoma";
+			color: #66F;
+			font-weight: bold;
+			text-align: center;
+		}
+		.locked3 {
+			float: left;
+			font-family: "Tahoma";
+			color: #33F;
+			font-weight: bold;
+			text-align: center;
+		}
+		li.albom {
+			background: #AAF;
+		}
+		li.alcott {
+			background: #CCF;
+		}
+		li.asimov {
+			background: #CAA;
+		}
+		li.burgess {
+			background: #FCA;
+		}
+		li.carson {
+			background: #AFA;
+		}
+		li.dickens {
+			background: #ACF;
+		}
+		li.dumas {
+			background: #CFA;
+		}
+		li.flagg {
+			background: #CCC;
+		}
+		li.gilman {
+			background: #FAC;
+		}
+		li.grady {
+			background: #AAC;
+		}
+		li.kesey {
+			background: #FFA;
+		}
+		li.kessler {
+			background: #FCC;
+		}
+		li.kingsolver {
+			background: #CAF;
+		}
+		li.kipling {
+			background: #FAA;
+		}
+		li.lewis {
+			background: #ACC;
+		}
+		li.morrison {
+			background: #ACA;
+		}
+		li.rawls {
+			background: #CFF;
+		}
+		li.steinbeck {
+			background: #CCA;
+		}
+		li.walker {
+			background: #AFC;
+		}
+		li.wolitzer {
+			background: #CAC;
+		}
+		#connected {
+			width: 690px;
+			overflow: hidden;
+			margin: auto;
+		}
+		.connected.no1 {
+			float: left;
+			height: 450px;
+			width: 230px;
+		}
+		.connected.no2 {
+			float: left;
+			height: 450px;
+			width: 230px;
+		}
+		.connected.no3 {
+			float: left;
+			height: 450px;
+			width: 230px;
+		}
+		li.sortable-placeholder {
+			border: 1px dashed #CCC;
+			background: none;
+		}
+	</style>
+	<link href='http://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+	
+	<center><a href="http://github.com/farhadi/html5sortable">(not part of the puzzle: code based on this more different guy)</a></center>
+
+	<header>
+		<h1>The Little Library</h1>
+	</header>
+
+	<p> In your pursuit of the elusive humans, you enter the next room. It is fairly small, and oddly enough, there doesn't appear to be 
+		another door aside from the one you just entered. 
+	<p>To your left there is a normal wooden desk with a chair. The drawers are all locked and thus inaccessible. There are a few items 
+		on top of the desk: a computer which is set up such that it can only access <a href="http://www.en.wikipedia.org">Wikipedia</a>
+		 and a notepad with a pen. There is a note scribbled on the pad: <i>"Please sort the books in order to leave. -Head Librarian"</i>
+	<p>Across the room are three bookshelves. Each shelf has a bronze placard above it displaying two names. There are twenty books 
+		strewn across the shelves.<br><br>
+
+	<section id="connected">
+
+		<div class="placard">
+		<center>D. H. Lawrence <br> Marcus Pfister</center>
+		<ul id="list1" class="connected list no1">
+			<li id="flagg" class="flagg">Fannie Flagg</li>
+			<li id="walker" class="walker">Alice Walker</li>
+			<li id="asimov" class="asimov">Isaac Asimov</li>
+			<li id="kesey" class="kesey">Ken Kesey</li>
+			<li id="wolitzer" class="wolitzer">Meg Wolitzer</li>
+			<li id="dickens" class="dickens">Charles Dickens</li>
+			<li id="steinbeck" class="steinbeck">John Steinbeck</li>
+			<li id="gilman" class="gilman">Charlotte Perkins Gilman</li>
+		</ul>
+		</div>
+		<div class="placard">
+		<center>Lois Lowry <br> Pittacus Lore</center>
+		<ul id="list2" class="connected list no2">
+			<li id="kessler" class="kessler">Liz Kessler</li>
+			<li id="alcott" class="alcott">Louisa May Alcott</li>
+			<li id="lewis" class="lewis">C. S. Lewis</li>
+			<li id="grady" class="grady">James Grady</li>
+			<li id="carson" class="carson">Rachel Carson</li>
+		</ul>
+		</div>
+		
+		<div class="placard">
+		<center>Myla Goldberg<br> Robert Bolt</center>
+		<ul id="list3" class="connected list no3">
+			<li id="rawls" class="rawls">Wilson Rawls</li>
+			<li id="morrison" class="morrison">Toni Morrison</li>
+			<li id="kipling" class="kipling">Rudyard Kipling</li>
+			<li id="dumas" class="dumas">Alexandre Dumas</li>
+			<li id="albom" class="albom">Mitch Albom</li>
+			<li id="kingsolver" class="kingsolver">Barbara Kingsolver</li>
+			<li id="burgess" class="burgess">Anthony Burgess</li>
+		</ul>
+		</div>	
+		<div class="locked1"></div>
+		<div class="locked2"></div>
+		<div class="locked3"></div><br>
+		<div class="exit"></div> 
+
+
+	</section>
+
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="jquery.sortable.js"></script>
+	<script>
+var _0xc132=["\x65\x71\x75\x61\x6C\x73","\x70\x72\x6F\x74\x6F\x74\x79\x70\x65","\x6C\x65\x6E\x67\x74\x68","\x72\x61\x77\x6C\x73","\x62\x75\x72\x67\x65\x73\x73","\x67\x69\x6C\x6D\x61\x6E","\x66\x6C\x61\x67\x67","\x6D\x6F\x72\x72\x69\x73\x6F\x6E","\x77\x61\x6C\x6B\x65\x72","\x6B\x65\x73\x65\x79","\x64\x69\x63\x6B\x65\x6E\x73","\x64\x75\x6D\x61\x73","\x6C\x65\x77\x69\x73","\x61\x6C\x62\x6F\x6D","\x67\x72\x61\x64\x79","\x6B\x69\x70\x6C\x69\x6E\x67","\x61\x6C\x63\x6F\x74\x74","\x61\x73\x69\x6D\x6F\x76","\x77\x6F\x6C\x69\x74\x7A\x65\x72","\x63\x61\x72\x73\x6F\x6E","\x6B\x69\x6E\x67\x73\x6F\x6C\x76\x65\x72","\x6B\x65\x73\x73\x6C\x65\x72","\x73\x74\x65\x69\x6E\x62\x65\x63\x6B","\x73\x6F\x72\x74\x75\x70\x64\x61\x74\x65","\x68\x69","\x6C\x6F\x67","\x62\x69\x6E\x64","\x73\x6F\x72\x74\x61\x62\x6C\x65","\x2E\x73\x6F\x72\x74\x61\x62\x6C\x65","\x73\x70\x61\x6E","\x2E\x68\x61\x6E\x64\x6C\x65\x73","\x63\x68\x69\x6C\x64\x4E\x6F\x64\x65\x73","\x6C\x69\x73\x74\x31","\x67\x65\x74\x45\x6C\x65\x6D\x65\x6E\x74\x42\x79\x49\x64","\x69\x64","\x70\x75\x73\x68","\x66\x69\x6C\x74\x65\x72","\x6C\x69\x73\x74\x32","\x6C\x69\x73\x74\x33","\x4C\x4F\x43\x4B\x31","\x62\x61\x63\x6B\x67\x72\x6F\x75\x6E\x64","\x77\x68\x69\x74\x65","\x63\x73\x73","\x6C\x69\x2E\x72\x61\x77\x6C\x73","\x6C\x69\x2E\x62\x75\x72\x67\x65\x73\x73","\x6C\x69\x2E\x67\x69\x6C\x6D\x61\x6E","\x6C\x69\x2E\x66\x6C\x61\x67\x67","\x6C\x69\x2E\x6D\x6F\x72\x72\x69\x73\x6F\x6E","\x6C\x69\x2E\x77\x61\x6C\x6B\x65\x72","\x54\x68\x65\x20\x62\x6F\x6F\x6B\x73\x20\x6F\x6E\x20\x74\x68\x65\x20\x66\x69\x72\x73\x74\x20\x73\x68\x65\x6C\x66\x20\x70\x61\x6C\x65\x20\x74\x6F\x20\x77\x68\x69\x74\x65\x2E\x20\x54\x68\x65\x72\x65\x20\x69\x73\x20\x61\x20\x73\x6F\x66\x74\x20\x63\x6C\x69\x63\x6B\x69\x6E\x67\x20\x6E\x6F\x69\x73\x65\x2E","\x74\x65\x78\x74","\x64\x69\x76\x2E\x6C\x6F\x63\x6B\x65\x64\x31","\x4C\x4F\x43\x4B\x32","\x6C\x69\x2E\x6B\x65\x73\x65\x79","\x6C\x69\x2E\x64\x69\x63\x6B\x65\x6E\x73","\x6C\x69\x2E\x64\x75\x6D\x61\x73","\x6C\x69\x2E\x6C\x65\x77\x69\x73","\x6C\x69\x2E\x61\x6C\x62\x6F\x6D","\x6C\x69\x2E\x67\x72\x61\x64\x79","\x6C\x69\x2E\x6B\x69\x70\x6C\x69\x6E\x67","\x6C\x69\x2E\x61\x6C\x63\x6F\x74\x74","\x6C\x69\x2E\x61\x73\x69\x6D\x6F\x76","\x6C\x69\x2E\x77\x6F\x6C\x69\x74\x7A\x65\x72","\x54\x68\x65\x20\x62\x6F\x6F\x6B\x73\x20\x6F\x6E\x20\x74\x68\x65\x20\x73\x65\x63\x6F\x6E\x64\x20\x73\x68\x65\x6C\x66\x20\x70\x61\x6C\x65\x20\x74\x6F\x20\x77\x68\x69\x74\x65\x2E\x20\x54\x68\x65\x72\x65\x20\x69\x73\x20\x61\x20\x73\x6F\x66\x74\x20\x63\x6C\x69\x63\x6B\x69\x6E\x67\x20\x6E\x6F\x69\x73\x65\x2E","\x64\x69\x76\x2E\x6C\x6F\x63\x6B\x65\x64\x32","\x4C\x4F\x43\x4B\x33","\x6C\x69\x2E\x63\x61\x72\x73\x6F\x6E","\x6C\x69\x2E\x6B\x69\x6E\x67\x73\x6F\x6C\x76\x65\x72","\x6C\x69\x2E\x6B\x65\x73\x73\x6C\x65\x72","\x6C\x69\x2E\x73\x74\x65\x69\x6E\x62\x65\x63\x6B","\x54\x68\x65\x20\x62\x6F\x6F\x6B\x73\x20\x6F\x6E\x20\x74\x68\x65\x20\x74\x68\x69\x72\x64\x20\x73\x68\x65\x6C\x66\x20\x70\x61\x6C\x65\x20\x74\x6F\x20\x77\x68\x69\x74\x65\x2E\x20\x54\x68\x65\x72\x65\x20\x69\x73\x20\x61\x20\x73\x6F\x66\x74\x20\x63\x6C\x69\x63\x6B\x69\x6E\x67\x20\x6E\x6F\x69\x73\x65\x2E","\x64\x69\x76\x2E\x6C\x6F\x63\x6B\x65\x64\x33","\x59\x4F\x55\x20\x57\x49\x4E\x21","\x59\x6F\x75\x20\x63\x6F\x72\x72\x65\x63\x74\x6C\x79\x20\x70\x6C\x61\x63\x65\x20\x61\x6C\x6C\x20\x74\x68\x65\x20\x62\x6F\x6F\x6B\x73\x2E\x20\x54\x68\x65\x72\x65\x20\x69\x73\x20\x61\x20\x62\x72\x69\x65\x66\x20\x6D\x6F\x6D\x65\x6E\x74\x20\x6F\x66\x20\x63\x6C\x69\x63\x6B\x69\x6E\x67\x20\x62\x65\x66\x6F\x72\x65\x20\x74\x68\x65\x20\x72\x69\x67\x68\x74\x20\x73\x69\x64\x65\x20\x6F\x66\x20\x74\x68\x65\x20\x62\x6F\x6F\x6B\x73\x68\x65\x6C\x66\x20\x73\x68\x69\x66\x74\x73\x20\x66\x6F\x72\x77\x61\x72\x64\x20\x61\x20\x6C\x69\x74\x74\x6C\x65\x2D\x2D\x69\x74\x20\x77\x61\x73\x20\x61\x20\x73\x65\x63\x72\x65\x74\x20\x64\x6F\x6F\x72\x20\x61\x6C\x6C\x20\x61\x6C\x6F\x6E\x67\x21\x20\x59\x6F\x75\x20\x65\x6E\x74\x65\x72\x20\x74\x68\x65\x20\x70\x61\x73\x73\x61\x67\x65\x77\x61\x79\x20\x74\x6F\x20\x74\x68\x65\x20\x6E\x65\x78\x74\x20\x72\x6F\x6F\x6D\x2C\x20\x62\x75\x74\x20\x6E\x6F\x74\x20\x77\x69\x74\x68\x6F\x75\x74\x20\x66\x6F\x72\x67\x65\x74\x74\x69\x6E\x67\x20\x74\x6F\x20\x73\x68\x75\x74\x20\x74\x68\x65\x20\x62\x6F\x6F\x6B\x63\x61\x73\x65\x20\x62\x65\x68\x69\x6E\x64\x20\x79\x6F\x75\x2E\x20\x57\x68\x65\x6E\x20\x79\x6F\x75\x20\x74\x75\x72\x6E\x20\x74\x6F\x20\x64\x6F\x20\x74\x68\x69\x73\x2C\x20\x79\x6F\x75\x20\x73\x65\x65\x20\x61\x20\x70\x6C\x61\x63\x61\x72\x64\x20\x6F\x6E\x20\x74\x68\x65\x20\x62\x61\x63\x6B\x20\x6F\x66\x20\x74\x68\x65\x20\x62\x6F\x6F\x6B\x63\x61\x73\x65\x20\x74\x68\x61\x74\x20\x72\x65\x61\x64\x73\x3A\x20\x56\x4F\x4E\x4E\x45\x47\x55\x54\x2E","\x64\x69\x76\x2E\x65\x78\x69\x74","\x2E\x63\x6F\x6E\x6E\x65\x63\x74\x65\x64","\x3A\x6E\x6F\x74\x28\x2E\x64\x69\x73\x61\x62\x6C\x65\x64\x29","\x2E\x65\x78\x63\x6C\x75\x64\x65"];Array[_0xc132[1]][_0xc132[0]]=function (_0xd5e2x1){if(this[_0xc132[2]]!==_0xd5e2x1[_0xc132[2]]){return false;} ;for(var _0xd5e2x2=0;_0xd5e2x2<this[_0xc132[2]];_0xd5e2x2+=1){if(this[_0xd5e2x2]!==_0xd5e2x1[_0xd5e2x2]){return false;} ;} ;return true;} ;$(function (){var _0xd5e2x3=[_0xc132[3],_0xc132[4],_0xc132[5],_0xc132[6],_0xc132[7],_0xc132[8]];var _0xd5e2x4=[_0xc132[9],_0xc132[10],_0xc132[11],_0xc132[12],_0xc132[13],_0xc132[14],_0xc132[15],_0xc132[16],_0xc132[17],_0xc132[18]];var _0xd5e2x5=[_0xc132[19],_0xc132[20],_0xc132[21],_0xc132[22]];var _0xd5e2x6=false;var _0xd5e2x7=false;var _0xd5e2x8=false;$(_0xc132[28])[_0xc132[27]]()[_0xc132[26]](_0xc132[23],function (){console[_0xc132[25]](_0xc132[24]);} );$(_0xc132[30])[_0xc132[27]]({handle:_0xc132[29]});$(_0xc132[75])[_0xc132[27]]({connectWith:_0xc132[75]})[_0xc132[26]](_0xc132[23],function (){var _0xd5e2x9=document[_0xc132[33]](_0xc132[32])[_0xc132[31]];var _0xd5e2xa=[];for(var _0xd5e2x2=0;_0xd5e2x2<_0xd5e2x9[_0xc132[2]];_0xd5e2x2++){var _0xd5e2xb=_0xd5e2x9[_0xd5e2x2][_0xc132[34]];_0xd5e2xa[_0xc132[35]](_0xd5e2xb);} ;_0xd5e2xa=_0xd5e2xa[_0xc132[36]](function (_0xd5e2xc){return _0xd5e2xc!=undefined;} );var _0xd5e2xd=document[_0xc132[33]](_0xc132[37])[_0xc132[31]];var _0xd5e2xe=[];for(var _0xd5e2x2=0;_0xd5e2x2<_0xd5e2xd[_0xc132[2]];_0xd5e2x2++){var _0xd5e2xb=_0xd5e2xd[_0xd5e2x2][_0xc132[34]];_0xd5e2xe[_0xc132[35]](_0xd5e2xb);} ;_0xd5e2xe=_0xd5e2xe[_0xc132[36]](function (_0xd5e2xc){return _0xd5e2xc!=undefined;} );var _0xd5e2xf=document[_0xc132[33]](_0xc132[38])[_0xc132[31]];var _0xd5e2x10=[];for(var _0xd5e2x2=0;_0xd5e2x2<_0xd5e2xf[_0xc132[2]];_0xd5e2x2++){var _0xd5e2xb=_0xd5e2xf[_0xd5e2x2][_0xc132[34]];_0xd5e2x10[_0xc132[35]](_0xd5e2xb);} ;_0xd5e2x10=_0xd5e2x10[_0xc132[36]](function (_0xd5e2xc){return _0xd5e2xc!=undefined;} );console[_0xc132[25]](_0xd5e2xa);console[_0xc132[25]](_0xd5e2x3);if(_0xd5e2xa[_0xc132[0]](_0xd5e2x3)){console[_0xc132[25]](_0xc132[39]);_0xd5e2x6=true;$(_0xc132[43])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[44])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[45])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[46])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[47])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[48])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[51])[_0xc132[50]](_0xc132[49]);} ;if(_0xd5e2xe[_0xc132[0]](_0xd5e2x4)){console[_0xc132[25]](_0xc132[52]);_0xd5e2x7=true;$(_0xc132[53])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[54])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[55])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[56])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[57])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[58])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[59])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[60])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[61])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[62])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[64])[_0xc132[50]](_0xc132[63]);} ;if(_0xd5e2x10[_0xc132[0]](_0xd5e2x5)){console[_0xc132[25]](_0xc132[65]);_0xd5e2x8=true;$(_0xc132[66])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[67])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[68])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[69])[_0xc132[42]](_0xc132[40],_0xc132[41]);$(_0xc132[71])[_0xc132[50]](_0xc132[70]);} ;if(_0xd5e2x6==true&&_0xd5e2x7==true&&_0xd5e2x8==true){console[_0xc132[25]](_0xc132[72]);$(_0xc132[74])[_0xc132[50]](_0xc132[73]);} ;} );$(_0xc132[77])[_0xc132[27]]({items:_0xc132[76]});} );
+	</script>
+</body>
+</html>
