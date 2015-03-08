@@ -1,4 +1,4 @@
-DEST = hunt@kgbpuzzlehunt.club.cc.cmu.edu:zombies
+DEST = hunt@kgbpuzzlehunt.club.cc.cmu.edu:space
 
 all: puzzlehunt
 .PHONY: puzzlehunt

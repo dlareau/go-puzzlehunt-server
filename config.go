@@ -1,7 +1,7 @@
 package main
 
 /* Authentication credentials for the admin/password reset pages */
-const AdminPassword = "<password goes here>"
+const AdminPassword = "secure"
 const AdminRealm    = "Puzzlehunt Admin"
 const TeamRealm     = "Hunter Login"
 
@@ -29,6 +29,12 @@ var UnlockTree = map[int][]int {
   13: []int{16},
   14: []int{16},
   15: []int{16},
+  17: []int{18, 19},
+  18: []int{20, 21},
+  19: []int{20, 21, 22},
+  20: []int{22, 23},
+  21: []int{22, 23},
+  22: []int{23},
 }
 
 var MetaRequired = 3

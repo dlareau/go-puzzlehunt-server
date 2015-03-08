@@ -51,7 +51,12 @@ func MapPuzzleHandler(w http.ResponseWriter, r *http.Request, t *Team) {
       submission.Status = CorrectUnreplied
       go updateCorrect(submission, &soln)
     } else if strings.Index(answer, " ") != -1 {
-      submission.Status = InvalidAnswer
+      if strings.EqualFold(strings.Replace(answer, " ", "", -1), puzzle.Answer){
+         submission.Status = CorrectUnreplied
+         go updateCorrect(submission, &soln)
+      } else {
+         submission.Status = IncorrectUnreplied  
+      }
     } else {
       submission.Status = IncorrectUnreplied
     }
