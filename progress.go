@@ -261,9 +261,6 @@ func (s *Solution) Update() error {
         solved := 0
         for iter.Next(&p) {
           var soln Solution
-          if p.UnlockIdx > 15 {
-            continue
-          }
           err := Solutions.Find(bson.M{"puzzleid":p.Id,
                                        "teamid":s.TeamId}).One(&soln)
           if err == mgo.ErrNotFound {
