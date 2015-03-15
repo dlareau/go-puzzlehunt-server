@@ -6,7 +6,7 @@ body {
   font-size: 14px;
   padding: 20px;
   margin: 20px auto;
-  width: 800px;
+  width: 973px;
   background: white;
   border: 4px solid black;
 }
@@ -27,51 +27,71 @@ body {
 #map {
   position: relative;
 
-  .puzzle {
+  .puzzle{
     position: absolute;
     overflow: visible;
     width: 20px;
     height: 20px;
 
-    .cloud { position: absolute; }
-
+    .cloud { position: absolute; width: 147px; opacity: 0.7;}
+  }
+  .puzzle_link{
+    position: absolute;
+    overflow: visible;
+    width: 20px;
+    height: 20px;
+    z-index: 200;
+  
     .done {
       width: 48px;
       position: absolute;
       top: -16px;
       left: -8px;
-      z-index: -1;
     }
 
     a {
       font-weight: bold;
-      color: white;
+      color: rgb(176, 176, 176);
       font-size: 20px;
     }
   }
 }
-#puzzle0 { top: 306px; left: 86px; z-index: 99; }
-#puzzle1 { top: 123px; left: 286px; z-index: 99; }
-#puzzle2 { top: 272px; left: 620px; z-index: 99; }
-#puzzle3 { top: 576px; left: 559px; z-index: 99; }
-#puzzle4 { top: 609px; left: 188px; z-index: 99; }
-#puzzle5 { top: 459px; left: 189px; z-index: 95; }
-#puzzle6 { top: 247px; left: 229px; z-index: 95; }
-#puzzle7 { top: 212px; left: 457px; z-index: 95; }
-#puzzle8 { top: 408px; left: 558px; z-index: 95; }
-#puzzle9 { top: 565px; left: 375px; z-index: 95; }
-#puzzle10 { top: 487px; left: 302px; z-index: 90; }
-#puzzle11 { top: 360px; left: 234px; z-index: 90; }
-#puzzle12 { top: 275px; left: 364px; z-index: 90; }
-#puzzle13 { top: 344px; left: 472px; z-index: 90; }
-#puzzle14 { top: 478px; left: 448px; z-index: 90; }
-#puzzle15 { top: 374px; left: 353px; z-index: 85; }
+#puzzle0 { top: 506px;  left: 165px; z-index: 99; }
+#puzzle1 { top: 546px;  left: 115px; z-index: 99; }
+#puzzle2 { top: 601px;  left: 135px; z-index: 99; }
+#puzzle3 { top: 601px;  left: 195px; z-index: 99; }
+#puzzle4 { top: 546px;  left: 208px; z-index: 99; }
 
-#map #puzzle5 a { color: black; }
-#map #puzzle6 a { color: black; }
-#map #puzzle7 a { color: black; }
-#map #puzzle8 a { color: black; }
-#map #puzzle9 a { color: black; }
+#puzzle5 { top: 521px;  left: 807px; z-index: 95; }
+#puzzle6 { top: 575px;  left: 822px; z-index: 95; }
+#puzzle7 { top: 611px;  left: 779px; z-index: 95; }
+#puzzle8 { top: 575px;  left: 738px; z-index: 95; }
+#puzzle9 { top: 521px;  left: 743px; z-index: 95; }
+
+#puzzle10 {top: 113px;  left: 461px; z-index: 90; }
+#puzzle11 {top: 155px;  left: 418px; z-index: 90; }
+#puzzle12 {top: 205px;  left: 431px; z-index: 90; }
+#puzzle13 {top: 205px;  left: 491px; z-index: 90; }
+#puzzle14 {top: 155px;  left: 495px; z-index: 90; }
+
+#puzzle15 {top: 570px;  left: 468px; z-index: 85; }
+
+#puzzle_link0 { top: 506px;  left: 165px; z-index: 99; }
+#puzzle_link1 { top: 546px;  left: 115px; z-index: 99; }
+#puzzle_link2 { top: 601px;  left: 135px; z-index: 99; }
+#puzzle_link3 { top: 601px;  left: 195px; z-index: 99; }
+#puzzle_link4 { top: 546px;  left: 208px; z-index: 99; }
+#puzzle_link5 { top: 521px;  left: 807px; z-index: 95; }
+#puzzle_link6 { top: 575px;  left: 822px; z-index: 95; }
+#puzzle_link7 { top: 611px;  left: 779px; z-index: 95; }
+#puzzle_link8 { top: 575px;  left: 738px; z-index: 95; }
+#puzzle_link9 { top: 521px;  left: 743px; z-index: 95; }
+#puzzle_link10 {top: 113px;  left: 461px; z-index: 90; }
+#puzzle_link11 {top: 155px;  left: 418px; z-index: 90; }
+#puzzle_link12 {top: 205px;  left: 431px; z-index: 90; }
+#puzzle_link13 {top: 205px;  left: 491px; z-index: 90; }
+#puzzle_link14 {top: 155px;  left: 495px; z-index: 90; }
+#puzzle_link15 {top: 570px;  left: 468px; z-index: 85; }
 
 @mixin rotate($deg) {
   -webkit-transform:rotate($deg);
@@ -79,35 +99,22 @@ body {
   transform:rotate($deg);
 }
 
-#puzzle0 .cloud { top: -83px; left: -172px; width: 404px;
-                  @include rotate(90deg); }
-#puzzle1 .cloud { top: -83px; left: -146px; width: 371px;
-                  @include rotate(0deg); }
-#puzzle2 .cloud { top: -119px; left: -187px; width: 371px;
-                  @include rotate(60deg); }
-#puzzle3 .cloud { top: -123px; left: -145px; width: 371px;
-                  @include rotate(-229deg); }
-#puzzle4 .cloud { top: -94px; left: -94px; width: 371px;
-                  @include rotate(-163deg); }
-#puzzle5 .cloud { top: -30px; left: -81px; width: 235px;
-                  @include rotate(-121deg); }
-#puzzle6 .cloud { top: -30px; left: -117px; width: 235px;
-                  @include rotate(-39deg); }
-#puzzle7 .cloud { top: -94px; left: -116px; width: 235px;
-                  @include rotate(87deg); }
-#puzzle8 .cloud { top: -87px; left: -101px; width: 235px;
-                  @include rotate(100deg); }
-#puzzle9 .cloud { top: -71px; left: -57px; width: 235px;
-                  @include rotate(168deg); }
-#puzzle10 .cloud { top: -76px; left: -111px; width: 225px;
-                   @include rotate(51deg); }
-#puzzle11 .cloud { top: -81px; left: -90px; width: 225px;
-                   @include rotate(115deg); }
-#puzzle12 .cloud { top: -62px; left: -78px; width: 225px;
-                   @include rotate(179deg); }
-#puzzle13 .cloud { top: -39px; left: -78px; width: 225px;
-                   @include rotate(245deg); }
-#puzzle14 .cloud { top: -43px; left: -98px; width: 225px;
-                   @include rotate(319deg); }
-#puzzle15 .cloud { top: -54px; left: -82px; width: 263px;
-                   @include rotate(198deg); }
+#puzzle0  .cloud { top: -56px;  left: -59px; @include rotate(0deg);    }
+#puzzle1  .cloud { top: -52px;  left: -69px; @include rotate(-72deg);  }
+#puzzle2  .cloud { top: -37px;  left: -67px; @include rotate(-144deg); }
+#puzzle3  .cloud { top: -37px;  left: -52px; @include rotate(-216deg); }
+#puzzle4  .cloud { top: -54px;  left: -43px; @include rotate(-288deg); }
+
+#puzzle5  .cloud { top: -59px;  left: -50px;  @include rotate(36deg);   }
+#puzzle6  .cloud { top: -42px;  left: -42px;  @include rotate(108deg);  }
+#puzzle7  .cloud { top: -37px;  left: -58px;  @include rotate(180deg);  }
+#puzzle8  .cloud { top: -42px;  left: -78px;  @include rotate(252deg);  }
+#puzzle9  .cloud { top: -59px;  left: -60px;  @include rotate(324deg);  }
+
+#puzzle10 .cloud { top: -59px;  left: -54px;  @include rotate(0deg);    }
+#puzzle11 .cloud { top: -58px;  left: -71px;  @include rotate(-72deg);  }
+#puzzle12 .cloud { top: -37px;  left: -61px;  @include rotate(-144deg); }
+#puzzle13 .cloud { top: -37px;  left: -45px;  @include rotate(-216deg); }
+#puzzle14 .cloud { top: -57px;  left: -28px;  @include rotate(-288deg); }
+
+#puzzle15 .cloud { top: -40px;  left: -50px;  @include rotate(0deg);    }

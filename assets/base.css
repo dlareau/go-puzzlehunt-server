@@ -1,304 +1,332 @@
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\000031}}
 html {
   background-image: url(/assets/parchment.jpg); }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\000034}}
 body {
   font-family: verdana;
   font-size: 14px;
   padding: 20px;
   margin: 20px auto;
-  width: 800px;
+  width: 973px;
   background: white;
   border: 4px solid black; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000314}}
 .puzzle, .info {
   overflow: auto; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000316}}
 .puzzle fieldset {
   float: left;
   padding: 20px;
   margin: 20px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000321}}
 .puzzle fieldset#submit {
   width: 30%; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000322}}
 .puzzle fieldset#answers {
   width: 48%; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000324}}
 .puzzle .info h1 {
   float: left; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000325}}
 .puzzle .info a {
   float: right; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000327}}
 #map {
   position: relative; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000330}}
   #map .puzzle {
     position: absolute;
     overflow: visible;
     width: 20px;
     height: 20px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000336}}
     #map .puzzle .cloud {
-      position: absolute; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000338}}
-    #map .puzzle .done {
+      position: absolute;
+      width: 147px;
+      opacity: 0.7; }
+  #map .puzzle_link {
+    position: absolute;
+    overflow: visible;
+    width: 20px;
+    height: 20px;
+    z-index: 200; }
+    #map .puzzle_link .done {
       width: 48px;
       position: absolute;
       top: -16px;
-      left: -8px;
-      z-index: -1; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000346}}
-    #map .puzzle a {
+      left: -8px; }
+    #map .puzzle_link a {
       font-weight: bold;
-      color: white;
+      color: #b0b0b0;
       font-size: 20px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000353}}
 #puzzle0 {
-  top: 525px;
-  left: 80px;
+  top: 506px;
+  left: 165px;
   z-index: 99; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000354}}
 #puzzle1 {
-  top: 168px;
-  left: 204px;
+  top: 546px;
+  left: 115px;
   z-index: 99; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000355}}
 #puzzle2 {
-  top: 163px;
-  left: 564px;
+  top: 601px;
+  left: 135px;
   z-index: 99; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000356}}
 #puzzle3 {
-  top: 529px;
-  left: 683px;
+  top: 601px;
+  left: 195px;
   z-index: 99; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000357}}
 #puzzle4 {
-  top: 755px;
-  left: 381px;
+  top: 546px;
+  left: 208px;
   z-index: 99; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000358}}
 #puzzle5 {
-  top: 358px;
-  left: 204px;
+  top: 521px;
+  left: 807px;
   z-index: 95; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000359}}
 #puzzle6 {
-  top: 226px;
-  left: 391px;
+  top: 575px;
+  left: 822px;
   z-index: 95; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000360}}
 #puzzle7 {
-  top: 354px;
-  left: 575px;
+  top: 611px;
+  left: 779px;
   z-index: 95; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000361}}
 #puzzle8 {
-  top: 590px;
-  left: 505px;
+  top: 575px;
+  left: 738px;
   z-index: 95; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000362}}
 #puzzle9 {
-  top: 584px;
-  left: 265px;
+  top: 521px;
+  left: 743px;
   z-index: 95; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000363}}
 #puzzle10 {
-  top: 512px;
-  left: 386px;
+  top: 113px;
+  left: 461px;
   z-index: 90; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000364}}
 #puzzle11 {
-  top: 454px;
-  left: 292px;
+  top: 155px;
+  left: 418px;
   z-index: 90; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000365}}
 #puzzle12 {
-  top: 329px;
-  left: 307px;
+  top: 205px;
+  left: 431px;
   z-index: 90; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000366}}
 #puzzle13 {
-  top: 327px;
-  left: 458px;
+  top: 205px;
+  left: 491px;
   z-index: 90; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000367}}
 #puzzle14 {
-  top: 454px;
-  left: 478px;
+  top: 155px;
+  left: 495px;
   z-index: 90; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000368}}
 #puzzle15 {
-  top: 410px;
-  left: 386px;
+  top: 570px;
+  left: 468px;
   z-index: 85; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000382}}
-#puzzle0 .cloud {
-  top: -83px;
-  left: -172px;
-  width: 404px;
-  -webkit-transform: rotate(90deg);
-  -moz-transform: rotate(90deg);
-  transform: rotate(90deg); }
+#puzzle_link0 {
+  top: 506px;
+  left: 165px;
+  z-index: 99; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000384}}
-#puzzle1 .cloud {
-  top: -83px;
-  left: -146px;
-  width: 371px;
+#puzzle_link1 {
+  top: 546px;
+  left: 115px;
+  z-index: 99; }
+
+#puzzle_link2 {
+  top: 601px;
+  left: 135px;
+  z-index: 99; }
+
+#puzzle_link3 {
+  top: 601px;
+  left: 195px;
+  z-index: 99; }
+
+#puzzle_link4 {
+  top: 546px;
+  left: 208px;
+  z-index: 99; }
+
+#puzzle_link5 {
+  top: 521px;
+  left: 807px;
+  z-index: 95; }
+
+#puzzle_link6 {
+  top: 575px;
+  left: 822px;
+  z-index: 95; }
+
+#puzzle_link7 {
+  top: 611px;
+  left: 779px;
+  z-index: 95; }
+
+#puzzle_link8 {
+  top: 575px;
+  left: 738px;
+  z-index: 95; }
+
+#puzzle_link9 {
+  top: 521px;
+  left: 743px;
+  z-index: 95; }
+
+#puzzle_link10 {
+  top: 113px;
+  left: 461px;
+  z-index: 90; }
+
+#puzzle_link11 {
+  top: 155px;
+  left: 418px;
+  z-index: 90; }
+
+#puzzle_link12 {
+  top: 205px;
+  left: 431px;
+  z-index: 90; }
+
+#puzzle_link13 {
+  top: 205px;
+  left: 491px;
+  z-index: 90; }
+
+#puzzle_link14 {
+  top: 155px;
+  left: 495px;
+  z-index: 90; }
+
+#puzzle_link15 {
+  top: 570px;
+  left: 468px;
+  z-index: 85; }
+
+#puzzle0 .cloud {
+  top: -56px;
+  left: -59px;
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
   transform: rotate(0deg); }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000386}}
+#puzzle1 .cloud {
+  top: -52px;
+  left: -69px;
+  -webkit-transform: rotate(-72deg);
+  -moz-transform: rotate(-72deg);
+  transform: rotate(-72deg); }
+
 #puzzle2 .cloud {
-  top: -119px;
-  left: -187px;
-  width: 371px;
-  -webkit-transform: rotate(60deg);
-  -moz-transform: rotate(60deg);
-  transform: rotate(60deg); }
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000388}}
-#puzzle3 .cloud {
-  top: -123px;
-  left: -145px;
-  width: 371px;
-  -webkit-transform: rotate(-229deg);
-  -moz-transform: rotate(-229deg);
-  transform: rotate(-229deg); }
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000390}}
-#puzzle4 .cloud {
-  top: -94px;
-  left: -94px;
-  width: 371px;
-  -webkit-transform: rotate(-163deg);
-  -moz-transform: rotate(-163deg);
-  transform: rotate(-163deg); }
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000392}}
-#puzzle5 .cloud {
-  top: -39px;
-  left: -103px;
-  width: 200px;
-  -webkit-transform: rotate(-121deg);
-  -moz-transform: rotate(-121deg);
-  transform: rotate(-121deg); }
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000394}}
-#puzzle6 .cloud {
-  top: -54px;
-  left: -87px;
-  width: 201px;
-  -webkit-transform: rotate(-39deg);
-  -moz-transform: rotate(-39deg);
-  transform: rotate(-39deg); }
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000396}}
-#puzzle7 .cloud {
-  top: -73px;
-  left: -92px;
-  width: 194px;
-  -webkit-transform: rotate(87deg);
-  -moz-transform: rotate(87deg);
-  transform: rotate(87deg); }
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\0000398}}
-#puzzle8 .cloud {
-  top: -68px;
-  left: -90px;
-  width: 200px;
-  -webkit-transform: rotate(100deg);
-  -moz-transform: rotate(100deg);
-  transform: rotate(100deg); }
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\00003100}}
-#puzzle9 .cloud {
-  top: -45px;
+  top: -37px;
   left: -67px;
-  width: 198px;
-  -webkit-transform: rotate(168deg);
-  -moz-transform: rotate(168deg);
-  transform: rotate(168deg); }
+  -webkit-transform: rotate(-144deg);
+  -moz-transform: rotate(-144deg);
+  transform: rotate(-144deg); }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\00003102}}
-#puzzle10 .cloud {
-  top: -39px;
-  left: -70px;
-  width: 181px;
-  -webkit-transform: rotate(51deg);
-  -moz-transform: rotate(51deg);
-  transform: rotate(51deg); }
+#puzzle3 .cloud {
+  top: -37px;
+  left: -52px;
+  -webkit-transform: rotate(-216deg);
+  -moz-transform: rotate(-216deg);
+  transform: rotate(-216deg); }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\00003104}}
-#puzzle11 .cloud {
-  top: -56px;
-  left: -72px;
-  width: 179px;
-  -webkit-transform: rotate(90deg);
-  -moz-transform: rotate(115deg);
-  transform: rotate(115deg); }
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\00003106}}
-#puzzle12 .cloud {
-  top: -57px;
-  left: -59px;
-  width: 200px;
-  -webkit-transform: rotate(179deg);
-  -moz-transform: rotate(179deg);
-  transform: rotate(179deg); }
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\00003108}}
-#puzzle13 .cloud {
-  top: -39px;
-  left: -78px;
-  width: 185px;
-  -webkit-transform: rotate(245deg);
-  -moz-transform: rotate(245deg);
-  transform: rotate(245deg); }
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\00003110}}
-#puzzle14 .cloud {
-  top: -43px;
-  left: -71px;
-  width: 183px;
-  -webkit-transform: rotate(319deg);
-  -moz-transform: rotate(319deg);
-  transform: rotate(319deg); }
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Dillon\/coding\/puzzlehunt\/puzzlehunt\/assets\/base\.scss}line{font-family:\00003112}}
-#puzzle15 .cloud {
+#puzzle4 .cloud {
   top: -54px;
+  left: -43px;
+  -webkit-transform: rotate(-288deg);
+  -moz-transform: rotate(-288deg);
+  transform: rotate(-288deg); }
+
+#puzzle5 .cloud {
+  top: -59px;
+  left: -50px;
+  -webkit-transform: rotate(36deg);
+  -moz-transform: rotate(36deg);
+  transform: rotate(36deg); }
+
+#puzzle6 .cloud {
+  top: -42px;
+  left: -42px;
+  -webkit-transform: rotate(108deg);
+  -moz-transform: rotate(108deg);
+  transform: rotate(108deg); }
+
+#puzzle7 .cloud {
+  top: -37px;
+  left: -58px;
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  transform: rotate(180deg); }
+
+#puzzle8 .cloud {
+  top: -42px;
+  left: -78px;
+  -webkit-transform: rotate(252deg);
+  -moz-transform: rotate(252deg);
+  transform: rotate(252deg); }
+
+#puzzle9 .cloud {
+  top: -59px;
+  left: -60px;
+  -webkit-transform: rotate(324deg);
+  -moz-transform: rotate(324deg);
+  transform: rotate(324deg); }
+
+#puzzle10 .cloud {
+  top: -59px;
+  left: -54px;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  transform: rotate(0deg); }
+
+#puzzle11 .cloud {
+  top: -58px;
+  left: -71px;
+  -webkit-transform: rotate(-72deg);
+  -moz-transform: rotate(-72deg);
+  transform: rotate(-72deg); }
+
+#puzzle12 .cloud {
+  top: -37px;
   left: -61px;
-  width: 208px;
-  -webkit-transform: rotate(160deg);
-  -moz-transform: rotate(198deg);
-  transform: rotate(198deg); }
+  -webkit-transform: rotate(-144deg);
+  -moz-transform: rotate(-144deg);
+  transform: rotate(-144deg); }
+
+#puzzle13 .cloud {
+  top: -37px;
+  left: -45px;
+  -webkit-transform: rotate(-216deg);
+  -moz-transform: rotate(-216deg);
+  transform: rotate(-216deg); }
+
+#puzzle14 .cloud {
+  top: -57px;
+  left: -28px;
+  -webkit-transform: rotate(-288deg);
+  -moz-transform: rotate(-288deg);
+  transform: rotate(-288deg); }
+
+#puzzle15 .cloud {
+  top: -40px;
+  left: -50px;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  transform: rotate(0deg); }
+
+/*# sourceMappingURL=base.css.map */

@@ -2,7 +2,7 @@
 
 {{ define "content" }}
   <div id='map'>
-    <img src='{{ AssetPath "map.png" }}' width=800 height=810 />
+    <img src='{{ AssetPath "map.png" }}' width=973 height=800 />
 
 
     {{ with $data := . }}
@@ -10,10 +10,17 @@
       <div id='puzzle{{ $i }}' class='puzzle'>
         {{ with $soln := SolutionFor $data.Solutions $data.Team $puzzle }}
           {{ if not $soln.SolvedAt.IsZero }}
-            <img class='done' src='{{ AssetPath "redx.png" }}'/>
+            <div></div>
           {{ end }}
         {{ else }}
           <img class='cloud' src='{{ AssetPath "cloud.png" }}'/>
+        {{ end }}
+      </div>
+      <div id='puzzle_link{{ $i }}' class='puzzle_link' >
+        {{ with $soln := SolutionFor $data.Solutions $data.Team $puzzle }}
+          {{ if not $soln.SolvedAt.IsZero }}
+            <img class='done' src='{{ AssetPath "redx.png" }}'/>
+          {{ end }}
         {{ end }}
         <a href='/map/puzzles/{{ .Slug }}'>P{{ .UnlockIdx }}</a>
       </div>
