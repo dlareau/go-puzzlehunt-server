@@ -74,7 +74,13 @@ body {
 #puzzle13 {top: 205px;  left: 491px; z-index: 90; }
 #puzzle14 {top: 155px;  left: 495px; z-index: 90; }
 
-#puzzle15 {top: 570px;  left: 468px; z-index: 85; }
+#puzzle15  {top: 664px;
+            background-color: rgb(159, 159, 159);
+            opacity: 0.8;
+            left: 336px;
+            width: 302px !important;
+            height: 142px !important;
+            z-index: 85;}
 
 #puzzle_link0 { top: 506px;  left: 165px; z-index: 99; }
 #puzzle_link1 { top: 546px;  left: 115px; z-index: 99; }
@@ -117,4 +123,4 @@ body {
 #puzzle13 .cloud { top: -37px;  left: -45px;  @include rotate(-216deg); }
 #puzzle14 .cloud { top: -57px;  left: -28px;  @include rotate(-288deg); }
 
-#puzzle15 .cloud { top: -40px;  left: -50px;  @include rotate(0deg);    }
+#puzzle15 .cloud { top: -40px;  left: -50px;  @include rotate(0deg); display: none;}

@@ -35,6 +35,7 @@ func MapHandler(w http.ResponseWriter, r *http.Request, t *Team) {
 }
 
 func MapPuzzleHandler(w http.ResponseWriter, r *http.Request, t *Team) {
+  println("in the puzzle handler");
   var puzzle Puzzle
   puzzle.findSlug(mux.Vars(r)["id"]);
   var soln Solution
