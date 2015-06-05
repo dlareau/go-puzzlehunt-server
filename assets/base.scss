@@ -43,10 +43,10 @@ body {
     z-index: 200;
   
     .done {
-      width: 48px;
+      width: 28px;
       position: absolute;
-      top: -16px;
-      left: -8px;
+      top: -6px;
+      left: -18px;
     }
 
     a {
@@ -71,16 +71,8 @@ body {
 #puzzle10 {top: 113px;  left: 461px; z-index: 90; }
 #puzzle11 {top: 155px;  left: 418px; z-index: 90; }
 #puzzle12 {top: 205px;  left: 431px; z-index: 90; }
-#puzzle13 {top: 205px;  left: 491px; z-index: 90; }
-#puzzle14 {top: 155px;  left: 495px; z-index: 90; }
-
-#puzzle15  {top: 664px;
-            background-color: rgb(159, 159, 159);
-            opacity: 0.8;
-            left: 336px;
-            width: 302px !important;
-            height: 142px !important;
-            z-index: 85;}
+#puzzle14 {top: 205px;  left: 491px; z-index: 90; }
+#puzzle13 {top: 155px;  left: 495px; z-index: 90; }
 
 #puzzle_link0 { top: 506px;  left: 165px; z-index: 99; }
 #puzzle_link1 { top: 546px;  left: 115px; z-index: 99; }
@@ -95,9 +87,8 @@ body {
 #puzzle_link10 {top: 113px;  left: 461px; z-index: 90; }
 #puzzle_link11 {top: 155px;  left: 418px; z-index: 90; }
 #puzzle_link12 {top: 205px;  left: 431px; z-index: 90; }
-#puzzle_link13 {top: 205px;  left: 491px; z-index: 90; }
-#puzzle_link14 {top: 155px;  left: 495px; z-index: 90; }
-#puzzle_link15 {top: 570px;  left: 468px; z-index: 85; }
+#puzzle_link14 {top: 205px;  left: 491px; z-index: 90; }
+#puzzle_link13 {top: 155px;  left: 495px; z-index: 90; }
 
 @mixin rotate($deg) {
   -webkit-transform:rotate($deg);
@@ -120,7 +111,5 @@ body {
 #puzzle10 .cloud { top: -59px;  left: -54px;  @include rotate(0deg);    }
 #puzzle11 .cloud { top: -58px;  left: -71px;  @include rotate(-72deg);  }
 #puzzle12 .cloud { top: -37px;  left: -61px;  @include rotate(-144deg); }
-#puzzle13 .cloud { top: -37px;  left: -45px;  @include rotate(-216deg); }
-#puzzle14 .cloud { top: -57px;  left: -28px;  @include rotate(-288deg); }
-
-#puzzle15 .cloud { top: -40px;  left: -50px;  @include rotate(0deg); display: none;}
+#puzzle14 .cloud { top: -37px;  left: -45px;  @include rotate(-216deg); }
+#puzzle13 .cloud { top: -57px;  left: -28px;  @include rotate(-288deg); }
