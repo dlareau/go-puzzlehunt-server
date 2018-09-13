@@ -1,3 +1,7 @@
+# This is an old project
+
+This project has been replaced by the [puzzlehunt_server](https://github.com/dlareau/puzzlehunt_server) project, which supports many more features including the ability to replay past hunts. 
+
 # Getting the code
 
 1. [Install git](http://git-scm.com/downloads)
@@ -29,7 +33,3 @@ make run
 # Visit the website!
 open http://localhost:4000
 ```
-
-# Running puzzlehunt
-* Currently, mazeoftwistypassages.com (registration page) is at cmukgb.club.cc.cmu.edu:/var/www/mazeoftwistypassages.com
-* Currently, main server hosting is at kgbpuzzlehunt.club.cc.cmu.edu
